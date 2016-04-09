@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+#/home/nelley/dj_pj_NL/lawyerFinder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -37,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'lawyerFinder',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,11 +54,12 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'lawyerFinder.urls'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'lawyerFinder/media')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR + '/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,10 +80,27 @@ WSGI_APPLICATION = 'lawyerFinder.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        
+        #'NAME': 'mysite',
+        #'USER': 'root',
+        #'PASSWORD': '',
+        #'HOST': '192.168.11.11',
+
+        'NAME': 'namimoch_lawyerFinder',
+        'USER': 'namimoch_root',
+        'PASSWORD': '143Nami0016Mochi!',
+        'HOST': '50.87.248.134',
+        
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8',
+        },
     }
 }
+
 
 
 # Internationalization
@@ -100,3 +121,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '[%(asctime)s %(module)s] %(levelname)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
