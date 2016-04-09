@@ -120,8 +120,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+# for real enviroment(python manage.py collectstatic)
+STATIC_ROOT = os.path.join(BASE_DIR, 'lawyerFinder/static')
+
 STATIC_URL = '/static/'
 
+# for general usage in dev
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "projectstatic"),
+)
 
 LOGGING = {
     'version': 1,
