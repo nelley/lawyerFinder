@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+#from models import User
 
 #/home/nelley/dj_pj_NL/lawyerFinder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +40,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'bootstrap3',
     'lawyerFinder',
+    'accounts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,9 +54,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    
 )
 
 ROOT_URLCONF = 'lawyerFinder.urls'
+AUTH_USER_MODEL = 'accounts.User'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'lawyerFinder/media')
 
 TEMPLATES = [
