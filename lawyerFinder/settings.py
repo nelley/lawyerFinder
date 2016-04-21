@@ -90,15 +90,16 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
         
-        #'NAME': 'mysite',
-        #'USER': 'root',
-        #'PASSWORD': '',
-        #'HOST': '192.168.11.11',
-
-        'NAME': 'namimoch_lawyerFinder',
-        'USER': 'namimoch_root',
-        'PASSWORD': '143Nami0016Mochi!',
-        'HOST': '50.87.248.134',
+        'NAME': 'lawyerFinder',
+        'USER': 'root',
+        'PASSWORD': '',
+        #'HOST': '192.168.1.115',
+        'HOST': '192.168.43.215',
+        
+        #'NAME': 'namimoch_lawyerFinder',
+        #'USER': 'namimoch_root',
+        #'PASSWORD': '143Nami0016Mochi!',
+        #'HOST': '50.87.248.134',
         
         'PORT': '3306',
         'OPTIONS': {
@@ -154,7 +155,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
     },

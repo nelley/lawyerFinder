@@ -4,6 +4,7 @@ from django.template import Context, RequestContext
 from django.contrib import messages
 import logging
 
+
 # Create your views here.
 def login_view(request):
     args = {}
@@ -27,3 +28,8 @@ def login_view(request):
     elif "next" in request.GET:
           args = {"next":request.GET['next']}
     return render_to_response('accounts/login.html', args, context_instance=RequestContext(request))
+
+
+
+
+

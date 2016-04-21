@@ -28,10 +28,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         logger.debug('db cmd start!')
         
-        # create groups
+        # create users
         User.objects.create_superuser(username='dragonbrucelee@gmail.com', 
                                       email='dragonbrucelee@gmail.com', 
                                       password='123456')
+        
         User.objects.create_superuser(username='test001@gmail.com', 
                                       email='test001@gmail.com', 
                                       password='123456')
@@ -62,5 +63,39 @@ class Command(BaseCommand):
         tmpUser = User.objects.get(username='testLawyer@gmail.com')
         tmpG = Group.objects.get(name = 'LAWYER')
         tmpG.user_set.add(tmpUser)
+        
+        
+        #-------------------------------------------------------------------------------
+        # relate user to lawyer
+        testLawyer = User.objects.get(username='testLawyer@gmail.com')
+        l = Lawyer(userId=testLawyer, lawyerId='13-0001')
+        l.save()
+        
+        # relate user to lawyer & get the lawyer_id
+        print testLawyer.lawyer.lawyerId
+        
+        # relate bar association with lawyer
+        taipei = Barassociation.objects.create(area='TAIPEI')
+        m1 = LawyerMembership.objects.create(lawyerId=l, barAssociation=taipei)
+        m1.save()
+        
+        # relate user to lawyer
+        dragonLawyer = User.objects.get(username='dragonbrucelee@gmail.com')
+        l = Lawyer(userId=dragonLawyer, lawyerId='13-0002')
+        l.save()
+        # relate bar association with lawyer
+        m1 = LawyerMembership.objects.create(lawyerId=l, barAssociation=taipei)
+        m1.save()
+        
+        
+        # relate user to lawyer
+        test001Lawyer = User.objects.get(username='test001@gmail.com')
+        l = Lawyer(userId=test001Lawyer, lawyerId='13-0003')
+        l.save()
+        # relate bar association with lawyer
+        taichung = Barassociation.objects.create(area='TAICHUNG')
+        m1 = LawyerMembership.objects.create(lawyerId=l, barAssociation=taichung)
+        m1.save()
+        
         
         logger.debug('db cmd end!')

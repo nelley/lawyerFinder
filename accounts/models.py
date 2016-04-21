@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             username=username,
             email=email,
-            is_active=True,
+            is_active=False,
             last_login=now,
             date_joined=now,
             **extra_fields
@@ -48,18 +48,21 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User """
-    username    = models.CharField(_('username'),
-                                   max_length=30,
+    username    = models.EmailField(_('username'),
+                                   max_length=255,
                                    unique=True,
                                    help_text=_('Required. 30 characters or fewer. Letters, numbers and '
-                                   '@/./+/-/_ characters'))
+                                   '@/./+/-/_ characters'),
+                                   blank=False)
     first_name  = models.CharField(_('first name'), max_length=30, blank=True)
     last_name   = models.CharField(_('last name'), max_length=30, blank=True)
-    email       = models.EmailField(verbose_name='email address', max_length=255, unique=True, blank=False)
-    is_active   = models.BooleanField(default=True)
+    email       = models.EmailField(verbose_name='email address', max_length=255, unique=True, blank=True)
+    is_active   = models.BooleanField(default=False)
     is_staff    = models.BooleanField(default=False)
     is_admin    = models.BooleanField(default=False)
+    #is_lawyer   = models.BooleanField(default=False)
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    
     
     objects = UserManager()
 
