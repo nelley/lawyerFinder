@@ -94,7 +94,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         #'HOST': '192.168.1.115',
-        'HOST': '192.168.43.215',
+        'HOST': '192.168.1.4',
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
@@ -155,7 +155,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
     },

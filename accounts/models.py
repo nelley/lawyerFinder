@@ -3,7 +3,7 @@ from django.db import models
 # --- coding: utf-8 ---
 
 import re
-
+from django.core.validators import EmailValidator
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, _user_has_perm
@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             username=username,
             email=email,
-            is_active=False,
+            is_active=True,
             last_login=now,
             date_joined=now,
             **extra_fields
@@ -60,9 +60,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active   = models.BooleanField(default=False)
     is_staff    = models.BooleanField(default=False)
     is_admin    = models.BooleanField(default=False)
-    #is_lawyer   = models.BooleanField(default=False)
+    premiumUser = models.CharField(max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-    
+    loginCnt    = models.PositiveIntegerField(default=0)
     
     objects = UserManager()
 
