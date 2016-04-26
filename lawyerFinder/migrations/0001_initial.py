@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('user', models.OneToOneField(related_name='foobar', primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
                 ('lawyerNo', models.CharField(max_length=32)),
                 ('premiumType', models.CharField(max_length=30, blank=True)),
-                ('gender', models.CharField(max_length=20, choices=[(b'MALE', b'\xe7\x94\xb7\xe6\x80\xa7'), (b'FEMALE', b'\xe5\xa5\xb3\xe6\x80\xa7')])),
+                ('gender', models.CharField(max_length=20, choices=[(b'M', b'\xe7\x94\xb7\xe6\x80\xa7'), (b'F', b'\xe5\xa5\xb3\xe6\x80\xa7')])),
                 ('careerYear', models.IntegerField(default=0, null=True, blank=True)),
                 ('companyAddress', models.CharField(max_length=50)),
             ],

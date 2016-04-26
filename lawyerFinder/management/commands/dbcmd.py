@@ -38,6 +38,7 @@ class Command(BaseCommand):
 
         try:
             with transaction.atomic():
+                user_name = ['dragonbrucelee', 'formerUser']
                 former_users = ['dragonbrucelee@gmail.com', 'formerUser@gmail.com']
                 former_pw = ['123456', '123456']
                 # create users
@@ -46,11 +47,13 @@ class Command(BaseCommand):
                 # create super user
                 for i, val in enumerate(former_users):
                     u.create_superuser(username=val,
+                                       first_name=user_name[i],
                                        email=val,
                                        password=former_pw[i])
                 # create former user(lawyer)
                 for i in range(1,10):
                     u.create_user(username='testLawyer'+str(i)+'@gmail.com',
+                                  first_name = 'testLawyer'+str(i),
                                   email='testLawyer'+str(i)+'@gmail.com',
                                   password='123456')
                 
@@ -88,13 +91,14 @@ class Command(BaseCommand):
                 for sf in LitigationType.CATEGORYS:
                     LitigationType.objects.create(category=sf[0])
         
-        
                 i=0
                 allu = User.objects.all()
                 for user in allu:
                     if not user.is_admin:
-                        # relate user to lawyer
-                        l = Lawyer(user=user, lawyerNo='13-00' + str(i))
+                        # relate user to lawyerl
+                        g = Lawyer.GENDER[randint(0,1)][0]
+                        grade = Lawyer.PREMIUM[randint(0,3)][0]
+                        l = Lawyer(user=user, lawyerNo='13-00' + str(i), gender=g, premiumType=grade)
                         i += 1
                         l.save()
                         
@@ -112,8 +116,7 @@ class Command(BaseCommand):
                         # duplicate removal
                         field_selected = list(set(tmpField))
                         fields = LitigationType.objects.filter(category__in = field_selected)
-                        LawyerSpecialty.objects.create_in_bulk(l, fields, randint(0,100))
-        
+                        LawyerSpecialty.objects.create_in_bulk(l, fields)
                         
                         
                 logger.debug('db cmd end!')

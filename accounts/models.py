@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, username, email, password, **extra_fields):
         logger.debug('superuser creation start!')
         """ Creates and saves a superuser with the given email and password. """
-        user = self.create_user(username, email, password)
+        user = self.create_user(username, email, password, **extra_fields)
         user.is_active = True
         user.is_staff = True
         user.is_admin = True

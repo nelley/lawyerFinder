@@ -26,10 +26,31 @@ class Command(BaseCommand):
 
     
     def handle(self, *args, **options):
+        sep = '========================================================================='
         logger.debug('sandbox start!')
         
+        print sep
+        #area_selected = ['YILAN', 'PINGTUNG', 'TAINAN']
+        #areas = Barassociation.objects.filter(area__in = area_selected)
         
-        l = Lawyer.objects.get(lawyerNo='13-008')
+        #field_selected = ['PC', 'EC']
+        #fields = LitigationType.objects.filter(category__in=field_selected)
+        
+        #lawyers = Lawyer.objects.select_related('user').prefetch_related("specialty").filter(
+        #                      lawyerspecialty__litigations=fields).distinct()
+        
+        # std to fetch data from intermediate table
+        lawyers = Lawyer.objects.get(lawyerNo='13-000')
+        bb = LitigationType.objects.filter(category__in=('EC', 'IW'))
+        aaaa = lawyers.lawyerspecialty_set.filter(litigations=bb)
+        for aa in aaaa:
+            print aa.caseNum
+        
+        
+        
+        
+        #xwx = (aa.caseNum for aa in lawyers.lawyerspecialty_set.filter(litigations=LitigationType.objects.filter(category__in=LitigationType.CateGorys)))
+        #print xwx
         
         '''
         # get the lawyers registered in TAIPEI & TAICHUNG(1)
@@ -40,22 +61,8 @@ class Command(BaseCommand):
             print 'lawyers in TAIWAN = %s' % l.lawyerId
         '''
         
-        # get the lawyers that registered in taipei
-        #area_selected = ['TAIPEI']
-        #areas = Barassociation.objects.filter(area__in = area_selected)
         
-        '''
-        select_related is limited to single-valued relationships - foreign key & one-to-one
-        prefetch_related : does a separate lookup for each relationship, and does the ‘joining’ in Python.
-        This allows it to prefetch many-to-many and many-to-one objects
-        '''
-        #lawyers = Lawyer.objects.select_related('userId').filter(lawyermembership__barAssociation=areas)
-        #for l in lawyers:
-        #    print l
-            #print 'lawyers in TAIWAN = %s' % l.userId.username
 
-
-            
         '''
         # get lawyers by specialty(2)
         field_selected = ['EC', 'EA']
