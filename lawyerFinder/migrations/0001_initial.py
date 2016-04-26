@@ -23,11 +23,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Lawyer',
             fields=[
-                ('userId', models.OneToOneField(related_name='foobar', primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('lawyerId', models.CharField(max_length=32)),
+                ('user', models.OneToOneField(related_name='foobar', primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
+                ('lawyerNo', models.CharField(max_length=32)),
                 ('premiumType', models.CharField(max_length=30, blank=True)),
                 ('gender', models.CharField(max_length=20, choices=[(b'MALE', b'\xe7\x94\xb7\xe6\x80\xa7'), (b'FEMALE', b'\xe5\xa5\xb3\xe6\x80\xa7')])),
-                ('careerYear', models.IntegerField(null=True, blank=True)),
+                ('careerYear', models.IntegerField(default=0, null=True, blank=True)),
                 ('companyAddress', models.CharField(max_length=50)),
             ],
         ),
@@ -37,15 +37,15 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('date_joined', models.DateField(default=datetime.date.today, null=True)),
                 ('barAssociation', models.ForeignKey(to='lawyerFinder.Barassociation')),
-                ('lawyerId', models.ForeignKey(to='lawyerFinder.Lawyer')),
+                ('lawyerNo', models.ForeignKey(to='lawyerFinder.Lawyer')),
             ],
         ),
         migrations.CreateModel(
             name='LawyerSpecialty',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('caseNum', models.IntegerField(null=True, blank=True)),
-                ('lawyerId', models.ForeignKey(to='lawyerFinder.Lawyer')),
+                ('caseNum', models.IntegerField(default=0, null=True, blank=True)),
+                ('lawyerNo', models.ForeignKey(to='lawyerFinder.Lawyer')),
             ],
         ),
         migrations.CreateModel(

@@ -10,6 +10,7 @@ from django.apps import apps
 import datetime
 from lawyerFinder.management.commands import * 
 from random import randint
+from __builtin__ import list
 
 #python manage.py sandbox
 class Command(BaseCommand):
@@ -27,11 +28,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         logger.debug('sandbox start!')
         
-        l = Lawyer.objects.get(lawyerId='13-001')
-        area_selected = ['TAIPEI', 'CHANGHUS']
-        areas = Barassociation.objects.filter(area__in = area_selected)
-        m1 = LawyerMembership.objects.create_in_bulk(l, areas)
         
+        l = Lawyer.objects.get(lawyerNo='13-008')
         
         '''
         # get the lawyers registered in TAIPEI & TAICHUNG(1)

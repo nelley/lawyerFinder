@@ -11,15 +11,26 @@ import datetime
 from django.utils import timezone
 from django.db import connection
 
-
+class LawyerSpecialtyManager(models.Manager):
+    def create_in_bulk(self, target, obs, num):
+        base_sql = "INSERT INTO lawyerfinder_lawyerspecialty (lawyerNo_id, litigations_id, caseNum) VALUES (%s, %s, %s) "
+        
+        values_data = []
+        for value in obs:
+            tmpTuple = (target.user_id, value.id, num)
+            values_data.append(tmpTuple)
+            
+        curs = connection.cursor()
+        curs.executemany(base_sql, values_data)
+    
 class LawyerMembershipManager(models.Manager):
-    def create_in_bulk(self, target, values):
-        base_sql = "INSERT INTO lawyerfinder_lawyermembership (lawyerId_id, barAssociation_id, date_joined) VALUES (%s, %s, %s) "
+    def create_in_bulk(self, target, obs):
+        base_sql = "INSERT INTO lawyerfinder_lawyermembership (lawyerNo_id, barAssociation_id, date_joined) VALUES (%s, %s, %s) "
         now = timezone.now().strftime("%Y-%m-%d")
         
         values_data = []
-        for value in values:
-            tmpTuple = (target.userId_id, value.id, now)
+        for value in obs:
+            tmpTuple = (target.user_id, value.id, now)
             values_data.append(tmpTuple)
             
         curs = connection.cursor()
@@ -57,8 +68,8 @@ class Lawyer(models.Model):
         ('FEMALE', '女性'),
     )
 
-    userId = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='foobar')
-    lawyerId = models.CharField(max_length=32, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='foobar')
+    lawyerNo = models.CharField(max_length=32, blank=False)
     premiumType = models.CharField(max_length=30, blank=True)
     gender = models.CharField(max_length=20, choices=GENDER)
     careerYear = models.IntegerField(null=True, blank=True, default=0)
@@ -76,14 +87,14 @@ class Lawyer(models.Model):
     #age
     
     def __str__(self):
-        #return "%s (%s)" % (self.lawyerId, ", ".join(litigationtype.category for litigationtype in self.specialty.all()))
-        return "%s (%s)" % (self.lawyerId, ", ".join(barassociation.area 
+        #return "%s (%s)" % (self.lawyerNo, ", ".join(litigationtype.category for litigationtype in self.specialty.all()))
+        return "%s (%s)" % (self.lawyerNo, ", ".join(barassociation.area 
                                                      for barassociation in self.regBarAss.all()))
     
     
 # membership
 class LawyerMembership(models.Model):
-    lawyerId = models.ForeignKey(Lawyer)
+    lawyerNo = models.ForeignKey(Lawyer)
     barAssociation = models.ForeignKey(Barassociation) 
     date_joined = models.DateField(null=True, default=datetime.date.today)
     
@@ -98,14 +109,13 @@ class LitigationType(models.Model):
         ('SA', '性侵案件'), ('LA', '訴訟程序'), ('LP', '勞資糾紛'), ('BD', '銀行債務'), ('NC', '國家賠償'),
         ('TP', '消費爭議'), ('EA', '選舉訴訟'), ('FM', '金融市場'), ('FT', '公平交易'), ('PN', '房地糾紛'),
     )
-    #specialty = models.CharField(max_length=20, choices=CATEGORYS)
     category = models.CharField(max_length=20, choices=CATEGORYS)
-    #experts = models.ManyToManyField('Lawyer', through='LawyerSpecialty',
-    #                                 blank=False, 
-    #                                 help_text=_('the cases that lawyer have been done'), 
-    #                                 verbose_name=_('the cases that lawyer have been done'))
+
 
 class LawyerSpecialty(models.Model):
-    lawyerId = models.ForeignKey(Lawyer)
+    lawyerNo = models.ForeignKey(Lawyer)
     litigations = models.ForeignKey(LitigationType) 
     caseNum = models.IntegerField(null=True, blank=True, default=0)
+    
+    # custom manager
+    objects = LawyerSpecialtyManager()
