@@ -8,9 +8,10 @@ from django.core.handlers.wsgi import logger
 from types import MemberDescriptorType
 from django.apps import apps
 import datetime
-from lawyerFinder.management.commands import * 
+from lawyerFinder.management.commands import *
 from random import randint
 from __builtin__ import list
+import re
 
 #python manage.py sandbox
 class Command(BaseCommand):
@@ -39,14 +40,36 @@ class Command(BaseCommand):
         #lawyers = Lawyer.objects.select_related('user').prefetch_related("specialty").filter(
         #                      lawyerspecialty__litigations=fields).distinct()
         
+        '''
         # std to fetch data from intermediate table
         lawyers = Lawyer.objects.get(lawyerNo='13-000')
         bb = LitigationType.objects.filter(category__in=('EC', 'IW'))
         aaaa = lawyers.lawyerspecialty_set.filter(litigations=bb)
         for aa in aaaa:
             print aa.caseNum
+        '''
+        
+        # calculate std
+        i = 0
+        print 'row\tarea\tfield\tgender\ttype\ttotal'
+        for a in xrange(1, 4): #area
+            for f in xrange(1, 4): #field
+                for g in xrange(0, 2): #gender
+                    for t in xrange(1, 5): #type
+                        print '%s\t%s\t%s\t%s\t%s\t%s' % (i,a,f,g,t, a*10000+f*1000+g*100000+t*100)
+                        i += 1
         
         
+        # logic of the user query
+        str = '(testLawyer4) (4) (M) (GOLDEN) (13-003) (KEELUNG, TAIPEI, HSINCHU, YUNLIN, HUALIEN) (PC:96, BC:71, SA:100, LA:18)'
+        userInput = []
+        userInput.append('YILAN|KEELUNG|TAINAN')
+        userInput.append('PC|BC|HI')
+
+        pattern = re.compile(userInput[1])
+        match = pattern.findall(str)
+        print len(match) 
+
         
         
         #xwx = (aa.caseNum for aa in lawyers.lawyerspecialty_set.filter(litigations=LitigationType.objects.filter(category__in=LitigationType.CateGorys)))

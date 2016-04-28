@@ -72,10 +72,10 @@ class Lawyer(models.Model):
     )
     
     PREMIUM = (
-        ('STD', '普通會員'),
-        ('GOLDEN', '黃金會員'),
-        ('PLATINUM', '白金會員'),
-        ('DIAMOND', '鑽石會員'),
+        ('1', '普通會員'), #STD
+        ('2', '黃金會員'), #GOLDEN
+        ('3', '白金會員'), #PLATINUM
+        ('4', '鑽石會員'), #DIAMOND
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='foobar')
@@ -98,14 +98,16 @@ class Lawyer(models.Model):
 
     def __str__(self):
         matchField = LitigationType.objects.all()
-        return "%s (%s) (%s) (%s) (%s) (%s) (%s)" % (
+        # return JSON formatted string
+        return "{\"first_name\":\"%s\",\"careerYear\":\"%s\",\"gender\":\"%s\",\"premiumType\":\"%s\",\"lawyerNo\":\"%s\",\"area\":[%s],\"caseNum\":{%s}}" % (
                                       self.user.first_name,
+                                      self.careerYear,
                                       self.gender, 
                                       self.premiumType,
                                       self.lawyerNo,
-                                      ", ".join(bar.area for bar in self.regBarAss.all()), 
-                                      ", ".join(lit.category for lit in self.specialty.all()),
-                                      ", ".join(str(field.caseNum) for field in self.lawyerspecialty_set.filter(litigations=matchField))
+                                      ",".join('\"'+bar.area+'\"' for bar in self.regBarAss.all()), 
+                                      ",".join(('\"'+field.litigations.category + '\":\"' + str(field.caseNum)+ '\"') 
+                                                for field in self.lawyerspecialty_set.filter(litigations=matchField))
                                       )
 
 # membership
@@ -125,13 +127,6 @@ class LitigationType(models.Model):
         ('SA', '性侵案件'), ('LA', '訴訟程序'), ('LP', '勞資糾紛'), ('BD', '銀行債務'), ('NC', '國家賠償'),
         ('TP', '消費爭議'), ('EA', '選舉訴訟'), ('FM', '金融市場'), ('FT', '公平交易'), ('PN', '房地糾紛'),
     )
-    
-    # for reverse searching caseNum
-    CateGorys = ('EC', 'IP', 'MD', 'IW', 'EP',
-                 'PC', 'GP', 'PE', 'FC', 'HI',
-                 'CI', 'CD', 'ID', 'RD', 'BC',
-                 'SA', 'LA', 'LP', 'BD', 'NC',
-                 'TP', 'EA', 'FM', 'FT', 'PN')
     
     category = models.CharField(max_length=20, choices=CATEGORYS)
 

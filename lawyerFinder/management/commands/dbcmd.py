@@ -98,7 +98,9 @@ class Command(BaseCommand):
                         # relate user to lawyerl
                         g = Lawyer.GENDER[randint(0,1)][0]
                         grade = Lawyer.PREMIUM[randint(0,3)][0]
-                        l = Lawyer(user=user, lawyerNo='13-00' + str(i), gender=g, premiumType=grade)
+                        cy = randint(0,20)
+                        l = Lawyer(user=user, lawyerNo='13-00' + str(i), 
+                                   gender=g, premiumType=grade, careerYear=cy)
                         i += 1
                         l.save()
                         
