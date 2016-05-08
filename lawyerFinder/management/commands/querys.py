@@ -33,6 +33,27 @@ class Command(BaseCommand):
         sep = '========================================================================='
         logger.info('query Start!')
         
+        area_selected = ['YILAN', 'TAIPEI', 'TAINAN']
+        field_selected = ['PC', 'PE', 'TP']
+        areas = Barassociation.objects.filter(area__in = area_selected)
+        field = LitigationType.objects.filter(category__in = field_selected)
+        
+        lawyers = Lawyer.objects.filter(
+                        regBarAss__contains = areas).filter(
+                        specialty__contains=field).filter(
+                        gender__contains='F').annotate(
+                        rank = models.Count('regBarAss', distinct=True)).annotate(
+                        field = models.Count('specialty', distinct=True)).order_by(
+                        '-rank', '-field', '-premiumType')[0:30].values_list('rank', 'field', 'gender', 'premiumType')
+        
+        
+        #.order_by('-rank')[0:10]
+        for l in lawyers:
+            #print 'hit num=%s areas=%s' % (l.rank, ",".join('\"'+bar.area+'\"' for bar in l.regBarAss.all()))
+            print l
+            
+            
+        
         # list up all lawyers with 
         #first_name, gender, premiumType, lawyerNo, registered area, strong fields
         '''
@@ -62,6 +83,9 @@ class Command(BaseCommand):
         for l in lawyers:
             print l
         '''
+        
+        
+        '''
         print sep
         
         SCORE = { 'area':10000,
@@ -84,11 +108,14 @@ class Command(BaseCommand):
                               models.Q(lawyermembership__barAssociation=areas) & 
                               models.Q(lawyerspecialty__litigations=fields)).distinct()
 
+        gender_selected = ['F']
+
         results = []
         #-- generate regex
         areaInput = '('+ "|".join(a for a in area_selected) +')'
         fieldInput = '(\"+[' + "|".join(f for f in field_selected) + ']+\":\"\d+\")'
-        genderInput = '\"F\"'
+        genderInput = '(\"['+ "|".join(g for g in gender_selected) +']\")'
+        
         for l in lawyers:
             #-- parse json to dict 
             d = json.loads(str(l))
@@ -128,9 +155,6 @@ class Command(BaseCommand):
         end = datetime.datetime.now()
         timeDelta = end-start
         print timeDelta
-        
-        
-        
-        
         print sep
+        '''
         logger.info('query End!')

@@ -1,0 +1,33 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+    
+    
+    <script src="{% static "lawyerFinder/js/bootstrap.js" %}"></script>
+    <link href="{% static "lawyerFinder/css/bootstrap.css" %}" rel="stylesheet">
+    
+    <style type="text/css">
+    </style>
+    <title>Bootstrap Multiselect</title>
+
+  
+</head>
+<body>
+    
+    <ul>
+    {% for lawyer in queryed_lawyers %}
+        <li>{{ lawyer.lawyerNo }}</li>
+    {% endfor %}
+    </ul>
+    
+</body>
+
+</html>
+

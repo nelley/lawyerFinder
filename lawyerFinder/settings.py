@@ -27,7 +27,7 @@ SECRET_KEY = '0g26ebv$%$dig6oazgng2#p9d=#axmz*j0076+_8qnb7rc^jv^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -94,7 +94,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '192.168.0.103',
-        #'HOST': '192.168.1.4',
+        #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
@@ -109,6 +109,7 @@ DATABASES = {
 }
 
 
+#LOGIN_REDIRECT_URL = '/accounts'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

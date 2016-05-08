@@ -61,7 +61,9 @@ class Barassociation(models.Model):
         ('KAOHSIUNG', '高雄'),
         ('NANTOU', '南投'),
     )
-    area = models.CharField(max_length=20, choices=AREAS)
+    area = models.CharField(max_length=20, choices=AREAS, 
+                            verbose_name=_('AREA:'),
+                            help_text=_('Please Choose The Area'))
 
 
 # person
@@ -80,7 +82,7 @@ class Lawyer(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='foobar')
     lawyerNo = models.CharField(max_length=32, blank=False)
-    premiumType = models.CharField(max_length=30, blank=True)
+    premiumType = models.CharField(max_length=30, blank=True, default='1')
     gender = models.CharField(max_length=20, choices=GENDER)
     careerYear = models.IntegerField(null=True, blank=True, default=0)
     companyAddress = models.CharField(max_length=50)
@@ -128,7 +130,9 @@ class LitigationType(models.Model):
         ('TP', '消費爭議'), ('EA', '選舉訴訟'), ('FM', '金融市場'), ('FT', '公平交易'), ('PN', '房地糾紛'),
     )
     
-    category = models.CharField(max_length=20, choices=CATEGORYS)
+    category = models.CharField(max_length=20, choices=CATEGORYS, 
+                                verbose_name=_('Category:'),
+                                help_text=_('Please Choose The Category'))
 
 
 class LawyerSpecialty(models.Model):

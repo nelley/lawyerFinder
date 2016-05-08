@@ -51,7 +51,7 @@ class Command(BaseCommand):
                                        email=val,
                                        password=former_pw[i])
                 # create former user(lawyer)
-                for i in range(1,10):
+                for i in range(1,100):
                     u.create_user(username='testLawyer'+str(i)+'@gmail.com',
                                   first_name = 'testLawyer'+str(i),
                                   email='testLawyer'+str(i)+'@gmail.com',
