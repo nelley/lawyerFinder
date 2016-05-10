@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
 from django.core.validators import RegexValidator
@@ -11,6 +11,7 @@ import datetime
 from django.utils import timezone
 from django.db import connection
 from random import randint
+import sys
 
 class LawyerSpecialtyManager(models.Manager):
     def create_in_bulk(self, target, obs):
@@ -65,9 +66,14 @@ class Barassociation(models.Model):
                             verbose_name=_('AREA:'),
                             help_text=_('Please Choose The Area'))
 
+    area_cn = models.CharField(max_length=20, choices=AREAS)
+
+
 
 # person
 class Lawyer(models.Model):
+    FILE_TYPES = ('image/jpeg', 'image/png', 'image/gif') 
+    
     GENDER = (
         ('M', '男性'),
         ('F', '女性'),
@@ -81,34 +87,37 @@ class Lawyer(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='foobar')
-    lawyerNo = models.CharField(max_length=32, blank=False)
+    lawyerNo = models.CharField(max_length=32, blank=True)
     premiumType = models.CharField(max_length=30, blank=True, default='1')
-    gender = models.CharField(max_length=20, choices=GENDER)
+    gender = models.CharField(max_length=20, choices=GENDER, blank=True)
     careerYear = models.IntegerField(null=True, blank=True, default=0)
-    companyAddress = models.CharField(max_length=50)
+    companyAddress = models.CharField(max_length=50, blank=True)
     regBarAss = models.ManyToManyField('Barassociation', through='LawyerMembership',
-                                     blank=False, 
+                                     blank=True, 
                                      help_text=_('the area that lawyer have been registered in'), 
                                      verbose_name=_('Registered Bar Association'))
     
     specialty = models.ManyToManyField('LitigationType', through='LawyerSpecialty',
-                                     blank=False, 
+                                     blank=True, 
                                      help_text=_('the strong field of this lawyer'), 
                                      verbose_name=_('the strong field of this lawyer'))
-    #phoneNumber
-    #age
+    phoneNumber = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
+                                    message="Phone number must be entered in the format: '+9999999999'. Up to 10 digits allowed.")
+    photos = models.ImageField(u'image', upload_to='/Download/', max_length=255, blank=True)
 
     def __str__(self):
         matchField = LitigationType.objects.all()
+        reload(sys)
+        sys.setdefaultencoding('UTF8')
         # return JSON formatted string
-        return "{\"first_name\":\"%s\",\"careerYear\":\"%s\",\"gender\":\"%s\",\"premiumType\":\"%s\",\"lawyerNo\":\"%s\",\"area\":[%s],\"caseNum\":{%s}}" % (
+        return "{\"first_name\":\"%s\",\"careerYear\":\"%s\",\"gender\":\"%s\",\"premiumType\":\"%s\",\"lawyerNo\":\"%s\",\"area\":[%s]},\"caseNum\":{%s}" % (
                                       self.user.first_name,
                                       self.careerYear,
                                       self.gender, 
                                       self.premiumType,
                                       self.lawyerNo,
-                                      ",".join('\"'+bar.area+'\"' for bar in self.regBarAss.all()), 
-                                      ",".join(('\"'+field.litigations.category + '\":\"' + str(field.caseNum)+ '\"') 
+                                      ",".join('\"'+bar.area_cn+'\"' for bar in self.regBarAss.all()), 
+                                      ",".join(('\"'+field.litigations.category_cn + '\":\"' + str(field.caseNum)+ '\"') 
                                                 for field in self.lawyerspecialty_set.filter(litigations=matchField))
                                       )
 
@@ -134,6 +143,7 @@ class LitigationType(models.Model):
                                 verbose_name=_('Category:'),
                                 help_text=_('Please Choose The Category'))
 
+    category_cn = models.CharField(max_length=20, choices=CATEGORYS)
 
 class LawyerSpecialty(models.Model):
     lawyerNo = models.ForeignKey(Lawyer)

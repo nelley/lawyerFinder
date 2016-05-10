@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'lawyerFinder',
     'accounts',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -93,7 +94,7 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.0.103',
+        'HOST': '192.168.1.3',
         #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
@@ -125,6 +126,14 @@ USE_L10N = True
 USE_TZ = True
 
 
+
+MEDIA_BANNER_IMAGE_VALID_FILETYPES = (
+    'JPEG', 'GIF', 'PNG'
+)
+MEDIA_BANNER_IMAGE_WIDTH  = 250
+MEDIA_BANNER_IMAGE_HEIGHT = 250
+MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE = 1024*1024*1024
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -137,6 +146,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "projectstatic"),
 )
+
 
 LOGGING = {
     'version': 1,

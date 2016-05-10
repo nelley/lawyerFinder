@@ -97,11 +97,9 @@
                         {% csrf_token %}
                         {% bootstrap_form litigation_form %}
                         {% bootstrap_form barassociation_form %}
-                        {% bootstrap_form lawyer_form %}
+                        {% bootstrap_form lawyer_searchform %}
                         {% buttons submit='OK' reset="RESET"%}{% endbuttons %}
                     </form>
-                    
-                    
                     <span id="result" class="alertMsg"></span> </div>
                 </div>
  

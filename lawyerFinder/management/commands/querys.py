@@ -37,17 +37,15 @@ class Command(BaseCommand):
         field_selected = ['PC', 'PE', 'TP']
         areas = Barassociation.objects.filter(area__in = area_selected)
         field = LitigationType.objects.filter(category__in = field_selected)
-        
         lawyers = Lawyer.objects.filter(
                         regBarAss__contains = areas).filter(
                         specialty__contains=field).filter(
                         gender__contains='F').annotate(
                         rank = models.Count('regBarAss', distinct=True)).annotate(
                         field = models.Count('specialty', distinct=True)).order_by(
-                        '-rank', '-field', '-premiumType')[0:30].values_list('rank', 'field', 'gender', 'premiumType')
+                        '-rank', '-field', '-premiumType')[0:30]
+                        #.values_list('rank', 'field', 'gender', 'premiumType')
         
-        
-        #.order_by('-rank')[0:10]
         for l in lawyers:
             #print 'hit num=%s areas=%s' % (l.rank, ",".join('\"'+bar.area+'\"' for bar in l.regBarAss.all()))
             print l

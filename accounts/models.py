@@ -49,14 +49,14 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """User """
     username    = models.EmailField(_('username'),
-                                   max_length=255,
+                                   max_length=100,
                                    unique=True,
                                    help_text=_('Required. 30 characters or fewer. Letters, numbers and '
                                    '@/./+/-/_ characters'),
                                    blank=False)
     first_name  = models.CharField(_('first name'), max_length=30, blank=True)
     last_name   = models.CharField(_('last name'), max_length=30, blank=True)
-    email       = models.EmailField(verbose_name='email address', max_length=255, unique=True, blank=True)
+    email       = models.EmailField(verbose_name='email address', max_length=100, unique=True, blank=True)
     is_active   = models.BooleanField(default=False)
     is_staff    = models.BooleanField(default=False)
     is_admin    = models.BooleanField(default=False)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import Group
 from django.core.handlers.wsgi import logger
@@ -85,11 +86,11 @@ class Command(BaseCommand):
                 
                 # init area info
                 for a in Barassociation.AREAS:
-                    Barassociation.objects.create(area=a[0])
+                    Barassociation.objects.create(area=a[0], area_cn=a[1])
                     
                 # init field info
                 for sf in LitigationType.CATEGORYS:
-                    LitigationType.objects.create(category=sf[0])
+                    LitigationType.objects.create(category=sf[0], category_cn=sf[1])
         
                 i=0
                 allu = User.objects.all()

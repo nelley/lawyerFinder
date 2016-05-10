@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 import logging
 import datetime
 from accounts.cus_decorators import group_required
-from lawyerFinder.forms import LawyerForm, LitigationTypeForm, BarassociationForm
+from lawyerFinder.forms import Lawyer_SearchForm, LitigationTypeForm, BarassociationForm, Lawyer_RegForm
 from lawyerFinder.models import Lawyer, LitigationType, Barassociation
 from lawyerFinder.models import *
 import operator
@@ -14,6 +14,7 @@ from random import randint
 import json
 import re
 from django.core.handlers.wsgi import logger
+from django.contrib import messages
 
 def searchLogic(area_selected, field_selected, gender_selected):
     sep = '========================================================================='
@@ -96,8 +97,6 @@ def home(request):
         barass = request.POST.getlist('area')
         gender = request.POST.getlist('gender')
 
-        #qResults = searchLogic(barass,litigations, gender)
-        
         areas = Barassociation.objects.filter(area__in = barass)
         field = LitigationType.objects.filter(category__in = litigations)
         g_list = [models.Q(gender__contains=x) for x in gender]
@@ -109,26 +108,27 @@ def home(request):
                         reduce(operator.or_, g_list)).annotate(
                         rank = models.Count('regBarAss', distinct=True)).annotate(
                         field = models.Count('specialty', distinct=True)).order_by(
-                        '-rank', '-field', '-premiumType')[0:30].values_list('rank', 'field', 'gender', 'premiumType')
+                        '-rank', '-field', '-premiumType')[0:30]
+                        #.values_list('rank', 'field', 'gender', 'premiumType')
         
-        print len(lawyers)
-        for l in lawyers:
-            print l
+        #print len(lawyers)
+        #for l in lawyers:
+        #    print l
 
         redirect = 'lawyerFinder/_search_results.html'
         args = {'queryed_lawyers':lawyers,
                 }
         
         
-    elif request.method == 'GET':
-        lawyer_form = LawyerForm()
+    elif request.method == 'GET': #display main page
+        lawyer_searchform = Lawyer_SearchForm()
         litigation_form = LitigationTypeForm()
         barassociation_form = BarassociationForm()
         
         # template name
         redirect = 'base/index.html'
         #redirect = 'lawyerFinder/_index.html'
-        args = {'lawyer_form':lawyer_form,
+        args = {'lawyer_searchform':lawyer_searchform,
                 'litigation_form':litigation_form,
                 'barassociation_form':barassociation_form,
                 'title' : 'lawyer',
