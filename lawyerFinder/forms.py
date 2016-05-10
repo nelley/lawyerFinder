@@ -3,6 +3,7 @@ from lawyerFinder.models import Lawyer, LitigationType, Barassociation
 from django.forms.extras.widgets import *
 from lawyerFinder.settings import *
 from django.core.exceptions import ValidationError
+from django.core.handlers.wsgi import logger
 from PIL import Image
 import re
 
@@ -40,6 +41,8 @@ class BarassociationForm(forms.ModelForm):
 class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
+    #photos = forms.ImageField()
+    
     class Meta:
         model = Lawyer
         #fields = ['lawyerNo', 'gender', 
@@ -48,34 +51,40 @@ class Lawyer_RegForm(forms.ModelForm):
         fields = ['photos']
         
     def clean_photos(self):
+        logger.debug('clean photos starts')
         photo = self.cleaned_data.get('photos', False)
-        if photo:
-            # validation for file type
-            format = Image.open(image.file).format
-            image.file.seek(0)
-            if format not in MEDIA_BANNER_IMAGE_VALID_FILETYPES:
-                raise ValidationError(_("file type doesn't permit."))
 
-            # validation for file size
-            if image.size > MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE:
-                raise ValidationError(_("Image file too large."))
+        # validation for file type
+        format = Image.open(photo.file).format
+        photo.file.seek(0)
+        
+        if format not in MEDIA_BANNER_IMAGE_VALID_FILETYPES:
+            raise ValidationError("file type doesn't permit.")
+        
+        # validation for file size
+        if photo.size > MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE:
+            raise ValidationError("Image file too large.")
+            
+        logger.debug('clean photos end')
         return photo
 
     def save(self, commit=True):
+        print 'save photos start'
         super(LawyerForm, self).save(commit)
 
         if self.instance.image:
             print(self.instance.image.path)
             self._resize_image(self.instance.image.path)
 
+
     def _resize_image(self, image_path):
         image = Image.open(image_path)
         width, height = image.size
 
         if width > height:
-            aspect_ratio = MEDIA_BANNER_IMAGE_WIDTH / float(width)
+            aspect_ratio = self.PROFILE_IMAGE_WIDTH / float(width)
         else:
-            aspect_ratio = MEDIA_BANNER_IMAGE_HEIGHT / float(height)
+            aspect_ratio = self.PROFILE_IMAGE_HEIGHT / float(height)
 
         adjusted_width = int(width * aspect_ratio)
         adjusted_height = int(height * aspect_ratio)

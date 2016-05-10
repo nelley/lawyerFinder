@@ -1,8 +1,11 @@
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
 from django.template import Context, RequestContext
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login
 from lawyerFinder.models import Lawyer, LitigationType, Barassociation
+from lawyerFinder.forms import Lawyer_SearchForm, LitigationTypeForm, BarassociationForm, Lawyer_RegForm
 from lawyerFinder.forms import Lawyer_RegForm
 import logging
 
@@ -39,35 +42,24 @@ def login_view(request):
 
 
 def register_view(request):
-    
-    args = []
-    redirect = ''
+    args = {}
     
     if request.method == 'POST':
-        form = Lawyer_RegForm(request.POST, request.FILES)
-        if form.is_valid():
+        lawyer_regform = Lawyer_RegForm(request.POST, request.FILES) # will call clean_photos
+        if lawyer_regform.is_valid():
             print 'file check ok'
-            #messages.add_message(request, messages.SUCCESS, "Image Saved")
-        else:
-            print 'file check fail'
-            print form.errors
+            return HttpResponseRedirect(reverse('home'))
             
-        redirect = 'base/index.html'
-        
-    elif request.method == 'GET':# display register page
-        # template name
-        redirect = 'accounts/register.html'
-
-
+    #elif request.method == 'GET':# display register page
+    else:# display register page
         lawyer_regform = Lawyer_RegForm()
-        
-        #redirect = 'lawyerFinder/_index.html'
-        args = {'lawyer_regform':lawyer_regform,
-                'title' : 'register',
-                }
+    
+    args = {'lawyer_regform':lawyer_regform,
+            'title' : 'register',
+            }
 
     return render_to_response(
-        redirect,
+        'accounts/register.html',
         args,
         context_instance=RequestContext(request)
     )

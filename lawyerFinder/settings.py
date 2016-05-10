@@ -132,7 +132,7 @@ MEDIA_BANNER_IMAGE_VALID_FILETYPES = (
 )
 MEDIA_BANNER_IMAGE_WIDTH  = 250
 MEDIA_BANNER_IMAGE_HEIGHT = 250
-MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE = 1024*1024*1024
+MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE = 4*1024*1024
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -166,7 +166,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
     },
