@@ -5,11 +5,13 @@ from lawyerFinder.settings import *
 from django.core.exceptions import ValidationError
 from django.core.handlers.wsgi import logger
 from PIL import Image
+from django.utils.translation import ugettext_lazy as _
 import re
 
 class Lawyer_SearchForm(forms.ModelForm):
     gender = forms.MultipleChoiceField(required=True, 
                                        choices=Lawyer.GENDER,
+                                       label=_('Gender')
                                        )
     class Meta:
         model = Lawyer
@@ -19,6 +21,7 @@ class Lawyer_SearchForm(forms.ModelForm):
 class LitigationTypeForm(forms.ModelForm):
     category =  forms.MultipleChoiceField(required=True, 
                                           choices=LitigationType.CATEGORYS,
+                                          label=_('Categorys')
                                           # add attr to HTML
                                           #widget=formsSelectMultiple(attrs={'title':'test'})
                                           )
@@ -26,45 +29,69 @@ class LitigationTypeForm(forms.ModelForm):
         model = LitigationType
         fields = ['category']
 
-        
+
 class BarassociationForm(forms.ModelForm):
     area = forms.MultipleChoiceField(required=True, 
                                           choices=Barassociation.AREAS,
+                                          label=_('Areas')
                                           # add attr to HTML
                                           #widget=formsSelectMultiple(attrs={'title':'test'})
                                           )
     class Meta:
         model = Barassociation
         fields = ['area']
-        
+
         
 class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
-    #photos = forms.ImageField()
+    
+    lawyerNo = forms.CharField(label='Certification Number')
+    careerYear = forms.IntegerField(label='Work Years')
+    companyAddress = forms.CharField(label='Company\'s Address')
+    photos = forms.ImageField(label='Profile Photo')
+    regBarAss = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                             choices=Barassociation.AREAS,
+                                             label="Registered Area",
+                                             help_text=_('multi-selection is permitted'))
+    
+    specialty = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                             choices=LitigationType.CATEGORYS,
+                                             label=_("Strong Field"),
+                                             help_text=_('multi-selection is permitted'))
     
     class Meta:
         model = Lawyer
-        #fields = ['lawyerNo', 'gender', 
-        #          'careerYear', 'companyAddress', 
-        #          'regBarAss', 'specialty', 'photos']
-        fields = ['photos']
+        fields = ['lawyerNo', 'gender', 
+                  'careerYear', 'companyAddress', 
+                  'regBarAss', 'specialty', 'photos']
+        #fields = ['photos']
+        
         
     def clean_photos(self):
         logger.debug('clean photos starts')
-        photo = self.cleaned_data.get('photos', False)
+        try:
+            photo = self.cleaned_data.get('photos', False)
 
-        # validation for file type
-        format = Image.open(photo.file).format
-        photo.file.seek(0)
-        
-        if format not in MEDIA_BANNER_IMAGE_VALID_FILETYPES:
-            raise ValidationError("file type doesn't permit.")
-        
-        # validation for file size
-        if photo.size > MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE:
-            raise ValidationError("Image file too large.")
+            if photo is not None:
+                # validation for file type
+                format = Image.open(photo.file).format
+                photo.file.seek(0)
+                
+                if format not in MEDIA_BANNER_IMAGE_VALID_FILETYPES:
+                    raise ValidationError("file type doesn't permit.")
             
+                # validation for file size
+                if photo.size > MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE:
+                    raise ValidationError("Image file too large.")
+                
+            else:
+                # add logic to attach default image file
+                print 'NONE TYPE'
+                
+        except Exception as e:
+            raise ValidationError(e)
+        
         logger.debug('clean photos end')
         return photo
 
@@ -72,9 +99,10 @@ class Lawyer_RegForm(forms.ModelForm):
         print 'save photos start'
         super(LawyerForm, self).save(commit)
 
-        if self.instance.image:
-            print(self.instance.image.path)
-            self._resize_image(self.instance.image.path)
+
+        #if self.instance.image:
+        #    print(self.instance.image.path)
+        #    self._resize_image(self.instance.image.path)
 
 
     def _resize_image(self, image_path):

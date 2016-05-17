@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 #from models import User
 
 #/home/nelley/dj_pj_NL/lawyerFinder
@@ -55,8 +58,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     
 )
+
 
 ROOT_URLCONF = 'lawyerFinder.urls'
 AUTH_USER_MODEL = 'accounts.User'
@@ -81,7 +86,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lawyerFinder.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -94,7 +98,7 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.1.3',
+        'HOST': '192.168.1.4',
         #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
@@ -114,15 +118,23 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
+from django.utils.translation import ugettext_lazy as _
+LANGUAGES = [
+    ('ja', _('Japanease')),
+    ('zh-TW', _('Traditional Chinese')),
+]
 
-LANGUAGE_CODE = 'en-us'
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'zh-TW'
+TIME_ZONE = 'Asia/Taipei'
+#translation system should be enabled
 USE_I18N = True
-
 USE_L10N = True
 
+#timezone-aware by default or not
 USE_TZ = True
 
 

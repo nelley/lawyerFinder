@@ -41,13 +41,13 @@ def login_view(request):
 
 
 
-def register_view(request):
+def register_lawyer_view(request):
     args = {}
     
     if request.method == 'POST':
         lawyer_regform = Lawyer_RegForm(request.POST, request.FILES) # will call clean_photos
         if lawyer_regform.is_valid():
-            print 'file check ok'
+            lawyer_regform.save()
             return HttpResponseRedirect(reverse('home'))
             
     #elif request.method == 'GET':# display register page
@@ -59,7 +59,7 @@ def register_view(request):
             }
 
     return render_to_response(
-        'accounts/register.html',
+        'accounts/register_lawyer.html',
         args,
         context_instance=RequestContext(request)
     )

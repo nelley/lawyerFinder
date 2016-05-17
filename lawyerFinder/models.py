@@ -71,8 +71,7 @@ class Barassociation(models.Model):
 
 
 # person
-class Lawyer(models.Model):
-    FILE_TYPES = ('image/jpeg', 'image/png', 'image/gif') 
+class Lawyer(models.Model): 
     
     GENDER = (
         ('M', '男性'),
@@ -87,11 +86,11 @@ class Lawyer(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='foobar')
-    lawyerNo = models.CharField(max_length=32, blank=True)
+    lawyerNo = models.CharField(max_length=32, blank=True, help_text=_('please input the lawyer certification number '))
     premiumType = models.CharField(max_length=30, blank=True, default='1')
     gender = models.CharField(max_length=20, choices=GENDER, blank=True)
-    careerYear = models.IntegerField(null=True, blank=True, default=0)
-    companyAddress = models.CharField(max_length=50, blank=True)
+    careerYear = models.IntegerField(null=True, blank=True, default=0, help_text=_('please input the career year'))
+    companyAddress = models.CharField(max_length=50, blank=True, help_text=_('please input the company\'s address'))
     regBarAss = models.ManyToManyField('Barassociation', through='LawyerMembership',
                                      blank=True, 
                                      help_text=_('the area that lawyer have been registered in'), 
@@ -103,12 +102,12 @@ class Lawyer(models.Model):
                                      verbose_name=_('the strong field of this lawyer'))
     phoneNumber = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
                                     message="Phone number must be entered in the format: '+9999999999'. Up to 10 digits allowed.")
-    photos = models.ImageField(u'image', upload_to='/Download/', max_length=255, blank=True)
+    photos = models.ImageField(u'image', upload_to='/home/nelley/Downloads/', max_length=255, blank=True)
 
     def __str__(self):
         matchField = LitigationType.objects.all()
-        reload(sys)
-        sys.setdefaultencoding('UTF8')
+        #reload(sys)
+        #sys.setdefaultencoding('UTF8')
         # return JSON formatted string
         return "{\"first_name\":\"%s\",\"careerYear\":\"%s\",\"gender\":\"%s\",\"premiumType\":\"%s\",\"lawyerNo\":\"%s\",\"area\":[%s]},\"caseNum\":{%s}" % (
                                       self.user.first_name,

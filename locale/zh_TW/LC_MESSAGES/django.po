@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-17 18:28+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: accounts/models.py:51
+msgid "username"
+msgstr "使用者名稱"
+
+#: accounts/models.py:54
+msgid ""
+"Required. 30 characters or fewer. Letters, numbers and @/./+/-/_ characters"
+msgstr ""
+
+#: accounts/models.py:57
+msgid "first name"
+msgstr "姓"
+
+#: accounts/models.py:58
+msgid "last name"
+msgstr "名"
+
+#: accounts/models.py:64
+msgid "date joined"
+msgstr "加入時間"
+
+#: lawyerFinder/forms.py:14
+msgid "Gender"
+msgstr "性別"
+
+#: lawyerFinder/forms.py:24
+msgid "Categorys"
+msgstr "案件種類"
+
+#: lawyerFinder/forms.py:36
+msgid "Areas"
+msgstr "執業地區"
+
+#: lawyerFinder/forms.py:56 lawyerFinder/forms.py:61
+msgid "multi-selection is permitted"
+msgstr "可複選"
+
+#: lawyerFinder/forms.py:60
+msgid "Strong Field"
+msgstr "擅長領"
+
+#: lawyerFinder/models.py:66
+msgid "AREA:"
+msgstr "地區"
+
+#: lawyerFinder/models.py:67
+msgid "Please Choose The Area"
+msgstr "請輸入可執業的地區"
+
+#: lawyerFinder/models.py:89
+msgid "please input the lawyer certification number "
+msgstr "請輸入律師編號"
+
+#: lawyerFinder/models.py:92
+msgid "please input the career year"
+msgstr "請輸入執業年數"
+
+#: lawyerFinder/models.py:93
+msgid "please input the company's address"
+msgstr "請輸入事務所的地址"
+
+#: lawyerFinder/models.py:96
+msgid "the area that lawyer have been registered in"
+msgstr "這位律師已登記的律師公會"
+
+#: lawyerFinder/models.py:97
+msgid "Registered Bar Association"
+msgstr "登記的律師公會"
+
+#: lawyerFinder/models.py:101 lawyerFinder/models.py:102
+msgid "the strong field of this lawyer"
+msgstr "這個律師的強項"
+
+#: lawyerFinder/models.py:142
+msgid "Category:"
+msgstr "領域"
+
+#: lawyerFinder/models.py:143
+msgid "Please Choose The Category"
+msgstr "請挑選擅長的領域"
+
+#: lawyerFinder/settings.py:123
+msgid "Japanease"
+msgstr "日文"
+
+#: lawyerFinder/settings.py:124
+msgid "Traditional Chinese"
+msgstr "繁體中文"
+
+#: templates/base/index.html:93
+msgid "lawyer"
+msgstr "律師"

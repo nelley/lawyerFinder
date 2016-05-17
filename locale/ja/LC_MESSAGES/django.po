@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-17 18:28+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: accounts/models.py:51
+msgid "username"
+msgstr ""
+
+#: accounts/models.py:54
+msgid ""
+"Required. 30 characters or fewer. Letters, numbers and @/./+/-/_ characters"
+msgstr ""
+
+#: accounts/models.py:57
+msgid "first name"
+msgstr ""
+
+#: accounts/models.py:58
+msgid "last name"
+msgstr ""
+
+#: accounts/models.py:64
+msgid "date joined"
+msgstr ""
+
+#: lawyerFinder/forms.py:14
+msgid "Gender"
+msgstr ""
+
+#: lawyerFinder/forms.py:24
+msgid "Categorys"
+msgstr ""
+
+#: lawyerFinder/forms.py:36
+msgid "Areas"
+msgstr ""
+
+#: lawyerFinder/forms.py:56 lawyerFinder/forms.py:61
+msgid "multi-selection is permitted"
+msgstr ""
+
+#: lawyerFinder/forms.py:60
+msgid "Strong Field"
+msgstr ""
+
+#: lawyerFinder/models.py:66
+msgid "AREA:"
+msgstr ""
+
+#: lawyerFinder/models.py:67
+msgid "Please Choose The Area"
+msgstr ""
+
+#: lawyerFinder/models.py:89
+msgid "please input the lawyer certification number "
+msgstr ""
+
+#: lawyerFinder/models.py:92
+msgid "please input the career year"
+msgstr ""
+
+#: lawyerFinder/models.py:93
+msgid "please input the company's address"
+msgstr ""
+
+#: lawyerFinder/models.py:96
+msgid "the area that lawyer have been registered in"
+msgstr ""
+
+#: lawyerFinder/models.py:97
+msgid "Registered Bar Association"
+msgstr ""
+
+#: lawyerFinder/models.py:101 lawyerFinder/models.py:102
+msgid "the strong field of this lawyer"
+msgstr ""
+
+#: lawyerFinder/models.py:142
+msgid "Category:"
+msgstr ""
+
+#: lawyerFinder/models.py:143
+msgid "Please Choose The Category"
+msgstr ""
+
+#: lawyerFinder/settings.py:123
+msgid "Japanease"
+msgstr ""
+
+#: lawyerFinder/settings.py:124
+msgid "Traditional Chinese"
+msgstr ""
+
+#: templates/base/index.html:93
+msgid "lawyer"
+msgstr ""
