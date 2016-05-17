@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 18:28+0800\n"
+"POT-Creation-Date: 2016-05-17 23:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,13 +51,39 @@ msgstr "案件種類"
 msgid "Areas"
 msgstr "執業地區"
 
-#: lawyerFinder/forms.py:56 lawyerFinder/forms.py:61
+#: lawyerFinder/forms.py:49
+msgid "Certification Number"
+msgstr "律師證號"
+
+#: lawyerFinder/forms.py:50
+msgid "Work Years"
+msgstr "執業年數"
+
+#: lawyerFinder/forms.py:51
+msgid "Company's Address"
+msgstr "事務所地址"
+
+#: lawyerFinder/forms.py:52
+msgid "Profile Photo"
+msgstr "個人照片"
+
+#: lawyerFinder/forms.py:53
+#| msgid "Gender"
+msgid "gender"
+msgstr "性別"
+
+#: lawyerFinder/forms.py:56
+#| msgid "Registered Bar Association"
+msgid "Registered Area"
+msgstr "登記的律師公會"
+
+#: lawyerFinder/forms.py:57 lawyerFinder/forms.py:63
 msgid "multi-selection is permitted"
 msgstr "可複選"
 
-#: lawyerFinder/forms.py:60
+#: lawyerFinder/forms.py:62
 msgid "Strong Field"
-msgstr "擅長領"
+msgstr "擅長領域"
 
 #: lawyerFinder/models.py:66
 msgid "AREA:"
@@ -89,7 +115,7 @@ msgstr "登記的律師公會"
 
 #: lawyerFinder/models.py:101 lawyerFinder/models.py:102
 msgid "the strong field of this lawyer"
-msgstr "這個律師的強項"
+msgstr "這位律師的強項"
 
 #: lawyerFinder/models.py:142
 msgid "Category:"
@@ -99,14 +125,14 @@ msgstr "領域"
 msgid "Please Choose The Category"
 msgstr "請挑選擅長的領域"
 
-#: lawyerFinder/settings.py:123
+#: lawyerFinder/settings.py:126
 msgid "Japanease"
 msgstr "日文"
 
-#: lawyerFinder/settings.py:124
+#: lawyerFinder/settings.py:127
 msgid "Traditional Chinese"
 msgstr "繁體中文"
 
-#: templates/base/index.html:93
+#: templates/base/index.html:92
 msgid "lawyer"
 msgstr "律師"

@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.1.4',
+        'HOST': '192.168.0.103',
         #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
@@ -119,6 +119,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 from django.utils.translation import ugettext_lazy as _
+
+# python manage.py makemessages(generate xxxx.po file)
+# python manage.py compilemessages(compile xxxx.po to mo file)
 LANGUAGES = [
     ('ja', _('Japanease')),
     ('zh-TW', _('Traditional Chinese')),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 18:28+0800\n"
+"POT-Creation-Date: 2016-05-17 23:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,11 +51,35 @@ msgstr ""
 msgid "Areas"
 msgstr ""
 
-#: lawyerFinder/forms.py:56 lawyerFinder/forms.py:61
+#: lawyerFinder/forms.py:49
+msgid "Certification Number"
+msgstr ""
+
+#: lawyerFinder/forms.py:50
+msgid "Work Years"
+msgstr ""
+
+#: lawyerFinder/forms.py:51
+msgid "Company's Address"
+msgstr ""
+
+#: lawyerFinder/forms.py:52
+msgid "Profile Photo"
+msgstr ""
+
+#: lawyerFinder/forms.py:53
+msgid "gender"
+msgstr ""
+
+#: lawyerFinder/forms.py:56
+msgid "Registered Area"
+msgstr ""
+
+#: lawyerFinder/forms.py:57 lawyerFinder/forms.py:63
 msgid "multi-selection is permitted"
 msgstr ""
 
-#: lawyerFinder/forms.py:60
+#: lawyerFinder/forms.py:62
 msgid "Strong Field"
 msgstr ""
 
@@ -99,14 +123,14 @@ msgstr ""
 msgid "Please Choose The Category"
 msgstr ""
 
-#: lawyerFinder/settings.py:123
+#: lawyerFinder/settings.py:126
 msgid "Japanease"
 msgstr ""
 
-#: lawyerFinder/settings.py:124
+#: lawyerFinder/settings.py:127
 msgid "Traditional Chinese"
 msgstr ""
 
-#: templates/base/index.html:93
+#: templates/base/index.html:92
 msgid "lawyer"
 msgstr ""

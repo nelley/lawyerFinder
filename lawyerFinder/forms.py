@@ -32,11 +32,11 @@ class LitigationTypeForm(forms.ModelForm):
 
 class BarassociationForm(forms.ModelForm):
     area = forms.MultipleChoiceField(required=True, 
-                                          choices=Barassociation.AREAS,
-                                          label=_('Areas')
-                                          # add attr to HTML
-                                          #widget=formsSelectMultiple(attrs={'title':'test'})
-                                          )
+                                     choices=Barassociation.AREAS,
+                                     label=_('Areas')
+                                     # add attr to HTML
+                                     #widget=formsSelectMultiple(attrs={'title':'test'})
+                                     )
     class Meta:
         model = Barassociation
         fields = ['area']
@@ -46,19 +46,22 @@ class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
     
-    lawyerNo = forms.CharField(label='Certification Number')
-    careerYear = forms.IntegerField(label='Work Years')
-    companyAddress = forms.CharField(label='Company\'s Address')
-    photos = forms.ImageField(label='Profile Photo')
+    lawyerNo = forms.CharField(max_length=15, required=True,label=_('Certification Number'))
+    careerYear = forms.IntegerField(required=False, label=_('Work Years'))
+    companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
+    photos = forms.ImageField(required=False, label=_('Profile Photo'))
+    gender = forms.ChoiceField(choices=Lawyer.GENDER, required=True, label=_('gender'))
     regBarAss = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                             choices=Barassociation.AREAS,
-                                             label="Registered Area",
-                                             help_text=_('multi-selection is permitted'))
+                                                 choices=Barassociation.AREAS,
+                                                 label=_('Registered Area'),
+                                                 help_text=_('multi-selection is permitted'),
+                                                 required=True)
     
     specialty = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                             choices=LitigationType.CATEGORYS,
-                                             label=_("Strong Field"),
-                                             help_text=_('multi-selection is permitted'))
+                                                 choices=LitigationType.CATEGORYS,
+                                                 label=_('Strong Field'),
+                                                 help_text=_('multi-selection is permitted'),
+                                                 required=True)
     
     class Meta:
         model = Lawyer
