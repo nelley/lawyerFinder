@@ -49,7 +49,7 @@ class Lawyer_RegForm(forms.ModelForm):
     lawyerNo = forms.CharField(max_length=15, required=True,label=_('Certification Number'))
     careerYear = forms.IntegerField(required=False, label=_('Work Years'))
     companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
-    photos = forms.ImageField(required=False, label=_('Profile Photo'))
+    #photos = forms.ImageField(required=False, label=_('Profile Photo'))
     gender = forms.ChoiceField(choices=Lawyer.GENDER, required=True, label=_('gender'))
     regBarAss = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                  choices=Barassociation.AREAS,
@@ -67,7 +67,7 @@ class Lawyer_RegForm(forms.ModelForm):
         model = Lawyer
         fields = ['lawyerNo', 'gender', 
                   'careerYear', 'companyAddress', 
-                  'regBarAss', 'specialty', 'photos']
+                  'regBarAss', 'specialty', ]#'photos']
         #fields = ['photos']
         
         

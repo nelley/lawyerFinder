@@ -24,8 +24,12 @@
     <ul>
     {% for lawyer in queryed_lawyers %}
         <li>{{ lawyer }}</li>
+    {% empty %}
+        <li>Sorry, no lawyer in this list.</li>
     {% endfor %}
     </ul>
+    
+    
     
 </body>
 

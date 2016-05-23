@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 23:56+0800\n"
+"POT-Creation-Date: 2016-05-24 00:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: accounts/models.py:51
+#: accounts/forms.py:18 accounts/models.py:51
 msgid "username"
 msgstr "使用者名稱"
+
+#: accounts/forms.py:21
+msgid "Enter a valid email address"
+msgstr "請輸入符合格式的電子郵件信箱"
+
+#: accounts/forms.py:22
+msgid "password"
+msgstr "使用者密碼"
+
+#: accounts/forms.py:25
+msgid "double check password"
+msgstr "確認密碼"
+
+#: accounts/forms.py:30
+msgid "agreements for site service policy"
+msgstr "同意服務條約"
+
+#: accounts/forms.py:46
+msgid "Passwords does not identical."
+msgstr "輸入的密碼並不一致"
+
+#: accounts/forms.py:53 accounts/forms.py:60 accounts/forms.py:67
+#: accounts/forms.py:74
+msgid "Please input something."
+msgstr "此為必填項目"
 
 #: accounts/models.py:54
 msgid ""
@@ -63,17 +88,11 @@ msgstr "執業年數"
 msgid "Company's Address"
 msgstr "事務所地址"
 
-#: lawyerFinder/forms.py:52
-msgid "Profile Photo"
-msgstr "個人照片"
-
 #: lawyerFinder/forms.py:53
-#| msgid "Gender"
 msgid "gender"
 msgstr "性別"
 
 #: lawyerFinder/forms.py:56
-#| msgid "Registered Bar Association"
 msgid "Registered Area"
 msgstr "登記的律師公會"
 
@@ -125,14 +144,17 @@ msgstr "領域"
 msgid "Please Choose The Category"
 msgstr "請挑選擅長的領域"
 
-#: lawyerFinder/settings.py:126
+#: lawyerFinder/settings.py:129
 msgid "Japanease"
 msgstr "日文"
 
-#: lawyerFinder/settings.py:127
+#: lawyerFinder/settings.py:130
 msgid "Traditional Chinese"
 msgstr "繁體中文"
 
 #: templates/base/index.html:92
 msgid "lawyer"
 msgstr "律師"
+
+#~ msgid "Profile Photo"
+#~ msgstr "個人照片"

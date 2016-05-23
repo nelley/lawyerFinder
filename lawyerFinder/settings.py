@@ -59,9 +59,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'lawyerFinder.middleware.session_controller_middleware.SessionControllerMiddleware'
     
 )
 
+#SESSION_COOKIE_AGE = 60 #second
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 ROOT_URLCONF = 'lawyerFinder.urls'
 AUTH_USER_MODEL = 'accounts.User'
@@ -132,6 +135,7 @@ LOCALE_PATHS = (
 )
 
 LANGUAGE_CODE = 'zh-TW'
+#LANGUAGE_CODE = 'en'
 TIME_ZONE = 'Asia/Taipei'
 #translation system should be enabled
 USE_I18N = True
@@ -186,3 +190,7 @@ LOGGING = {
         },
     },
 }
+
+# custom parameter
+SESSION_FRONT_AGE = 1*60
+SESSION_BACK_AGE = 0.5*60

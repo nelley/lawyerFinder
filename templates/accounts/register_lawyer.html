@@ -8,8 +8,18 @@
 
 {% block container %}
 <form role="form" method="post" enctype="multipart/form-data">
+
     {% csrf_token %}
-    {% bootstrap_form lawyer_regform %}
+    
+    {% if stageflag == "1" %}
+        {% bootstrap_form agreement_regform %}
+    {% elif stageflag == "2" %}
+        {% bootstrap_form lawyer_regform %}
+    {% endif %}
+    
+    <input type="hidden" name="flag" value={{ stageflag }}></input>
+    
     {% buttons submit='OK' reset="RESET"%}{% endbuttons %}
+    
 </form>
 {% endblock container %}

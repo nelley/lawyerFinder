@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-17 23:56+0800\n"
+"POT-Creation-Date: 2016-05-24 00:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: accounts/models.py:51
+#: accounts/forms.py:18 accounts/models.py:51
 msgid "username"
+msgstr ""
+
+#: accounts/forms.py:21
+msgid "Enter a valid email address"
+msgstr ""
+
+#: accounts/forms.py:22
+msgid "password"
+msgstr ""
+
+#: accounts/forms.py:25
+msgid "double check password"
+msgstr ""
+
+#: accounts/forms.py:30
+msgid "agreements for site service policy"
+msgstr ""
+
+#: accounts/forms.py:46
+msgid "Passwords does not identical."
+msgstr ""
+
+#: accounts/forms.py:53 accounts/forms.py:60 accounts/forms.py:67
+#: accounts/forms.py:74
+msgid "Please input something."
 msgstr ""
 
 #: accounts/models.py:54
@@ -61,10 +86,6 @@ msgstr ""
 
 #: lawyerFinder/forms.py:51
 msgid "Company's Address"
-msgstr ""
-
-#: lawyerFinder/forms.py:52
-msgid "Profile Photo"
 msgstr ""
 
 #: lawyerFinder/forms.py:53
@@ -123,11 +144,11 @@ msgstr ""
 msgid "Please Choose The Category"
 msgstr ""
 
-#: lawyerFinder/settings.py:126
+#: lawyerFinder/settings.py:129
 msgid "Japanease"
 msgstr ""
 
-#: lawyerFinder/settings.py:127
+#: lawyerFinder/settings.py:130
 msgid "Traditional Chinese"
 msgstr ""
 
