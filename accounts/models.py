@@ -16,7 +16,7 @@ from django.utils import timezone
 from django.core.handlers.wsgi import logger
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password, **extra_fields):
+    def create_user(self, username, email, password, active_flag, **extra_fields):
         """ Creates and saves User with the given email and password. """
         now = timezone.now()
         if not email:
@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             username=username,
             email=email,
-            is_active=True,
+            is_active=active_flag,
             last_login=now,
             date_joined=now,
             **extra_fields

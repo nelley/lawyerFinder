@@ -46,7 +46,7 @@ class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
     
-    lawyerNo = forms.CharField(max_length=15, required=True,label=_('Certification Number'))
+    lawyerNo = forms.CharField(max_length=15, required=False, label=_('Certification Number'))
     careerYear = forms.IntegerField(required=False, label=_('Work Years'))
     companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
     #photos = forms.ImageField(required=False, label=_('Profile Photo'))
@@ -70,7 +70,30 @@ class Lawyer_RegForm(forms.ModelForm):
                   'regBarAss', 'specialty', ]#'photos']
         #fields = ['photos']
         
+    def save_custom(self):
+        print 'Lawyer_RegForm saved!!'
         
+    def clean_lawyerNo(self):
+        lawyerNo = self.cleaned_data['lawyerNo']
+        if (not lawyerNo) or lawyerNo is None:
+            raise forms.ValidationError(_("Please input something."))
+        
+        return lawyerNo
+    
+    def clean_regBarAss(self):
+        regBarAss = self.cleaned_data['regBarAss']
+        if (not regBarAss) or regBarAss is None:
+            raise forms.ValidationError(_("Please at least choose one field."))
+        
+        return regBarAss
+    
+    def clean_specialty(self):
+        specialty = self.cleaned_data['specialty']
+        if (not specialty) or specialty is None:
+            raise forms.ValidationError(_("Please at least choose one field."))
+        
+        return specialty
+    
     def clean_photos(self):
         logger.debug('clean photos starts')
         try:
@@ -98,9 +121,9 @@ class Lawyer_RegForm(forms.ModelForm):
         logger.debug('clean photos end')
         return photo
 
-    def save(self, commit=True):
-        print 'save photos start'
-        super(LawyerForm, self).save(commit)
+    #def save(self, commit=True):
+        #print 'save photos start'
+        #super(LawyerForm, self).save(commit)
 
 
         #if self.instance.image:

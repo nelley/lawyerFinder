@@ -64,6 +64,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 #SESSION_COOKIE_AGE = 60 #second
+#avoid datetime.datetime is not JSON serializable 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 ROOT_URLCONF = 'lawyerFinder.urls'

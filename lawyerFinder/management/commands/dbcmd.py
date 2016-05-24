@@ -56,7 +56,8 @@ class Command(BaseCommand):
                     u.create_user(username='testLawyer'+str(i)+'@gmail.com',
                                   first_name = 'testLawyer'+str(i),
                                   email='testLawyer'+str(i)+'@gmail.com',
-                                  password='123456')
+                                  password='123456',
+                                  active_flag = True)
                 
                 # create groups
                 Group.objects.create(name = 'ORDINARYUSER')
