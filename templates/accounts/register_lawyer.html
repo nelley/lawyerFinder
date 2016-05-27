@@ -1,6 +1,9 @@
 {% extends "accounts/_base.html" %}
 {% load i18n %}
 {% load bootstrap3 %}
+{% load classfinder %}
+{% load serialization %}
+{% load translater %}
 
 {% block title %}<title>使用者註冊</title>{% endblock title %}
 
@@ -16,20 +19,30 @@
     {% elif stageflag == "2" %}
         {% bootstrap_form lawyer_regform %}
     {% elif stageflag == "3" %}
-        {{ request.session.id }}
-        {{ request.session.lawyerNo }}
-        {{ request.session.regBarAss }}
-        {{ request.session.specialty }}
-        {{ request.session.careerYear }}
-        {{ request.session.companyAddress }}
-        {{ request.session.gender}}
+        <table class="table table-condensed table-striped">
+            <div align=center>{% trans "Please Confirm Again" %}</div>
+            <tbody>
+                {% with trans=confirm_form|get_translate %}
+                {% for key, values in trans.items %}
+                <tr>
+                    <td align="center"><strong>{{ key }}</strong></td>
+                    {% if values|get_class == 'list' %}
+                        <td align="center">{{ values|get_string }}</td>
+                    {% else%}
+                        <td align="center">{{ values }}</td>
+                    {% endif%}
+                </tr>
+                {% endfor %}
+                {% endwith %}
+            </tbody>
+        </table>
         
     {% endif %}
     
     <input type="hidden" name="flag" value={{ stageflag }}></input>
     
     
-        {% buttons submit='OK' %}{% endbuttons %}
+    <div align=center>{% buttons submit='OK' %}{% endbuttons %}</div>
     
     
 </form>

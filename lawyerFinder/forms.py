@@ -7,6 +7,9 @@ from django.core.handlers.wsgi import logger
 from PIL import Image
 from django.utils.translation import ugettext_lazy as _
 import re
+from django.utils.safestring import mark_safe
+from accounts.forms import User_reg_form
+from django.contrib.contenttypes import fields
 
 class Lawyer_SearchForm(forms.ModelForm):
     gender = forms.MultipleChoiceField(required=True, 
@@ -41,7 +44,13 @@ class BarassociationForm(forms.ModelForm):
         model = Barassociation
         fields = ['area']
 
-        
+class HorizontalCheckBoxRenderer(forms.CheckboxSelectMultiple.renderer):
+    def render(self):
+        tmp = mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+        tmp = '<br>' + tmp
+        return tmp
+        #return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+    
 class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
@@ -51,13 +60,13 @@ class Lawyer_RegForm(forms.ModelForm):
     companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
     #photos = forms.ImageField(required=False, label=_('Profile Photo'))
     gender = forms.ChoiceField(choices=Lawyer.GENDER, required=True, label=_('gender'))
-    regBarAss = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+    regBarAss = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
                                                  choices=Barassociation.AREAS,
                                                  label=_('Registered Area'),
                                                  help_text=_('multi-selection is permitted'),
                                                  required=True)
     
-    specialty = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+    specialty = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
                                                  choices=LitigationType.CATEGORYS,
                                                  label=_('Strong Field'),
                                                  help_text=_('multi-selection is permitted'),
@@ -79,6 +88,14 @@ class Lawyer_RegForm(forms.ModelForm):
             raise forms.ValidationError(_("Please input something."))
         
         return lawyerNo
+    
+    def clean_careerYear(self):
+        careerYear = self.cleaned_data['careerYear']
+        if careerYear is None :
+            careerYear = 0
+        elif careerYear < 0:
+            raise forms.ValidationError(_("Please do not input minus number."))
+        return careerYear
     
     def clean_regBarAss(self):
         regBarAss = self.cleaned_data['regBarAss']
@@ -144,3 +161,15 @@ class Lawyer_RegForm(forms.ModelForm):
         adjusted_height = int(height * aspect_ratio)
         image = image.resize((adjusted_width, adjusted_height), Image.ANTIALIAS)
         image.save(image_path)
+'''
+class Confirm_form(User_reg_form, Lawyer_RegForm):
+    #class Meta:
+    def __init__(self, *args, **kwargs):
+         super(Confirm_form, self).__init__(*args, **kwargs)
+         self.fields.pop('password')
+         self.fields.pop('checkpassword')
+         self.fields.pop('siterule')
+         #self.fields.pop('password')
+         #for x in self.fields:
+         #    self.fields[x].widget.attrs['readonly'] = True
+'''

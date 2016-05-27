@@ -8,16 +8,24 @@ from PIL import Image
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 import re
-from django.contrib.auth.hashers import make_password 
+from django.contrib.auth.hashers import make_password
+from django.utils.safestring import mark_safe
+
+
+# for temporary use
+class HorizontalRadioRenderer(forms.RadioSelect.renderer):
+    def render(self):
+        tmp = mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+        tmp = '<br>' + tmp
+        return tmp
 
 class User_reg_form(forms.ModelForm):
     
     CHOICES=[('YES','Yes'),
              ('NO','No')]
     
-    
     username = forms.EmailField(label = _('username'), 
-                                widget=forms.TextInput(attrs={'placeholder': 'newuser@mail.com'}),
+                                widget=forms.TextInput(attrs={'placeholder': 'user@mail.com'}),
                                 required = False,
                                 error_messages ={'invalid':_('Enter a valid email address')})
     password = forms.CharField(label=_('password'), 
@@ -26,15 +34,19 @@ class User_reg_form(forms.ModelForm):
     checkpassword = forms.CharField(label = _('double check password'), 
                                     widget=forms.PasswordInput,
                                     required = False)
-    
     siterule = forms.ChoiceField(choices=CHOICES, 
-                                 widget=forms.RadioSelect(), label=_('agreements for site service policy'),
+                                 widget=forms.RadioSelect(renderer=HorizontalRadioRenderer), 
+                                 label=_('agreements for site service policy'),
                                  required = False)
     
     class Meta:
         model = User
         fields = ['username', 'password', 'checkpassword', 'siterule']
-        
+    
+    def __init__(self, *args, **kwargs):
+         super(User_reg_form, self).__init__(*args, **kwargs)
+         #self.fields['siterule'].widget.attrs['label'] = 'test'
+    
     def save_custom(self):
         print 'User_reg_form saved!!'
     
@@ -85,7 +97,10 @@ class User_reg_form(forms.ModelForm):
     
     def clean_siterule(self):
         siterule = self.cleaned_data['siterule']
-        if (not siterule) or siterule is None:
+        if siterule or siterule is not None:
+            if siterule == 'NO':
+                raise forms.ValidationError(_("Please agree before you register."))
+        else:
             raise forms.ValidationError(_("Please input something."))
         
         return siterule
