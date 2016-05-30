@@ -55,7 +55,8 @@ class User_reg_form(forms.ModelForm):
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("checkpassword")
 
-        if password1 is not None or password2 is not None:
+        #if the checks before all passed
+        if (not self.errors):
             # password length check
             if len(password1) < 6:
                raise forms.ValidationError(_("Password should be longer than 6 digits"))
@@ -66,7 +67,7 @@ class User_reg_form(forms.ModelForm):
                 del cleaned_data['password']
                 del cleaned_data['checkpassword']
                 raise forms.ValidationError(_("Passwords does not identical."))
-            
+        
         return cleaned_data
     
     def clean_username(self): # called first
