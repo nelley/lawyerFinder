@@ -19,18 +19,51 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
         tmp = '<br>' + tmp
         return tmp
 
-class User_reg_form(forms.ModelForm):
-    
-    CHOICES=[('YES','Yes'),
-             ('NO','No')]
-    
+
+class User_Loginform(forms.ModelForm):
+
     username = forms.EmailField(label = _('username'), 
-                                widget=forms.TextInput(attrs={'placeholder': 'user@mail.com'}),
+                                widget=forms.TextInput(attrs={'placeholder': 'Email Account'}),
                                 required = False,
                                 error_messages ={'invalid':_('Enter a valid email address')})
     password = forms.CharField(label=_('password'), 
                                widget=forms.PasswordInput,
                                required = False)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+    
+    def __init__(self, *args, **kwargs):
+        super(User_Loginform, self).__init__(*args, **kwargs)
+    
+    def clean(self): #have to override, if not, User model's clean method will raise some eroor
+        logger.debug('full clean')
+        cleaned_data = self.cleaned_data # individual field's clean methods have already been called
+
+        return cleaned_data
+    
+    def clean_username(self): # called first
+        logger.debug('clean username!')
+        username = self.cleaned_data['username'] # individual field's clean methods have already been called
+        if (not username) or username is None:
+            raise forms.ValidationError(_("Please input something."))
+        return username
+    
+    def clean_password(self):
+        logger.debug('clean password!')
+        password = self.cleaned_data['password']
+        if (not password) or password is None: #check empty or NONE
+            raise forms.ValidationError(_("Please input something."))
+            
+        return password
+
+
+class User_reg_form(User_Loginform):
+    
+    CHOICES=[('YES','Yes'),
+             ('NO','No')]
+    
     checkpassword = forms.CharField(label = _('double check password'), 
                                     widget=forms.PasswordInput,
                                     required = False)
@@ -39,8 +72,7 @@ class User_reg_form(forms.ModelForm):
                                  label=_('agreements for site service policy'),
                                  required = False)
     
-    class Meta:
-        model = User
+    class Meta(User_Loginform.Meta):
         fields = ['username', 'password', 'checkpassword', 'siterule']
     
     def __init__(self, *args, **kwargs):
@@ -51,6 +83,7 @@ class User_reg_form(forms.ModelForm):
         print 'User_reg_form saved!!'
     
     def clean(self): #this will be called at the last
+        logger.debug('pw checkpw confirmation')
         cleaned_data = self.cleaned_data # individual field's clean methods have already been called
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("checkpassword")
@@ -69,8 +102,10 @@ class User_reg_form(forms.ModelForm):
                 raise forms.ValidationError(_("Passwords does not identical."))
         
         return cleaned_data
+        
     
     def clean_username(self): # called first
+        logger.debug('clean username!')
         username = self.cleaned_data['username'] # individual field's clean methods have already been called
         if username and username is not None:
             tmpUser = User.objects.filter(username=username)
@@ -80,28 +115,22 @@ class User_reg_form(forms.ModelForm):
             raise forms.ValidationError(_("Please input something."))
         return username
     
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        #tPassword = make_password(password)
-        if (not password) or password is None: #check empty or NONE
-            raise forms.ValidationError(_("Please input something."))
-            
-        return password
-        
     def clean_checkpassword(self):
+        logger.debug('clean checkpassword!')
         checkpassword = self.cleaned_data['checkpassword']
-        #tcPassword = make_password(checkpassword)
         if (not checkpassword) or checkpassword is None:
             raise forms.ValidationError(_("Please input something."))
         
         return checkpassword
     
     def clean_siterule(self):
+        logger.debug('clean siterule!')
         siterule = self.cleaned_data['siterule']
         if siterule or siterule is not None:
-            if siterule == 'NO':
+            if siterule == 'NO' or (not siterule):
                 raise forms.ValidationError(_("Please agree before you register."))
         else:
             raise forms.ValidationError(_("Please input something."))
         
         return siterule
+        

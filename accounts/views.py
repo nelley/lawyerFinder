@@ -6,49 +6,51 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login
 from lawyerFinder.models import *
 from lawyerFinder.forms import Lawyer_SearchForm, LitigationTypeForm, BarassociationForm, Lawyer_RegForm
-from accounts.forms import User_reg_form
+from accounts.forms import *
 from django.core.handlers.wsgi import logger
 from accounts.models import User
 from django.db import IntegrityError, transaction
 from django.contrib.auth.models import Group
 
 
-
-
 # Create your views here.
-def login_view(request):
+def user_login_view(request):
     logger.debug('user login page Start')
     args = {}
-    
-    # check whether logged in or not
+    user_loginform = ''
     
     #print request.method
     if request.method == 'POST':
-        user = authenticate(username=request.POST['username'], password=request.POST['password'])
-        if user is not None:
-            if user.is_active:
+        user_loginform = User_Loginform(request.POST)
+        if user_loginform.is_valid():
+            id = user_loginform.cleaned_data['username']
+            pw = user_loginform.cleaned_data['password']
+            
+            user = authenticate(username=id, password=pw)
+            if user is not None:
                 login(request, user)
                 if "next" in request.POST and request.POST["next"]:
                     return redirect(request.POST["next"])
                 else:
                     return redirect('home')
-            else:
-                logger.debug('This user is inactive!!')
-                #redirect to the inactive page || limited some views on a page
-                messages.warning(request, 'error')
+                    
         else:
-            logger.debug('This Account is Not Our User!!')
-            #show the error msg about id||pw is wrong!!
-            messages.warning(request, 'error')
-        args = {
-                #'email':request.POST['email'],
-                'next': request.POST['next'],
-                }
-    elif "next" in request.GET:
-          args = {"next":request.GET['next']}
+            logger.debug('Something Wrong When Login')
+            args = {'user_loginform':user_loginform}
+            
+    elif "next" in request.GET: #when write a mail for querying, etc
+        user_loginform = User_Loginform() 
+        args = {'user_loginform':user_loginform, 
+                "next":request.GET['next']}
+        
+    else:
+        user_loginform = User_Loginform()
+        args = {'user_loginform':user_loginform}
           
-    return render_to_response('accounts/login.html', args, context_instance=RequestContext(request))
-
+          
+    return render_to_response('accounts/user_login.html', 
+                              args, 
+                              context_instance=RequestContext(request))
 
 @transaction.atomic
 def register_lawyer_view(request):
@@ -89,6 +91,10 @@ def register_lawyer_view(request):
                 LawyerSpecialty.objects.create_in_bulk(l, fields)
                 
                 logger.debug('user added!')
+                #clean sessions
+                for key in request.session.keys():
+                    del request.session[key]
+                    
                 return HttpResponseRedirect(reverse('home'))
             
         except IntegrityError as e:
@@ -153,6 +159,61 @@ def register_lawyer_view(request):
 
     return render_to_response(
         'accounts/register_lawyer.html',
+        args,
+        context_instance=RequestContext(request)
+    )
+    
+    
+def lawyer_login_view(request):
+    logger.debug('user login page Start')
+    args = {}
+    user_loginform = ''
+    
+    #print request.method
+    if request.method == 'POST':
+        user_loginform = User_Loginform(request.POST)
+        if user_loginform.is_valid():
+            id = user_loginform.cleaned_data['username']
+            pw = user_loginform.cleaned_data['password']
+            
+            user = authenticate(username=id, password=pw)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    if "next" in request.POST and request.POST["next"]:
+                        return redirect(request.POST["next"])
+                    else:
+                        #redirect to lawyer management page
+                        return redirect('home')
+                        
+                else:
+                    logger.debug('This user is inactive!!')
+                    logger.debug('#redirect to the inactive page || limited some views on a page')
+                    redirect('home')
+                    
+        else:
+            logger.debug('#Something Wrong When Login!!')
+            args = {'user_loginform':user_loginform}
+            
+    elif "next" in request.GET:
+        user_loginform = User_Loginform() 
+        args = {"next":request.GET['next']}
+        
+    else:
+        user_loginform = User_Loginform()
+        args = {'user_loginform':user_loginform}
+          
+          
+    return render_to_response('accounts/lawyer_login.html', 
+                              args, 
+                              context_instance=RequestContext(request))
+    
+    
+def repw_view(request):
+    args={'title':'repassword'}
+    
+    return render_to_response(
+        'accounts/_base.html',
         args,
         context_instance=RequestContext(request)
     )

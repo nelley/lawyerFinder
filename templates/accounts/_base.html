@@ -40,7 +40,8 @@
             </div>
             <div class="panel-body">
             {% block container %}
-                <form class="form" action="{% url 'login' %}" method="post">{% csrf_token %}
+                <form class="form" action="{% url 'user_login' %}" method="post">
+                    {% csrf_token %}
                     <input type="hidden" name="next" value="{{ next }}" />
                     <div class="form-group">
                         <input class="form-control" placeholder="Username" name="username" type="text">

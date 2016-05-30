@@ -161,15 +161,3 @@ class Lawyer_RegForm(forms.ModelForm):
         adjusted_height = int(height * aspect_ratio)
         image = image.resize((adjusted_width, adjusted_height), Image.ANTIALIAS)
         image.save(image_path)
-'''
-class Confirm_form(User_reg_form, Lawyer_RegForm):
-    #class Meta:
-    def __init__(self, *args, **kwargs):
-         super(Confirm_form, self).__init__(*args, **kwargs)
-         self.fields.pop('password')
-         self.fields.pop('checkpassword')
-         self.fields.pop('siterule')
-         #self.fields.pop('password')
-         #for x in self.fields:
-         #    self.fields[x].widget.attrs['readonly'] = True
-'''
