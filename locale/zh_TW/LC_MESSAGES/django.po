@@ -204,6 +204,174 @@ msgstr "登記執業地區"
 msgid "Gspecialty"
 msgstr "擅長領域"
 
+#
+msgid "KEELUNG"
+msgstr "基隆"
+
+#
+msgid "TAIPEI"
+msgstr "台北"
+
+#
+msgid "HSINCHU"
+msgstr "新竹"
+
+#
+msgid "TAICHUNG"
+msgstr "台中"
+
+#
+msgid "TAINAN"
+msgstr "台南"
+
+#
+msgid "YILAN"
+msgstr "宜蘭"
+
+#
+msgid "TAOYUAN"
+msgstr "桃園"
+
+#
+msgid "MIAOLI"
+msgstr "苗栗"
+
+#
+msgid "CHANGHUS"
+msgstr "彰化"
+
+#
+msgid "YUNLIN"
+msgstr "雲林"
+
+#
+msgid "CHIAYI"
+msgstr "嘉義"
+
+#
+msgid "PINGTUNG"
+msgstr "屏東"
+
+#
+msgid "TAITUNG"
+msgstr "台東"
+
+#
+msgid "HUALIEN"
+msgstr "花蓮"
+
+#
+msgid "PENGHU"
+msgstr "澎湖"
+
+#
+msgid "KAOHSIUNG"
+msgstr "高雄"
+
+#
+msgid "NANTOU"
+msgstr "南投"
+
+#==========
+#
+msgid "EC"
+msgstr "感情事件"
+
+#
+msgid "IP"
+msgstr "智慧財產"
+
+#
+msgid "MD"
+msgstr "醫療糾紛"
+
+#
+msgid "IW"
+msgstr "網路世界"
+
+#
+msgid "EP"
+msgstr "毒品問題"
+
+#
+msgid "PC"
+msgstr "支付命令"
+
+#
+msgid "GP"
+msgstr "政府採購"
+
+#
+msgid "PE"
+msgstr "環境保護"
+
+#
+msgid "FC"
+msgstr "詐騙案件"
+
+#
+msgid "HI"
+msgstr "遺產繼承"
+
+#
+msgid "CI"
+msgstr "公司經營"
+
+#
+msgid "CD"
+msgstr "車禍糾紛"
+
+#
+msgid "ID"
+msgstr "保險爭議"
+
+#
+msgid "RD"
+msgstr "營造工程"
+
+#
+msgid "BC"
+msgstr "兒少事件"
+
+#
+msgid "SA"
+msgstr "性侵案件"
+
+#
+msgid "LA"
+msgstr "訴訟程序"
+
+#
+msgid "LP"
+msgstr "勞資糾紛"
+
+#
+msgid "BD"
+msgstr "銀行債務"
+
+#
+msgid "NC"
+msgstr "國家賠償"
+
+#
+msgid "TP"
+msgstr "消費爭議"
+
+#
+msgid "EA"
+msgstr "選舉訴訟"
+
+#
+msgid "FM"
+msgstr "金融市場"
+
+#
+msgid "FT"
+msgstr "公平交易"
+
+#
+msgid "PN"
+msgstr "房地糾紛"
 
 #~ msgid "Profile Photo"
 #~ msgstr "個人照片"

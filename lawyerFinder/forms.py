@@ -55,7 +55,7 @@ class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
     
-    lawyerNo = forms.CharField(max_length=15, required=False, label=_('Certification Number'))
+    lawyerNo = forms.CharField(max_length=5, required=False, label=_('Certification Number'))
     careerYear = forms.IntegerField(required=False, label=_('Work Years'))
     companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
     #photos = forms.ImageField(required=False, label=_('Profile Photo'))

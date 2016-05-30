@@ -1,4 +1,5 @@
 from django.core.handlers.wsgi import logger
+from django.contrib.auth.views import logout
 from lawyerFinder.settings import SESSION_FRONT_AGE, SESSION_BACK_AGE
 import datetime
 

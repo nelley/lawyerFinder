@@ -27,7 +27,7 @@
                 <tr>
                     <td align="center"><strong>{{ key }}</strong></td>
                     {% if values|get_class == 'list' %}
-                        <td align="center">{{ values|get_string }}</td>
+                        <td align="center">{{ values|get_trans_string }}</td>
                     {% else%}
                         <td align="center">{{ values }}</td>
                     {% endif%}
