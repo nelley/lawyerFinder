@@ -142,3 +142,63 @@ def home(request):
     
     
     
+    
+    
+    
+    
+    
+    
+#===============================================================================
+def tmp(request):
+    args = []
+    redirect = ''
+    
+    if request.method == 'POST':
+        litigations = request.POST.getlist('category')
+        barass = request.POST.getlist('area')
+        gender = request.POST.getlist('gender')
+
+        areas = Barassociation.objects.filter(area__in = barass)
+        field = LitigationType.objects.filter(category__in = litigations)
+        g_list = [models.Q(gender__contains=x) for x in gender]
+        
+        
+        lawyers = Lawyer.objects.filter(
+                        regBarAss__contains=areas).filter(
+                        specialty__contains=field).filter(
+                        reduce(operator.or_, g_list)).annotate(
+                        rank = models.Count('regBarAss', distinct=True)).annotate(
+                        field = models.Count('specialty', distinct=True)).order_by(
+                        '-rank', '-field', '-premiumType')[0:30]
+                        #.values_list('rank', 'field', 'gender', 'premiumType')
+        
+        #print len(lawyers)
+        #for l in lawyers:
+        #    print l
+
+        redirect = 'lawyerFinder/_search_results.html'
+        args = {'queryed_lawyers':lawyers,
+                }
+        
+        
+    elif request.method == 'GET': #display main page
+        lawyer_searchform = Lawyer_SearchForm()
+        litigation_form = LitigationTypeForm()
+        barassociation_form = BarassociationForm()
+        
+        # template name
+        redirect = 'base/tmp.html'
+        #redirect = 'lawyerFinder/_index.html'
+        args = {'lawyer_searchform':lawyer_searchform,
+                'litigation_form':litigation_form,
+                'barassociation_form':barassociation_form,
+                'title' : 'lawyer',
+                }
+    
+    return render_to_response(
+        redirect,
+        args,
+        context_instance=RequestContext(request)
+    )
+    
+    

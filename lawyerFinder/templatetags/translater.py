@@ -7,7 +7,7 @@ register = template.Library()
 
 @register.filter(name='get_translate')
 def get_translate(dict):
-
+    #sorting the titles
     sortedDict = OrderedDict(sorted(dict.items(), key=lambda t: t[0]))
     #if not use keys() for iterating, it will cause runtime error
     for k in sortedDict.keys():

@@ -103,7 +103,7 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.1.4',
+        'HOST': '192.168.0.104',
         #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
@@ -144,7 +144,7 @@ USE_I18N = True
 USE_L10N = True
 
 #timezone-aware by default or not
-USE_TZ = True
+USE_TZ = False
 
 
 

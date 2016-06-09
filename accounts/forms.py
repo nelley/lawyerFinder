@@ -22,11 +22,11 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
 
 class User_Loginform(forms.ModelForm):
 
-    username = forms.EmailField(label = _('username'), 
+    username = forms.EmailField(label = _('username'),
                                 widget=forms.TextInput(attrs={'placeholder': 'Email Account'}),
                                 required = False,
                                 error_messages ={'invalid':_('Enter a valid email address')})
-    password = forms.CharField(label=_('password'), 
+    password = forms.CharField(label=_('password'),
                                widget=forms.PasswordInput,
                                required = False)
 

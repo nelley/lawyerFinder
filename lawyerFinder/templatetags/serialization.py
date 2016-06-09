@@ -6,6 +6,7 @@ register = template.Library()
 
 @register.filter(name='get_trans_string')
 def get_trans_string(list):
+    #translate the strong fields and areas
     translated = ''
     for x in list:
         tmp = _(x)

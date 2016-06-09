@@ -22,5 +22,6 @@ urlpatterns = [
     
     url(r'^$', views.home , name='home'),
     url(r'^accounts/', include('accounts.urls')),
-    #url(r'^hello/$', hello_world, name='hello'),
+    url(r'^tmp/$', views.tmp, name='tmp'),
+    
 ]

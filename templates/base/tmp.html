@@ -12,10 +12,57 @@
     <link href="{% static "lawyerFinder/css/bootstrap.css" %}" rel="stylesheet">
     <link href="{% static "lawyerFinder/css/modern-business.css" %}" rel="stylesheet">
     
+    <script src="{% static "lawyerFinder/js/jquery.js" %}"></script>
+    <script src="{% static "lawyerFinder/js/bootstrap.js" %}"></script>
+
+    <script src="{% static "lawyerFinder/js/bootstrap-multiselect.js" %}"></script>
+    <link href="{% static "lawyerFinder/css/bootstrap-multiselect.css" %}" rel="stylesheet">
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
 
+<script>
+
+ $(function() {
+    $("#id_category").multiselect({
+        buttonWidth: "300px",
+        nonSelectedText: '請挑選案件種類'
+    });
+
+    $("#id_area").multiselect({
+        buttonWidth: "300px",
+        nonSelectedText: '請挑選地點'
+    });
+               
+    $("#id_gender").multiselect({
+        buttonWidth: "300px",
+        nonSelectedText: '請挑選律師性別'
+    });
+    
+    
+    $(':reset').on('click', function(event) {
+        $('#id_category option:selected').each(function() {
+            $(this).prop('selected', false);
+        })
+
+        $('#id_area option:selected').each(function() {
+            $(this).prop('selected', false);
+        })
+
+        $('#id_gender option:selected').each(function() {
+            $(this).prop('selected', false);
+        })
+
+        $('#id_category').multiselect('refresh');
+        $('#id_area').multiselect('refresh');
+        $('#id_gender').multiselect('refresh');
+    });
+  });
+        
+</script>
+
+
 <body>
+
 <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -27,7 +74,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'home' %}">好律師你在哪裡</a>
+                <a class="navbar-brand" href="index.html">好律師你在哪裡</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -39,10 +86,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">找律師看這裡<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{% url 'user_login' %}">登入</a>
+                                <a href="portfolio-1-col.html">登入</a>
                             </li>
                             <li>
-                                <a href="{% url 'lawyer_login' %}">申請帳號</a>
+                                <a href="portfolio-2-col.html">申請帳號</a>
                             </li>
                         </ul>
                     </li>
@@ -50,10 +97,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">律師們看這裡<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{% url 'lawyer_login' %}">登入</a>
+                                <a href="blog-home-1.html">登入</a>
                             </li>
                             <li>
-                                <a href="{% url 'register' %}">申請帳號</a>
+                                <a href="blog-home-2.html">申請帳號</a>
                             </li>
                         </ul>
                     </li>
@@ -63,7 +110,7 @@
         </div>
         <!-- /.container -->
     </nav>
-{% block container %}
+
     <!-- Header Carousel -->
     <header id="myCarousel" class="carousel slide">
         <!-- Indicators -->
@@ -230,7 +277,6 @@
         </div>
 
         <hr>
-{% endblock container %}
 
         <!-- Footer -->
         <footer>
@@ -244,58 +290,12 @@
     </div>
     <!-- /.container -->
 
-{% block js %}
-    <script src="{% static "lawyerFinder/js/jquery.js" %}"></script>
-    <script src="{% static "lawyerFinder/js/bootstrap.js" %}"></script>
-
-    <script src="{% static "lawyerFinder/js/bootstrap-multiselect.js" %}"></script>
-    <link href="{% static "lawyerFinder/css/bootstrap-multiselect.css" %}" rel="stylesheet">
-
-    <script>
-      $(function() {
-        $("#id_category").multiselect({
-            buttonWidth: "400px",
-            nonSelectedText: '請挑選案件種類'
-        });
-    
-        $("#id_area").multiselect({
-            buttonWidth: "400px",
-            nonSelectedText: '請挑選地點'
-        });
-                   
-        $("#id_gender").multiselect({
-            buttonWidth: "400px",
-            nonSelectedText: '請挑選律師性別'
-        });
-        
-        
-        $(':reset').on('click', function(event) {
-            $('#id_category option:selected').each(function() {
-                $(this).prop('selected', false);
-            })
-    
-            $('#id_area option:selected').each(function() {
-                $(this).prop('selected', false);
-            })
-    
-            $('#id_gender option:selected').each(function() {
-                $(this).prop('selected', false);
-            })
-    
-            $('#id_category').multiselect('refresh');
-            $('#id_area').multiselect('refresh');
-            $('#id_gender').multiselect('refresh');
-        });
-      });
-    </script>
-    
     <!-- Script to Activate the Carousel -->
     <script>
     $('.carousel').carousel({
         interval: 3000 //changes the speed
     })
     </script>
-{% endblock js %}
 </body>
 
 </html>

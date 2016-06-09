@@ -11,8 +11,7 @@
 <form role="form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form user_loginform %}
-    <div align=center>{% buttons submit='OK' %}{% endbuttons %}</div>
+    <div align=center>{% buttons submit='REPORT' %}{% endbuttons %}</div>
     
-    <!-- forget pw ??-->
 </form>
 {% endblock container %}
