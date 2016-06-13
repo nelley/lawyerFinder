@@ -109,14 +109,14 @@ class Lawyer(models.Model):
         #reload(sys)
         #sys.setdefaultencoding('UTF8')
         # return JSON formatted string
-        return "{\"first_name\":\"%s\",\"careerYear\":\"%s\",\"gender\":\"%s\",\"premiumType\":\"%s\",\"lawyerNo\":\"%s\",\"area\":[%s]},\"caseNum\":{%s}" % (
+        return "{\"first_name\":\"%s\",\"careerYear\":\"%s\",\"gender\":\"%s\",\"premiumType\":\"%s\",\"lawyerNo\":\"%s\",\"area\":[%s],\"caseNum\":[%s]}" % (
                                       self.user.first_name,
                                       self.careerYear,
                                       self.gender, 
                                       self.premiumType,
                                       self.lawyerNo,
                                       ",".join('\"'+bar.area_cn+'\"' for bar in self.regBarAss.all()), 
-                                      ",".join(('\"'+field.litigations.category_cn + '\":\"' + str(field.caseNum)+ '\"') 
+                                      ",".join(('{\"'+field.litigations.category_cn + '\":\"' + str(field.caseNum)+ '\"}')
                                                 for field in self.lawyerspecialty_set.filter(litigations=matchField))
                                       )
 

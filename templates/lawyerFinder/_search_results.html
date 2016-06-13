@@ -1,5 +1,8 @@
 {% load staticfiles %}
 {% load bootstrap3 %}
+{% load getArea %}
+{% load getField %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,95 +37,36 @@
         </div>
         <!-- /.row -->
 
-        <!-- Blog Post Row -->
-        <div class="row">
-            <div class="col-md-1 text-center">
-                <p><i class="fa fa-volume-control-phone fa-4x"></i></p>
-                <p><i class="fa fa-volume-control-phone fa-4x"></i></p>
-                <p><i class="fa fa-volume-control-phone fa-4x"></i></p>
+        {% for lawyer in queryed_lawyers %}
+            <!-- Blog Post Row -->
+            <div class="row">
+                <div class="col-md-1 text-center">
+                    <p><i class="fa fa-volume-control-phone fa-4x"></i></p>
+                    <p><i class="fa fa-volume-control-phone fa-4x"></i></p>
+                    <p><i class="fa fa-volume-control-phone fa-4x"></i></p>
+                </div>
+                <div class="col-md-5">
+                    <a href="blog-post.html">
+                        <img class="img-responsive img-hover" src="http://placehold.it/600x300" alt="">
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <h3>
+                        <a href="blog-post.html">{{ lawyer.user.first_name }}</a>
+                    </h3>
+                    <p>性別:{{ lawyer.gender }}      執業年數:{{ lawyer.careerYear }}</p>
+                    <p>登記的律師公會:{{ lawyer|get_area }}</p>
+                    <p>擅長領域（案件數）:{{ lawyer|get_field }}</p>
+                    <p>lawyer No :{{lawyer.lawyerNo}}</p>
+                    <a class="btn btn-primary" href="blog-post.html">Read More <i class="fa fa-angle-right"></i></a>
+                </div>
             </div>
-            <div class="col-md-5">
-                <a href="blog-post.html">
-                    <img class="img-responsive img-hover" src="http://placehold.it/600x300" alt="">
-                </a>
-            </div>
-            <div class="col-md-6">
-                <h3>
-                    <a href="blog-post.html">Blog Post Title</a>
-                </h3>
-                <p>by <a href="#">Start Bootstrap</a>
-                </p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <a class="btn btn-primary" href="blog-post.html">Read More <i class="fa fa-angle-right"></i></a>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
-        <!-- Blog Post Row -->
-        <div class="row">
-            <div class="col-md-1 text-center">
-                <p><i class="fa fa-weixin fa-4x"></i>
-                </p>
-                <p>June 17, 2014</p>
-            </div>
-            <div class="col-md-5">
-                <a href="blog-post.html">
-                    <img class="img-responsive img-hover" src="http://placehold.it/600x300" alt="">
-                </a>
-            </div>
-            <div class="col-md-6">
-                <h3><a href="blog-post.html">Blog Post Title</a>
-                </h3>
-                <p>by <a href="#">Start Bootstrap</a>
-                </p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <a class="btn btn-primary" href="blog-post.html">Read More <i class="fa fa-angle-right"></i></a>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
-        <!-- Blog Post Row -->
-        <div class="row">
-            <div class="col-md-1 text-center">
-                <p><i class="fa fa-file-text fa-4x"></i>
-                </p>
-                <p>June 17, 2014</p>
-            </div>
-            <div class="col-md-5">
-                <a href="blog-post.html">
-                    <img class="img-responsive img-hover" src="http://placehold.it/600x300" alt="">
-                </a>
-            </div>
-            <div class="col-md-6">
-                <h3><a href="blog-post.html">Blog Post Title</a>
-                </h3>
-                <p>by <a href="#">Start Bootstrap</a>
-                </p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <a class="btn btn-primary" href="blog-post.html">Read More <i class="fa fa-angle-right"></i></a>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
-        <!-- Pager -->
-        <div class="row">
-            <ul class="pager">
-                <li class="previous"><a href="#">&larr; Older</a>
-                </li>
-                <li class="next"><a href="#">Newer &rarr;</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
+            <!-- /.row -->
+            <hr>
+        {% empty %}
+            <li>Sorry, no lawyer in this list.</li>
+        {% endfor %}
+        
         <!-- Footer -->
         <footer>
             <div class="row">
@@ -139,13 +83,5 @@
 <script src="{% static "lawyerFinder/js/jquery.js" %}"></script>
 <script src="{% static "lawyerFinder/js/bootstrap.js" %}"></script>
 
-<div>Search Results</div>
-    <ul>
-    {% for lawyer in queryed_lawyers %}
-        <li>{{ lawyer }}</li>
-    {% empty %}
-        <li>Sorry, no lawyer in this list.</li>
-    {% endfor %}
-    </ul>
 </html>
 
