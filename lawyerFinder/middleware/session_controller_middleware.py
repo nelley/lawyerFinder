@@ -24,4 +24,3 @@ class SessionControllerMiddleware(object):
                 del request.session['lastRequest'] 
 
         return None
-   

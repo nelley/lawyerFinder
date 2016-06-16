@@ -15,7 +15,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="about.html">關於本站</a>
+                        <a href="{% url 'undercons' %}">關於本站</a>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">找律師看這裡<b class="caret"></b></a>
@@ -24,7 +24,7 @@
                                 <a href="{% url 'user_login' %}">登入</a>
                             </li>
                             <li>
-                                <a href="{% url 'lawyer_login' %}">申請帳號</a>
+                                <a href="{% url 'user_register' %}">申請帳號</a>
                             </li>
                         </ul>
                     </li>
@@ -38,6 +38,9 @@
                                 <a href="{% url 'register' %}">申請帳號</a>
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="about.html">登出</a>
                     </li>
                 </ul>
             </div>

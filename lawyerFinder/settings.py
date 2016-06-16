@@ -103,7 +103,7 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.11.11',
+        'HOST': '192.168.1.5',
         #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
@@ -193,6 +193,6 @@ LOGGING = {
     },
 }
 
-# custom parameter
+# custom parameter(1*60(sec))
 SESSION_FRONT_AGE = 1*60
 SESSION_BACK_AGE = 1*60

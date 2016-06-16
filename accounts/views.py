@@ -217,3 +217,12 @@ def repw_view(request):
         args,
         context_instance=RequestContext(request)
     )
+    
+def user_register_view(request):
+    args={}
+    
+    return render_to_response(
+        'base/under_cons.html',
+        args,
+        context_instance=RequestContext(request)
+    )

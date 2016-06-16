@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from lawyerFinder.models import Lawyer, LitigationType, Barassociation
 from django.forms.extras.widgets import *

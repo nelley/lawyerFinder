@@ -25,12 +25,12 @@ class Migration(migrations.Migration):
             name='Lawyer',
             fields=[
                 ('user', models.OneToOneField(related_name='foobar', primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('lawyerNo', models.CharField(max_length=32)),
+                ('lawyerNo', models.CharField(help_text='please input the lawyer certification number ', max_length=32, blank=True)),
                 ('premiumType', models.CharField(default=b'1', max_length=30, blank=True)),
-                ('gender', models.CharField(max_length=20, choices=[(b'M', b'\xe7\x94\xb7\xe6\x80\xa7'), (b'F', b'\xe5\xa5\xb3\xe6\x80\xa7')])),
-                ('careerYear', models.IntegerField(default=0, null=True, blank=True)),
-                ('companyAddress', models.CharField(max_length=50)),
-                ('photos', models.ImageField(upload_to=b'/Download/', max_length=255, verbose_name='image', blank=True)),
+                ('gender', models.CharField(blank=True, max_length=20, choices=[(b'M', b'\xe7\x94\xb7\xe6\x80\xa7'), (b'F', b'\xe5\xa5\xb3\xe6\x80\xa7')])),
+                ('careerYear', models.IntegerField(default=0, help_text='please input the career year', null=True, blank=True)),
+                ('companyAddress', models.CharField(help_text="please input the company's address", max_length=50, blank=True)),
+                ('photos', models.ImageField(upload_to=b'/home/nelley/Downloads/', max_length=255, verbose_name='image', blank=True)),
             ],
         ),
         migrations.CreateModel(
@@ -66,11 +66,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lawyer',
             name='regBarAss',
-            field=models.ManyToManyField(help_text='the area that lawyer have been registered in', to='lawyerFinder.Barassociation', verbose_name='Registered Bar Association', through='lawyerFinder.LawyerMembership'),
+            field=models.ManyToManyField(help_text='the area that lawyer have been registered in', to='lawyerFinder.Barassociation', verbose_name='Registered Bar Association', through='lawyerFinder.LawyerMembership', blank=True),
         ),
         migrations.AddField(
             model_name='lawyer',
             name='specialty',
-            field=models.ManyToManyField(help_text='the strong field of this lawyer', to='lawyerFinder.LitigationType', verbose_name='the strong field of this lawyer', through='lawyerFinder.LawyerSpecialty'),
+            field=models.ManyToManyField(help_text='the strong field of this lawyer', to='lawyerFinder.LitigationType', verbose_name='the strong field of this lawyer', through='lawyerFinder.LawyerSpecialty', blank=True),
         ),
     ]
