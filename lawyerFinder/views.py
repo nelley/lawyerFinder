@@ -14,7 +14,6 @@ from random import randint
 import json
 import re
 from django.core.handlers.wsgi import logger
-from django.contrib import messages
 
 
 

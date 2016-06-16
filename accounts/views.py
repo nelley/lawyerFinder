@@ -11,6 +11,7 @@ from django.core.handlers.wsgi import logger
 from accounts.models import User
 from django.db import IntegrityError, transaction
 from django.contrib.auth.models import Group
+from django.utils.translation import ugettext_lazy as _
 
 
 # Create your views here.
@@ -33,6 +34,11 @@ def user_login_view(request):
                     return redirect(request.POST["next"])
                 else:
                     return redirect('home')
+            else:
+                logger.debug('#Login Failed')
+                messages.error(request, _('ID or PW mismatching'))
+                user_loginform = User_Loginform()
+                args = {'user_loginform':user_loginform}
                     
         else:
             logger.debug('Something Wrong When Login')
@@ -176,21 +182,21 @@ def lawyer_login_view(request):
             id = user_loginform.cleaned_data['username']
             pw = user_loginform.cleaned_data['password']
             
+            logger.debug('#Login Process Sarted')
             user = authenticate(username=id, password=pw)
             if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    if "next" in request.POST and request.POST["next"]:
-                        return redirect(request.POST["next"])
-                    else:
-                        #redirect to lawyer management page
-                        return redirect('home')
-                        
+                login(request, user)
+                if "next" in request.POST and request.POST["next"]:
+                    return redirect(request.POST["next"])
                 else:
-                    logger.debug('This user is inactive!!')
-                    logger.debug('#redirect to the inactive page || limited some views on a page')
-                    redirect('home')
-                    
+                    #redirect to lawyer management page
+                    return redirect('home')
+            else:
+                logger.debug('#Login Failed')
+                messages.error(request, _('ID or PW mismatching'))
+                user_loginform = User_Loginform()
+                args = {'user_loginform':user_loginform}
+
         else:
             logger.debug('#Something Wrong When Login!!')
             args = {'user_loginform':user_loginform}

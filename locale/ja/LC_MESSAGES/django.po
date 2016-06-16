@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-27 16:42+0800\n"
+"POT-Creation-Date: 2016-06-16 16:52+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,44 +18,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: accounts/forms.py:27 accounts/models.py:51
+#: accounts/forms.py:25 accounts/models.py:51
 msgid "username"
 msgstr ""
 
-#: accounts/forms.py:30
+#: accounts/forms.py:28
 msgid "Enter a valid email address"
 msgstr ""
 
-#: accounts/forms.py:31
+#: accounts/forms.py:29
 msgid "password"
 msgstr ""
 
-#: accounts/forms.py:34
-msgid "double check password"
-msgstr ""
-
-#: accounts/forms.py:39
-msgid "agreements for site service policy"
-msgstr ""
-
-#: accounts/forms.py:61
-msgid "Password should be longer than 6 digits"
-msgstr ""
-
-#: accounts/forms.py:68
-msgid "Passwords does not identical."
-msgstr ""
-
-#: accounts/forms.py:77
-msgid "This ID has been registered."
-msgstr ""
-
-#: accounts/forms.py:79 accounts/forms.py:86 accounts/forms.py:94
-#: accounts/forms.py:104 lawyerFinder/forms.py:88
+#: accounts/forms.py:50 accounts/forms.py:57 accounts/forms.py:115
+#: accounts/forms.py:122 accounts/forms.py:133 lawyerFinder/forms.py:89
 msgid "Please input something."
 msgstr ""
 
+#: accounts/forms.py:67
+msgid "double check password"
+msgstr ""
+
+#: accounts/forms.py:72
+msgid "agreements for site service policy"
+msgstr ""
+
+#: accounts/forms.py:95
+msgid "Password should be longer than 6 digits"
+msgstr ""
+
 #: accounts/forms.py:102
+msgid "Passwords does not identical."
+msgstr ""
+
+#: accounts/forms.py:113
+msgid "This ID has been registered."
+msgstr ""
+
+#: accounts/forms.py:131
 msgid "Please agree before you register."
 msgstr ""
 
@@ -76,47 +76,55 @@ msgstr ""
 msgid "date joined"
 msgstr ""
 
-#: lawyerFinder/forms.py:17
+#: accounts/views.py:191
+msgid "ID or PW mismatching"
+msgstr ""
+
+#: lawyerFinder/forms.py:18
 msgid "Gender"
 msgstr ""
 
-#: lawyerFinder/forms.py:27
+#: lawyerFinder/forms.py:28
 msgid "Categorys"
 msgstr ""
 
-#: lawyerFinder/forms.py:39
+#: lawyerFinder/forms.py:40
 msgid "Areas"
 msgstr ""
 
-#: lawyerFinder/forms.py:58
+#: lawyerFinder/forms.py:59
 msgid "Certification Number"
 msgstr ""
 
-#: lawyerFinder/forms.py:59
+#: lawyerFinder/forms.py:60
 msgid "Work Years"
 msgstr ""
 
-#: lawyerFinder/forms.py:60
+#: lawyerFinder/forms.py:61
 msgid "Company's Address"
 msgstr ""
 
-#: lawyerFinder/forms.py:62
+#: lawyerFinder/forms.py:63
 msgid "gender"
 msgstr ""
 
-#: lawyerFinder/forms.py:65
+#: lawyerFinder/forms.py:66
 msgid "Registered Area"
 msgstr ""
 
-#: lawyerFinder/forms.py:66 lawyerFinder/forms.py:72
+#: lawyerFinder/forms.py:67 lawyerFinder/forms.py:73
 msgid "multi-selection is permitted"
 msgstr ""
 
-#: lawyerFinder/forms.py:71
+#: lawyerFinder/forms.py:72
 msgid "Strong Field"
 msgstr ""
 
-#: lawyerFinder/forms.py:95 lawyerFinder/forms.py:102
+#: lawyerFinder/forms.py:98
+msgid "Please do not input minus number."
+msgstr ""
+
+#: lawyerFinder/forms.py:104 lawyerFinder/forms.py:111
 msgid "Please at least choose one field."
 msgstr ""
 
@@ -170,8 +178,4 @@ msgstr ""
 
 #: templates/accounts/register_lawyer.html:23
 msgid "Please Confirm Again"
-msgstr ""
-
-#: templates/base/index.html:92
-msgid "lawyer"
 msgstr ""

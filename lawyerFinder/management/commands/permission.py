@@ -23,8 +23,8 @@ class Command(BaseCommand):
 
         #
         Permission.objects.create(content_type_id=content_type.id, 
-                                  name='Can view', 
-                                  codename='staff_can_view')
+                                  name='Can view logged in page', 
+                                  codename='can_view')
         
         
         logger.debug('permission end!')

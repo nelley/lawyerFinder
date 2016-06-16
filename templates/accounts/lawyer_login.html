@@ -11,6 +11,11 @@
 <form role="form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form user_loginform %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" align="center">{{ message|safe }}</div>
+        {% endfor %}
+    {% endif %}
     <div align=center>{% buttons submit='OK' %}{% endbuttons %}</div>
     
     <!-- forget pw ??-->
