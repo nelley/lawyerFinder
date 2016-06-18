@@ -22,20 +22,24 @@
     <div class="col-xs-12 col-sm-8 col-sm-offset-2" style="margin-top: 2em;">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {% block containerTitle %}<h3 class="panel-title">form template title</h3>{%endblock containerTitle %}
+                {% block containerTitle %}<h3 class="panel-title">密碼重設</h3>{%endblock containerTitle %}
             </div>
             <div class="panel-body">
             {% block container %}
-                <form class="form" action="{% url 'user_login' %}" method="post">
+                <form class="form" action="{% url 'repw' %}" method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="next" value="{{ next }}" />
+                    <label class="control-label" for="id_username">註冊會員的信箱</label>
                     <div class="form-group">
-                        <input class="form-control" placeholder="Username" name="username" type="text">
+                        <input class="form-control" placeholder="Email Account" name="username" type="text">
                     </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                    </div>
-                    <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message|safe }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div align=center>{% buttons submit='OK' %}{% endbuttons %}</div>
                 </form>
              {% endblock container %}
             </div>

@@ -218,6 +218,17 @@ def lawyer_login_view(request):
 def repw_view(request):
     args={'title':'repassword'}
     
+    if request.POST:
+        emailID = request.POST['username']
+        re = User.objects.filter(username = emailID)
+        if re:
+            # generate new pw
+            # sent mail successed
+            # update new pw to DB
+            messages.success(request, _('Please check your new pw in your email account'))
+        else:
+            messages.warning(request, _('This Email has not been registered'))
+    
     return render_to_response(
         'accounts/_base.html',
         args,

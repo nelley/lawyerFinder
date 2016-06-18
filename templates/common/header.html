@@ -1,5 +1,12 @@
+{% load which_group %}
 <!-- Navigation -->
+{% if request.user|which_group:"LAWYER" %}
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+{% elif request.user|which_group:"ORDINARYUSER" %}
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+{% else %}
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+{% endif %}
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -30,7 +37,7 @@
                         </ul>
                     </li>
                     {% endif %}
-                    {% if not user.is_authenticated and not user.is_active %}
+                    {% if not user.is_authenticated %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">律師們看這裡<b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -43,10 +50,13 @@
                         </ul>
                     </li>
                     {% endif %}
-                    {% if user.is_authenticated and not user.is_active %}
+                    {% if user.is_authenticated %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">帳戶管理<b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                            <li>
+                                <a>Hello!! {{ user.first_name}}</a>
+                            </li>
                             <li>
                                 <a href="{% url 'lawyer_login' %}">我的頁面</a>
                             </li>
