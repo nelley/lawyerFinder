@@ -148,7 +148,7 @@ def home(request):
         
         # template name
         redirect = 'base/index.html'
-        #redirect = 'lawyerFinder/_index.html'
+        
         args = {'lawyer_searchform':lawyer_searchform,
                 'litigation_form':litigation_form,
                 'barassociation_form':barassociation_form,

@@ -17,7 +17,16 @@
 
 <body>
 {% include "common/header.html" %}
-
+{% if messages %}
+    <div class="span12">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} fade in" style="margin-bottom:0px;">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                <div align="center">{{ message|safe }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 {% block container %}
     <!-- Header Carousel -->
     <header id="myCarousel" class="carousel slide">

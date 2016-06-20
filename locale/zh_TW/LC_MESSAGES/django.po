@@ -190,7 +190,15 @@ msgstr "請到信箱確認您的新密碼"
 msgid "This Email has not been registered"
 msgstr "這個電子郵件信箱不是本網站的會員"
 
+#: lawyerFinder/accounts/views.py:99
+msgid "Lawyer Member Registeration Successed"
+msgstr "成功申請成為律師會員,接下來請等待工作人員的審核"
 
+#: lawyerFinder/accounts/views.py:108
+msgid "Lawyer Member Registeration Failed"
+msgstr "由於系統錯誤,申請成為律師會員失敗！！"
+
+#
 msgid "lawyer"
 msgstr "律師"
 

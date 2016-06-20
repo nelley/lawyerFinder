@@ -13,15 +13,6 @@ Class-based views
 Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
     
-    memo:
-    ^a start with a
-    a$ end with a
-    /d is [0-9]
-    + ab+ will match ‘a’ followed by any non-zero number of ‘b’s; 
-      it will not match just ‘a’.
-    
-    
-    
 """
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
@@ -35,7 +26,7 @@ urlpatterns = [
     url(r'^accounts/', include('accounts.urls')),
     url(r'^lawyerHome/(?P<lawyer_id>\d{2,10})$', views.lawyerHome, name='lawyer_home'),
     url(r'^undercons/$', views.undercons, name='undercons'),
-    #url(r'^tmp/$', views.tmp, name='tmp'),
+    url(r'^tmp/$', views.tmp, name='tmp'),
     
     
 ]

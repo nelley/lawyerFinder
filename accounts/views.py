@@ -96,6 +96,7 @@ def register_lawyer_view(request):
                 fields = LitigationType.objects.filter(category__in=request.session['specialty'])
                 LawyerSpecialty.objects.create_in_bulk(l, fields)
                 
+                messages.success(request, _('Lawyer Member Registeration Successed'))
                 logger.debug('user added!')
                 #clean sessions
                 for key in request.session.keys():
@@ -104,6 +105,7 @@ def register_lawyer_view(request):
                 return HttpResponseRedirect(reverse('home'))
             
         except IntegrityError as e:
+            messages.error(request, _('Lawyer Member Registeration Failed'))
             logger.debug('Add Lawyer Failed')
             logger.debug(e.message)
     
@@ -132,8 +134,7 @@ def register_lawyer_view(request):
             
         else:
             stageflag = '2'
-        
-        
+            
     elif request.method == 'POST' and request.POST['flag'] == '1':
         logger.debug('Register page 2 start')
         agreement_regform = User_reg_form(request.POST)
@@ -142,11 +143,9 @@ def register_lawyer_view(request):
             request.session['pw'] = agreement_regform.cleaned_data['password']
         
             lawyer_regform = Lawyer_RegForm()
-        
             stageflag = '2'
         else:
             stageflag = '1'
-        
         
     else:# display register page
         logger.debug('Register page 1 start')
@@ -155,7 +154,6 @@ def register_lawyer_view(request):
         agreement_regform = User_reg_form()
         stageflag = '1'
         
-    
     args = {'agreement_regform':agreement_regform,
             'lawyer_regform':lawyer_regform,
             'confirm_form':confirm_form,
