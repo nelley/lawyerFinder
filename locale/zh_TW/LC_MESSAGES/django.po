@@ -186,7 +186,7 @@ msgstr "請再次確認已輸入的資料"
 msgid "Please check your new pw in your email account"
 msgstr "請到信箱確認您的新密碼"
 
-#: lawyerFinder/accounts/views.py:230
+#: lawyerFinder/accounts/views.py:245
 msgid "This Email has not been registered"
 msgstr "這個電子郵件信箱不是本網站的會員"
 
@@ -197,6 +197,33 @@ msgstr "成功申請成為律師會員,接下來請等待工作人員的審核"
 #: lawyerFinder/accounts/views.py:108
 msgid "Lawyer Member Registeration Failed"
 msgstr "由於系統錯誤,申請成為律師會員失敗！！"
+
+#: lawyerFinder/accounts/forms.py:116
+#: lawyerFinder/accounts/views.py:230
+msgid "This ID has not been activated. Please check your mailbox"
+msgstr "這個帳號尚未被啟用,請至信箱點擊確認信函中的連結"
+
+#: lawyerFinder/accounts/views.py:238
+msgid "This ID has been activated."
+msgstr "這個帳號已經被啟用"
+
+#: lawyerFinder/accounts/views.py:286
+#: lawyerFinder/accounts/views.py:247
+msgid "Please Check The Comfirmation Mail In Your Mailbox"
+msgstr "請至信箱確認寄送的認證信"
+
+#: lawyerFinder/accounts/views.py:323
+msgid "Invalid register key due to exceed time limitation"
+msgstr "驗證碼已失效"
+
+#: lawyerFinder/accounts/views.py:328
+msgid "Account activated"
+msgstr "認證完畢"
+
+#: lawyerFinder/accounts/views.py:333
+msgid "Register Key does not exist"
+msgstr "驗證碼錯誤"
+
 
 #
 msgid "lawyer"

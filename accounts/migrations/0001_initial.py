@@ -36,4 +36,14 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
         ),
+        migrations.CreateModel(
+            name='RegistTokens',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('email', models.EmailField(max_length=100)),
+                ('registkey', models.CharField(max_length=255)),
+                ('updated_at', models.DateTimeField(null=True, blank=True)),
+                ('created_at', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date added')),
+            ],
+        ),
     ]

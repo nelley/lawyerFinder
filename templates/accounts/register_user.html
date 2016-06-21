@@ -1,0 +1,18 @@
+{% extends "accounts/_base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}<title>使用者註冊</title>{% endblock title %}
+
+{% block containerTitle %}<h3 class="panel-title">使用者註冊</h3>{%endblock containerTitle %}
+
+{% block container %}
+<form role="form" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {% bootstrap_form user_reg_form %}
+    <div align=center>{% buttons submit='OK' %}{% endbuttons %}</div>
+    
+    
+</form>
+{% endblock container %}

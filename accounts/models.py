@@ -94,6 +94,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     #def __unicode__(self):
     #l    return self.email
     
+    
+class RegistTokens(models.Model):
+    email = models.EmailField(max_length=100)
+    registkey = models.CharField(max_length=255)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(_('date added'), default=timezone.now)
+
     '''
 class AuthGroup(models.Model):
     ORDINARYUSER = 1

@@ -7,11 +7,13 @@ from django.contrib.auth import authenticate, logout, login
 from lawyerFinder.models import *
 from lawyerFinder.forms import Lawyer_SearchForm, LitigationTypeForm, BarassociationForm, Lawyer_RegForm
 from accounts.forms import *
+from accounts.models import *
 from django.core.handlers.wsgi import logger
-from accounts.models import User
 from django.db import IntegrityError, transaction
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
+from common.utilities import *
+import datetime
 
 
 # Create your views here.
@@ -214,16 +216,46 @@ def lawyer_login_view(request):
     
     
 def repw_view(request):
+    logger.debug('repassword Start')
     args={'title':'repassword'}
     
     if request.POST:
         emailID = request.POST['username']
-        re = User.objects.filter(username = emailID)
+        type = request.POST['type']
+        re = User.objects.get(username = emailID)
+        # user is existed or not
         if re:
-            # generate new pw
-            # sent mail successed
-            # update new pw to DB
-            messages.success(request, _('Please check your new pw in your email account'))
+            is_active = re.is_active
+            # if user request repassword
+            if type == 'REPW':
+                if is_active == True:
+                    # generate new pw
+                    password = User.objects.make_random_password(length=12,
+                                                                 allowed_chars='!@#$%^&*abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789')
+                    # sent mail successed
+                    print 'password=%s' % password
+                    # update new pw to DB
+                    re.set_password(password)
+                    re.save()
+                    messages.success(request, _('Please check your new pw in your email account'))
+                else:
+                    messages.warning(request, _("This ID has not been activated. Please check your mailbox"))
+            # if user request resend confirm mail
+            elif(type == 'RECO'):
+                if is_active == True:
+                    messages.warning(request, _("This ID has been activated."))
+                else:
+                    try:
+                        with transaction.atomic():
+                            token = gen_tokens(emailID)
+                            RegistTokens.objects.create(email=emailID, registkey=token)
+                            # send mail by SES with new token
+                            mailSender(token)
+                            messages.success(request, _('Please Check The Comfirmation Mail In Your Mailbox'))
+                    except IntegrityError as e:
+                        messages.error(request, _('ReComfirmation Failed'))
+                        logger.debug('ReComfirmation Failed')
+                        logger.debug(e.message)
         else:
             messages.warning(request, _('This Email has not been registered'))
     
@@ -233,11 +265,75 @@ def repw_view(request):
         context_instance=RequestContext(request)
     )
     
+    
+@transaction.atomic
 def user_register_view(request):
-    args={}
+    logger.debug('User register Start')
+    user_reg_form=''
+    
+    if request.POST:
+        user_reg_regform = User_reg_form(request.POST)
+        if user_reg_regform.is_valid():
+            tid = user_reg_regform.cleaned_data['username']
+            tpw = user_reg_regform.cleaned_data['password']
+            logger.debug('save user info start')
+            try:
+                with transaction.atomic():
+                    # insert as a user
+                    u = User.objects
+                    u.create_user(username=tid, 
+                                  email=tid, 
+                                  password=tpw,
+                                  active_flag=False)
+                    # add this ID to gtoup
+                    insertedu = User.objects.get(username = tid)
+                    tmpG = Group.objects.get(name = 'ORDINARYUSER')
+                    insertedu.groups.add(tmpG)
+                    
+                    # insert token to table
+                    token = gen_tokens(tid)
+                    RegistTokens.objects.create(email=tid, registkey=token)
+                    
+                    # send mail by SES with new token
+                    mailSender(token)
+                    messages.success(request, _('Please Check The Comfirmation Mail In Your Mailbox'))
+                    
+            except IntegrityError as e:
+                messages.error(request, _('User Member Registeration Failed'))
+                logger.debug('Add Lawyer Failed')
+                logger.debug(e.message)
+
+            return redirect('home')
+            
+        logger.debug('input validation failed')
+        args={'user_reg_form':user_reg_regform}
+    else:
+        user_reg_form = User_reg_form()
+        args={'user_reg_form':user_reg_form}
+    
     
     return render_to_response(
-        'base/under_cons.html',
+        'accounts/register_user.html',
         args,
         context_instance=RequestContext(request)
     )
+    
+    
+def user_confirm(request, registkey):
+    try:
+        emailId = RegistTokens.objects.get(registkey=registkey)
+        if emailId:
+            now = datetime.datetime.now()
+            if (now - emailId.created_at).total_seconds() > 60*60:#over 1 hour
+                messages.error(request, _('Invalid register key due to exceed time limitation'))
+            else:
+                u = User.objects.get(username=emailId.email)
+                u.is_active = 1
+                u.save()
+                messages.success(request, _('Account activated'))
+    except IntegrityError as e:
+        logger.debug('DB Error!') 
+    except RegistTokens.DoesNotExist:
+        messages.error(request, _('Register Key does not exist'))
+    
+    return redirect('home')

@@ -43,12 +43,19 @@ class User_Loginform(forms.ModelForm):
 
         return cleaned_data
     
+    # user and lawyer use this method currently
     def clean_username(self): # called first
         logger.debug('clean username!')
         username = self.cleaned_data['username'] # individual field's clean methods have already been called
-        if (not username) or username is None:
+        if username and username is not None:
+            tmpUser = User.objects.filter(username=username)
+            if tmpUser.count() > 0:
+                if tmpUser.values('is_active')[0]['is_active'] == True:
+                    return username
+                else:
+                    raise forms.ValidationError(_("This ID has not been activated. Please check your mailbox"))
+        else:
             raise forms.ValidationError(_("Please input something."))
-        return username
     
     def clean_password(self):
         logger.debug('clean password!')
@@ -82,6 +89,22 @@ class User_reg_form(User_Loginform):
     def save_custom(self):
         print 'User_reg_form saved!!'
     
+    # user and lawyer use this method currently
+    def clean_username(self): # called first
+        logger.debug('clean username in user reg')
+        username = self.cleaned_data['username'] # individual field's clean methods have already been called
+        if username and username is not None:
+            tmpUser = User.objects.filter(username=username)
+            if tmpUser.count() > 0:
+                if tmpUser.values('is_active')[0]['is_active'] == True:
+                    raise forms.ValidationError(_("This ID has been registered."))
+                else:
+                    raise forms.ValidationError(_("This ID has not been activated. Please check your mailbox"))
+        else:
+            raise forms.ValidationError(_("Please input something."))
+        return username
+    
+    
     def clean(self): #this will be called at the last
         logger.debug('pw checkpw confirmation')
         cleaned_data = self.cleaned_data # individual field's clean methods have already been called
@@ -102,18 +125,6 @@ class User_reg_form(User_Loginform):
                 raise forms.ValidationError(_("Passwords does not identical."))
         
         return cleaned_data
-        
-    
-    def clean_username(self): # called first
-        logger.debug('clean username!')
-        username = self.cleaned_data['username'] # individual field's clean methods have already been called
-        if username and username is not None:
-            tmpUser = User.objects.filter(username=username)
-            if tmpUser.count() > 0:
-                raise forms.ValidationError(_("This ID has been registered."))
-        else:
-            raise forms.ValidationError(_("Please input something."))
-        return username
     
     def clean_checkpassword(self):
         logger.debug('clean checkpassword!')
