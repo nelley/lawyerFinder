@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import sys
+import ConfigParser
 reload(sys)
 sys.setdefaultencoding("utf-8")
 #from models import User
@@ -104,8 +105,8 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.1.3',
-        #'HOST': '192.168.43.215',
+        #'HOST': '192.168.10.121',
+        'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
@@ -146,6 +147,13 @@ USE_L10N = True
 
 #timezone-aware by default or not
 USE_TZ = False
+
+
+# AWS SES
+config = ConfigParser.ConfigParser()
+config.read("/home/nelley/.aws/credentials.txt")
+AWS_ACC_KEY_ID = config.get("DEFAULT","aws_access_key_id")
+AWS_SEC_ACC_KEY = config.get("DEFAULT","aws_secret_access_key")
 
 
 

@@ -79,7 +79,7 @@ def register_lawyer_view(request):
                               email=request.session['id'], 
                               password=request.session['pw'],
                               active_flag=False)
-                # add this ID to gtoup
+                # add this ID to group
                 insertedu = User.objects.get(username = request.session['id'])
                 tmpG = Group.objects.get(name = 'LAWYER')
                 insertedu.groups.add(tmpG)
@@ -233,7 +233,7 @@ def repw_view(request):
                     password = User.objects.make_random_password(length=12,
                                                                  allowed_chars='!@#$%^&*abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789')
                     # sent mail successed
-                    print 'password=%s' % password
+                    mailSender(mail_to=emailID, pw=password)
                     # update new pw to DB
                     re.set_password(password)
                     re.save()
@@ -250,7 +250,7 @@ def repw_view(request):
                             token = gen_tokens(emailID)
                             RegistTokens.objects.create(email=emailID, registkey=token)
                             # send mail by SES with new token
-                            mailSender(token)
+                            mailSender(mail_to=emailID, token=token)
                             messages.success(request, _('Please Check The Comfirmation Mail In Your Mailbox'))
                     except IntegrityError as e:
                         messages.error(request, _('ReComfirmation Failed'))
@@ -295,7 +295,7 @@ def user_register_view(request):
                     RegistTokens.objects.create(email=tid, registkey=token)
                     
                     # send mail by SES with new token
-                    mailSender(token)
+                    mailSender(token=token, mail_to = tid)
                     messages.success(request, _('Please Check The Comfirmation Mail In Your Mailbox'))
                     
             except IntegrityError as e:

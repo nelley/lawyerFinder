@@ -5,7 +5,10 @@ from django.utils.translation import ugettext as _
 from datetime import datetime
 from hashlib import sha1
 from accounts.models import *
-
+from lawyerFinder.settings import *
+import boto
+from boto.sqs.message import Message
+from boto.regioninfo import RegionInfo
 
 def gen_tokens(id):
     time = datetime.now().isoformat()
@@ -13,11 +16,41 @@ def gen_tokens(id):
     token = sha1(plain)
     return token.hexdigest()
 
-def mailSender(t):
-    print 'sent mail with token=%s' % t
+def mailSender(mail_to=None, pw=None, token=None):
+    print mail_to
+    mail_context=''
+    URL = 'http://192.168.0.108:8000/accounts/registConfirm/'
+    mail_to='doublenunchakus@gmail.com'
     
+    cusRegion = RegionInfo()
+    cusRegion.endpoint='email.us-west-2.amazonaws.com'
+    cusRegion.name='us-west-2'
     
+    if pw:
+        mail_context='pw=' + pw
+    else:
+        mail_context=URL + token
+        
+    #print mail_context
+    connection = boto.connect_ses(
+                      aws_access_key_id=AWS_ACC_KEY_ID,
+                      aws_secret_access_key=AWS_SEC_ACC_KEY,
+                      region=cusRegion,)
     
+    # test emails
+    # complaint@simulator.amazonses.com
+    # bounce@simulator.amazonses.com
+    result = connection.send_email('dragonbrucelee@gmail.com' # from
+                       ,'TestMail'
+                       ,mail_context
+                       ,mail_to # to
+                       ,cc_addresses=[]
+                       ,bcc_addresses=[]
+                       ,reply_addresses=''
+                       ,return_path=''
+                       )
+    
+    logger.debug(result)
 
 class RestrictedImageField(ImageField):
     content_type = None
