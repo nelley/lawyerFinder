@@ -93,9 +93,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lawyerFinder.wsgi.application'
 
+
+SITE_URL = 'http://192.168.0.108:8000/'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
@@ -105,8 +106,8 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        #'HOST': '192.168.10.121',
-        'HOST': '192.168.43.215',
+        'HOST': '192.168.0.104',
+        #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
@@ -210,5 +211,5 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
                 message_constants.ERROR: 'danger',}
 
 # custom parameter(1*60(sec))
-SESSION_FRONT_AGE = 1*60
+SESSION_FRONT_AGE = 60*60
 SESSION_BACK_AGE = 1*60
