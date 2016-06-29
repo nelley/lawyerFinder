@@ -2,6 +2,9 @@
 {% load staticfiles %}
 {% load bootstrap3 %}
 {% load i18n %}
+{% load getArea %}
+{% load getField %}
+
 <html lang="en">
 
 <head>
@@ -19,6 +22,7 @@
 
     <!-- Custom CSS -->
     <link href="{% static "lawyerFinder/css/modern-business.css" %}" rel="stylesheet">
+    <link href="{% static "lawyerFinder/css/lawyerProfile.css" %}" rel="stylesheet">
     
     <!-- Custom Fonts -->
     <link href="{% static "lawyerFinder/css/font-awesome.min.css" %}" rel="stylesheet">
@@ -43,19 +47,55 @@
         <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Services
-                    <small>Subheading</small>
+                <h1 class="page-header">基本資料
+                    <small>上班時間8:00-18:00</small>
                 </h1>
             </div>
         </div>
         <!-- /.row -->
 
         <!-- Image Header -->
+        {% for law in law_info%}
         <div class="row">
-            <div class="col-lg-12">
-                <img class="img-responsive" src="http://placehold.it/1200x300" alt="">
-            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-xs-12 col-sm-3 text-center">
+                        <figure>
+                            <h2><img src="http://placehold.it/150x150" alt="" class="img-rounded img-responsive"></h2>
+                        </figure>
+                    </div>
+                    <div class="col-xs-12 col-sm-9">
+                        <h2><a href="/lawyerHome/{{ law.lawyerNo }}">{{ law.user.first_name }}</a></h2>
+                        <figcaption class="ratings">
+                                <p>Ratings
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                     <span class="fa fa-star-o"></span>
+                                </a> 
+                                </p>
+                        </figcaption>
+                        <p><strong>執業年數: </strong>{{ law.careerYear }}</p>
+                        <p><strong>執業地區: </strong>{{ law|get_area }}</p>
+                        <p><strong>擅長領域: </strong>
+                            {% for field in law|get_field %}
+                                <span class="tags">{{ field.litigations.category_cn }}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
         </div>
+        {% endfor %}
         <!-- /.row -->
 
         <!-- Service Panels -->
@@ -69,7 +109,7 @@
                     <div class="panel-heading">
                         <span class="fa-stack fa-5x">
                               <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
+                              <a href="#"><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></a>
                         </span>
                     </div>
                     <div class="panel-body">
@@ -83,7 +123,7 @@
                     <div class="panel-heading">
                         <span class="fa-stack fa-5x">
                               <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-car fa-stack-1x fa-inverse"></i>
+                              <a href="#"><i class="fa fa-mobile-phone fa-stack-1x fa-inverse"></i></a>
                         </span>
                     </div>
                     <div class="panel-body">
@@ -97,7 +137,7 @@
                     <div class="panel-heading">
                         <span class="fa-stack fa-5x">
                               <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-support fa-stack-1x fa-inverse"></i>
+                              <a href="#"><i class="fa fa-comments-o fa-stack-1x fa-inverse"></i></a>
                         </span>
                     </div>
                     <div class="panel-body">
@@ -154,132 +194,7 @@
             </div>
         </div>
 
-        <!-- Service List -->
-        <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">Service List</h2>
-            </div>
-            <div class="col-md-4">
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-tree fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service One</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-car fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Two</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-support fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Three</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-database fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Four</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-bomb fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Five</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-bank fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Six</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-paper-plane fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Seven</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-space-shuttle fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Eight</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="pull-left">
-                        <span class="fa-stack fa-2x">
-                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                              <i class="fa fa-recycle fa-stack-1x fa-inverse"></i>
-                        </span> 
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Service Nine</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo itaque ipsum sit harum.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
-        <div>{{ la_info}}</div>
+                <hr>
         <!-- Footer -->
         <footer>
             <div class="row">

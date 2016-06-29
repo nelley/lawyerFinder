@@ -7,5 +7,6 @@ register = template.Library()
 @register.filter(name='get_field')
 def get_field(lawyerObj):
     matchField = LitigationType.objects.all()
-    return ",".join((field.litigations.category_cn + ':' + str(field.caseNum))
-                                                for field in lawyerObj.lawyerspecialty_set.filter(litigations=matchField))
+    #return ",".join((field.litigations.category_cn + ':' + str(field.caseNum))
+    #                                            for field in lawyerObj.lawyerspecialty_set.filter(litigations=matchField))
+    return lawyerObj.lawyerspecialty_set.filter(litigations=matchField)

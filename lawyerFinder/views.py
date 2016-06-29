@@ -169,8 +169,8 @@ def lawyerHome(request, lawyer_id):
     args =''
     
     # retrieve data from DB
-    la_info = Lawyer.objects.filter(lawyerNo=lawyer_id)
-    if not la_info: 
+    law_info = Lawyer.objects.filter(lawyerNo=lawyer_id)
+    if not law_info: 
         logger.debug("No corresponding lawyer!")
         return redirectHome(request)
     
@@ -183,7 +183,7 @@ def lawyerHome(request, lawyer_id):
     #prepare for querying from user like email
     #if request.method == 'POST':
     #    pass
-    args = {'la_info':la_info}
+    args = {'law_info':law_info}
     
     
     return render_to_response(
