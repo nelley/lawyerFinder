@@ -217,6 +217,7 @@ def tmp(request):
         litigation_form = LitigationTypeForm()
         barassociation_form = BarassociationForm()
         
+        all_lawyer = Lawyer.objects.all()
         # template name
         redirect = 'base/tmp.html'
 
@@ -224,6 +225,7 @@ def tmp(request):
                 'litigation_form':litigation_form,
                 'barassociation_form':barassociation_form,
                 'title' : 'lawyer',
+                'all_lawyer': all_lawyer,
                 }
     
     return render_to_response(

@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'ckeditor',
     'bootstrap3',
     'lawyerFinder',
     'accounts',
@@ -106,8 +107,8 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        #'HOST': '192.168.254.102',
-        'HOST': '192.168.43.215',
+        'HOST': '192.168.1.15',
+        #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
@@ -213,3 +214,6 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
 # custom parameter(1*60(sec))
 SESSION_FRONT_AGE = 60*60
 SESSION_BACK_AGE = 1*60
+
+# ckeditor settings
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
