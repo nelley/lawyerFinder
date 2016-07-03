@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from lawyerFinder.models import Lawyer, LitigationType, Barassociation
+from lawyerFinder.models import Lawyer, LitigationType, Barassociation, Lawyer_infos
 from django.forms.extras.widgets import *
 from lawyerFinder.settings import *
 from django.core.exceptions import ValidationError
@@ -11,6 +11,17 @@ import re
 from django.utils.safestring import mark_safe
 from accounts.forms import User_reg_form
 from django.contrib.contenttypes import fields
+from ckeditor.widgets import CKEditorWidget
+
+
+class Lawyer_infosForm(forms.ModelForm):
+    basic = forms.CharField(widget=CKEditorWidget(config_name='default'),
+                              label='')
+    class Meta:
+        model = Lawyer_infos
+        fields = ['basic']
+        #fields = '__all__'
+
 
 class Lawyer_SearchForm(forms.ModelForm):
     gender = forms.MultipleChoiceField(required=True, 

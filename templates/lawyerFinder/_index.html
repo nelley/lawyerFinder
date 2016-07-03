@@ -6,15 +6,11 @@
 
 
 {% block searchform %}
-
-
     <form role="form" method="post">
         {% csrf_token %}
         {% bootstrap_form litigation_form %}
         {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
     </form>
-
-
 {% endblock searchform%}
 
 

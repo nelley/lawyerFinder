@@ -11,6 +11,8 @@ import datetime
 from django.utils import timezone
 from django.db import connection
 from random import randint
+from ckeditor.fields import RichTextField
+
 import sys
 
 class LawyerSpecialtyManager(models.Manager):
@@ -72,7 +74,6 @@ class Barassociation(models.Model):
 
 # person
 class Lawyer(models.Model): 
-    
     GENDER = (
         ('M', '男性'),
         ('F', '女性'),
@@ -119,6 +120,20 @@ class Lawyer(models.Model):
                                       ",".join(('{\"'+field.litigations.category_cn + '\":\"' + str(field.caseNum)+ '\"}')
                                                 for field in self.lawyerspecialty_set.filter(litigations=matchField))
                                       )
+
+
+
+
+class Lawyer_infos(models.Model):
+    lawyer = models.OneToOneField(Lawyer, on_delete=models.CASCADE, 
+                                  primary_key=True, related_name='lawyer_info',
+                                  )
+    basic = RichTextField(max_length=130, blank=True)
+    strongFields = RichTextField(max_length=130, blank=True)
+    finishedCases = RichTextField(max_length=130, blank=True)
+    feeStd = RichTextField(max_length=130, blank=True)
+    companyInfos = RichTextField(max_length=130, blank=True)
+
 
 # membership
 class LawyerMembership(models.Model):

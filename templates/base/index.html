@@ -11,6 +11,7 @@
     <title>好律師你在哪裡</title>
     <link href="{% static "lawyerFinder/css/bootstrap.css" %}" rel="stylesheet">
     <link href="{% static "lawyerFinder/css/modern-business.css" %}" rel="stylesheet">
+    <link href="{% static "lawyerFinder/css/slider.css" %}" rel="stylesheet">
     
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
@@ -68,6 +69,9 @@
         </a>
     </header>
 
+
+
+
     <!-- Page Content -->
     <div class="container">
         <!-- Features Section -->
@@ -97,105 +101,76 @@
         </div>
         <!-- /.row -->
         
-        
         <!-- Marketing Icons Section -->
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Welcome to Modern Business
+                    我們的特點
                 </h1>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-check"></i>快速諮詢</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-gift"></i>透明律師資訊</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-compass"></i>公開律師評價</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- /.row -->
-
-        <!-- Portfolio Section -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">Portfolio Heading</h2>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-                </a>
-            </div>
-        </div>
-        <!-- /.row -->
-        
-        <hr>
-
-        <!-- Call to Action Section -->
-        <div class="well">
-            <div class="row">
-                <div class="col-md-8">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
-                </div>
-                <div class="col-md-4">
-                    <a class="btn btn-lg btn-default btn-block" href="#">Call to Action</a>
-                </div>
-            </div>
-        </div>
-
-        <hr>
 {% endblock container %}
+    </div>
+    <!-- /.container -->
+    
+    <div class="container">
+    <header id="CarouselDown" class="carousel slide">
+        <!-- Wrapper for slides -->
+        <div class="slider-inner">
+            <div class="item active">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4><i class="fa fa-fw fa-check"></i>快速諮詢</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
+                            <a href="#" class="btn btn-default">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4><i class="fa fa-fw fa-gift"></i>透明律師資訊</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
+                            <a href="#" class="btn btn-default">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4><i class="fa fa-fw fa-compass"></i>公開律師評價</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
+                            <a href="#" class="btn btn-default">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Controls -->
+        <a class="left slider-control" href="#CarouselDown" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right slider-control" href="#CarouselDown" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+    </header>
+    </div>
+    <!-- /.container -->
+    
+    <div class="container">
         <!-- Footer -->
         <footer>
             <div class="row">
@@ -204,9 +179,7 @@
                 </div>
             </div>
         </footer>
-
     </div>
-    <!-- /.container -->
 
 {% block js %}
     <script src="{% static "lawyerFinder/js/jquery.js" %}"></script>
@@ -214,50 +187,77 @@
 
     <script src="{% static "lawyerFinder/js/bootstrap-multiselect.js" %}"></script>
     <link href="{% static "lawyerFinder/css/bootstrap-multiselect.css" %}" rel="stylesheet">
+    <script src="{% static "lawyerFinder/js/hammer.js" %}"></script>
 
     <script>
       $(function() {
-        $("#id_category").multiselect({
-            buttonWidth: "300px",
-            nonSelectedText: '請挑選案件種類'
-        });
+          $("#id_category").multiselect({
+              buttonWidth: "300px",
+              nonSelectedText: '請挑選案件種類'
+          });
     
-        $("#id_area").multiselect({
-            buttonWidth: "300px",
-            nonSelectedText: '請挑選地點'
-        });
+          $("#id_area").multiselect({
+              buttonWidth: "300px",
+              nonSelectedText: '請挑選地點'
+          });
                    
-        $("#id_gender").multiselect({
-            buttonWidth: "300px",
-            nonSelectedText: '請挑選律師性別'
-        });
+          $("#id_gender").multiselect({
+              buttonWidth: "300px",
+              nonSelectedText: '請挑選律師性別'
+          });
         
-        
-        $(':reset').on('click', function(event) {
-            $('#id_category option:selected').each(function() {
-                $(this).prop('selected', false);
-            })
+          // touch event
+          var upper = document.getElementById('myCarousel');
+          var mc = new Hammer(upper);
+          // listen to events
+          mc.on("panleft", function(ev) {
+              $('.carousel').carousel('next');
+          });
+          mc.on("panright", function(ev) {
+              $('.carousel').carousel('prev');
+          })
+          
+          // touch event down
+          var bottom = document.getElementById('CarouselDown');
+          var dn = new Hammer(bottom);
+          // listen to events
+          dn.on("panleft", function(ev){
+              $('.carousel').carousel('next');
+          });
+          dn.on("panright", function(ev){
+              $('.carousel').carousel('prev');
+          });
+          
+          $(':reset').on('click', function(event) {
+              $('#id_category option:selected').each(function() {
+                  $(this).prop('selected', false);
+              })
     
-            $('#id_area option:selected').each(function() {
-                $(this).prop('selected', false);
-            })
+              $('#id_area option:selected').each(function() {
+                  $(this).prop('selected', false);
+              })
     
-            $('#id_gender option:selected').each(function() {
-                $(this).prop('selected', false);
-            })
+              $('#id_gender option:selected').each(function() {
+                  $(this).prop('selected', false);
+              })
     
-            $('#id_category').multiselect('refresh');
-            $('#id_area').multiselect('refresh');
-            $('#id_gender').multiselect('refresh');
-        });
+              $('#id_category').multiselect('refresh');
+              $('#id_area').multiselect('refresh');
+              $('#id_gender').multiselect('refresh');
+          });
       });
     </script>
     
     <!-- Script to Activate the Carousel -->
     <script>
-    $('.carousel').carousel({
+    $('#myCarousel').carousel({
         interval: 3000 //changes the speed
     })
+    
+    $('#CarouselDown').carousel({
+        interval: 0 //changes the speed
+    })
+    
     </script>
 {% endblock js %}
 </body>

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 from django.conf import settings
+import ckeditor.fields
 import datetime
 
 
@@ -39,7 +40,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('date_joined', models.DateField(default=datetime.date.today, null=True)),
                 ('barAssociation', models.ForeignKey(to='lawyerFinder.Barassociation')),
-                ('lawyerNo', models.ForeignKey(to='lawyerFinder.Lawyer')),
             ],
         ),
         migrations.CreateModel(
@@ -47,7 +47,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('caseNum', models.IntegerField(default=0, null=True, blank=True)),
-                ('lawyerNo', models.ForeignKey(to='lawyerFinder.Lawyer')),
             ],
         ),
         migrations.CreateModel(
@@ -58,10 +57,31 @@ class Migration(migrations.Migration):
                 ('category_cn', models.CharField(max_length=20, choices=[(b'EC', b'\xe6\x84\x9f\xe6\x83\x85\xe4\xba\x8b\xe4\xbb\xb6'), (b'IP', b'\xe6\x99\xba\xe6\x85\xa7\xe8\xb2\xa1\xe7\x94\xa2'), (b'MD', b'\xe9\x86\xab\xe7\x99\x82\xe7\xb3\xbe\xe7\xb4\x9b'), (b'IW', b'\xe7\xb6\xb2\xe8\xb7\xaf\xe4\xb8\x96\xe7\x95\x8c'), (b'EP', b'\xe6\xaf\x92\xe5\x93\x81\xe5\x95\x8f\xe9\xa1\x8c'), (b'PC', b'\xe6\x94\xaf\xe4\xbb\x98\xe5\x91\xbd\xe4\xbb\xa4'), (b'GP', b'\xe6\x94\xbf\xe5\xba\x9c\xe6\x8e\xa1\xe8\xb3\xbc'), (b'PE', b'\xe7\x92\xb0\xe5\xa2\x83\xe4\xbf\x9d\xe8\xad\xb7'), (b'FC', b'\xe8\xa9\x90\xe9\xa8\x99\xe6\xa1\x88\xe4\xbb\xb6'), (b'HI', b'\xe9\x81\xba\xe7\x94\xa2\xe7\xb9\xbc\xe6\x89\xbf'), (b'CI', b'\xe5\x85\xac\xe5\x8f\xb8\xe7\xb6\x93\xe7\x87\x9f'), (b'CD', b'\xe8\xbb\x8a\xe7\xa6\x8d\xe7\xb3\xbe\xe7\xb4\x9b'), (b'ID', b'\xe4\xbf\x9d\xe9\x9a\xaa\xe7\x88\xad\xe8\xad\xb0'), (b'RD', b'\xe7\x87\x9f\xe9\x80\xa0\xe5\xb7\xa5\xe7\xa8\x8b'), (b'BC', b'\xe5\x85\x92\xe5\xb0\x91\xe4\xba\x8b\xe4\xbb\xb6'), (b'SA', b'\xe6\x80\xa7\xe4\xbe\xb5\xe6\xa1\x88\xe4\xbb\xb6'), (b'LA', b'\xe8\xa8\xb4\xe8\xa8\x9f\xe7\xa8\x8b\xe5\xba\x8f'), (b'LP', b'\xe5\x8b\x9e\xe8\xb3\x87\xe7\xb3\xbe\xe7\xb4\x9b'), (b'BD', b'\xe9\x8a\x80\xe8\xa1\x8c\xe5\x82\xb5\xe5\x8b\x99'), (b'NC', b'\xe5\x9c\x8b\xe5\xae\xb6\xe8\xb3\xa0\xe5\x84\x9f'), (b'TP', b'\xe6\xb6\x88\xe8\xb2\xbb\xe7\x88\xad\xe8\xad\xb0'), (b'EA', b'\xe9\x81\xb8\xe8\x88\x89\xe8\xa8\xb4\xe8\xa8\x9f'), (b'FM', b'\xe9\x87\x91\xe8\x9e\x8d\xe5\xb8\x82\xe5\xa0\xb4'), (b'FT', b'\xe5\x85\xac\xe5\xb9\xb3\xe4\xba\xa4\xe6\x98\x93'), (b'PN', b'\xe6\x88\xbf\xe5\x9c\xb0\xe7\xb3\xbe\xe7\xb4\x9b')])),
             ],
         ),
+        migrations.CreateModel(
+            name='Lawyer_infos',
+            fields=[
+                ('lawyer', models.OneToOneField(related_name='lawyer_info', primary_key=True, serialize=False, to='lawyerFinder.Lawyer')),
+                ('basic', ckeditor.fields.RichTextField(max_length=130, blank=True)),
+                ('strongFields', ckeditor.fields.RichTextField(max_length=130, blank=True)),
+                ('finishedCases', ckeditor.fields.RichTextField(max_length=130, blank=True)),
+                ('feeStd', ckeditor.fields.RichTextField(max_length=130, blank=True)),
+                ('companyInfos', ckeditor.fields.RichTextField(max_length=130, blank=True)),
+            ],
+        ),
+        migrations.AddField(
+            model_name='lawyerspecialty',
+            name='lawyerNo',
+            field=models.ForeignKey(to='lawyerFinder.Lawyer'),
+        ),
         migrations.AddField(
             model_name='lawyerspecialty',
             name='litigations',
             field=models.ForeignKey(to='lawyerFinder.LitigationType'),
+        ),
+        migrations.AddField(
+            model_name='lawyermembership',
+            name='lawyerNo',
+            field=models.ForeignKey(to='lawyerFinder.Lawyer'),
         ),
         migrations.AddField(
             model_name='lawyer',

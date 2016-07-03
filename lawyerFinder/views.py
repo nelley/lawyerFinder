@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import permission_required
 import logging
 import datetime
 from accounts.cus_decorators import group_required
-from lawyerFinder.forms import Lawyer_SearchForm, LitigationTypeForm, BarassociationForm, Lawyer_RegForm
+from lawyerFinder.forms import *
 from lawyerFinder.models import Lawyer, LitigationType, Barassociation
 from lawyerFinder.models import *
 import operator
@@ -208,25 +208,29 @@ def tmp(request):
     args = []
     redirect = ''
     
+    
     if request.method == 'POST':
-        pass
+        lawyer_infosForm = Lawyer_infosForm(request.POST)
+        l = Lawyer.objects.get(lawyerNo='13000')
+        
+        if lawyer_infosForm.is_valid():
+            input = lawyer_infosForm.cleaned_data['basic']
+            Lawyer_infos.objects.create(lawyer=l, basic=input)
+            
+            
+            
+        lawyer_infosForm = Lawyer_infosForm()
         
         
     elif request.method == 'GET': #display main page
-        lawyer_searchform = Lawyer_SearchForm()
-        litigation_form = LitigationTypeForm()
-        barassociation_form = BarassociationForm()
+        lawyer_infosForm = Lawyer_infosForm()
+        lawyer_input = Lawyer_infos.objects.get(lawyer_id='3')
         
-        all_lawyer = Lawyer.objects.all()
-        # template name
-        redirect = 'base/tmp.html'
-
-        args = {'lawyer_searchform':lawyer_searchform,
-                'litigation_form':litigation_form,
-                'barassociation_form':barassociation_form,
-                'title' : 'lawyer',
-                'all_lawyer': all_lawyer,
-                }
+    # template name
+    redirect = 'base/tmp.html'
+    args = {'testform' : lawyer_infosForm,
+            'lawyer_input' : lawyer_input,
+            }
     
     return render_to_response(
         redirect,
