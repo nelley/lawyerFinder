@@ -22,8 +22,9 @@
 
     <!-- Custom CSS -->
     <link href="{% static "lawyerFinder/css/modern-business.css" %}" rel="stylesheet">
-    <link href="{% static "lawyerFinder/css/lawyerProfile.css" %}" rel="stylesheet">
     <link href="{% static "lawyerFinder/css/slider.css" %}" rel="stylesheet">
+    <link href="{% static "lawyerFinder/css/lawyer_service.css" %}" rel="stylesheet">
+    
     
     <!-- Custom Fonts -->
     <link href="{% static "lawyerFinder/css/font-awesome.min.css" %}" rel="stylesheet">
@@ -137,7 +138,25 @@
       
       
     </script>
-
+    <script>
+      $(function() {
+        $('.listwarpper > a').click(function(){
+          var element = $(this).parent().next();
+          
+          if(element.attr('class').indexOf('marker') == -1){ //if no marker class
+            if(element.attr('class') == 'list'){
+              $(element.addClass('expanded')); //add class
+            }else{
+              $(element.attr('class', 'list')); //replace class
+            }
+          }
+          
+        });
+      });
+      
+      
+    </script>
+    
 </body>
 
 </html>

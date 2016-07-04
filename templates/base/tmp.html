@@ -10,7 +10,7 @@
     <title>好律師你在哪裡</title>
     <link href="{% static "lawyerFinder/css/bootstrap.css" %}" rel="stylesheet">
     <link href="{% static "lawyerFinder/css/modern-business.css" %}" rel="stylesheet">
-    <link href="{% static "lawyerFinder/css/slider.css" %}" rel="stylesheet">
+    <link href="{% static "lawyerFinder/css/lawyer_service.css" %}" rel="stylesheet">
     
     <link rel="shortcut icon" href="images/favicon.png">
 </head>
@@ -18,71 +18,104 @@
 <body>
 {% include "common/header.html" %}
 {% block container %}
-    <!-- Header Carousel -->
-    <header id="CarouselDown" class="carousel slide">
-    <br>
-    <div class="container">
-        <!-- Wrapper for slides -->
-        <div class="slider-inner">
-            <div class="item active">
-                <div class="col-md-3 col-sm-6">
-                    <div class="panel panel-default text-center">
-                        <div class="panel-heading">
-                            <span class="fa-stack fa-5x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <a href="#"><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></a>
-                            </span>
-                        </div>
-                        <div class="panel-body">
-                            <h4>郵件諮詢</h4>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
+
+    <div class="col-lg-12">
+        <ul id="myTab" class="nav nav-tabs nav-justified">
+            <li class="marker active"><a href="#service-one" id="s-1" data-toggle="tab"><i class="fa fa-tree"></i>基本資料</a>
+            </li>
+            <li class="marker"><a href="#service-two" id="s-2" data-toggle="tab"><i class="fa fa-car"></i>擅長領域</a>
+            </li>
+            <li class="marker"><a href="#service-three" id="s-3" data-toggle="tab"><i class="fa fa-support"></i>解決案例</a>
+            </li>
+            <li class="marker"><a href="#service-four" id="s-4" data-toggle="tab"><i class="fa fa-database"></i>收費標準</a>
+            </li>
+            <li class="marker"><a href="#service-five" id="s-5" data-toggle="tab"><i class="fa fa-database"></i>辦公位址</a>
+            </li>
+        </ul>
+
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="service-one">
+                <h4>Service One</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+            </div>
+            <div class="tab-pane fade" id="service-two">
+                <h4>Service Two</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+            </div>
+            <div class="tab-pane fade" id="service-three">
+                <h4>Service Three</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+            </div>
+            <div class="tab-pane fade" id="service-four">
+                <h4>Service Four</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+            </div>
+            <div class="tab-pane fade" id="service-five">
+                <h4>Service Five</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+            </div>
+        </div>
+        
+        <div class="panel-group" id="collapse-myTab">
+            <div class="responPanel">
+                <div class="listwarpper"><a class="btn btn-default btn-block" href="#service-one" id="s-1" data-toggle="tab"><i class="fa fa-tree"></i>基本資料</a></div>
+                <div class="list expanded" id="service-one">
+                    <div class="text-area">
+                        <h4>Service One</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="col-md-3 col-sm-6">
-                    <div class="panel panel-default text-center">
-                        <div class="panel-heading">
-                            <span class="fa-stack fa-5x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <a href="#"><i class="fa fa-mobile-phone fa-stack-1x fa-inverse"></i></a>
-                            </span>
-                        </div>
-                        <div class="panel-body">
-                            <h4>電話諮詢</h4>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
+            
+            <div class="responPanel">
+                <div class="listwarpper"><a class="btn btn-default btn-block" href="#service-two" id="s-2" data-toggle="tab"><i class="fa fa-tree"></i>擅長領域</a></div>
+                <div class="list" id="service-one">
+                    <div class="text-area">
+                        <h4>Service Two</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <div class="col-md-3 col-sm-6">
-                    <div class="panel panel-default text-center">
-                        <div class="panel-heading">
-                            <span class="fa-stack fa-5x">
-                                  <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                  <a href="#"><i class="fa fa-comments-o fa-stack-1x fa-inverse"></i></a>
-                            </span>
-                        </div>
-                        <div class="panel-body">
-                            <h4>線上諮詢</h4>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
+            <div class="responPanel">
+                <div class="listwarpper"><a class="btn btn-default btn-block" href="#service-three" id="s-3" data-toggle="tab"><i class="fa fa-tree"></i>解決案例</a></div>
+                <div class="list" id="service-three">
+                    <div class="text-area">
+                        <h4>Service Three</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="responPanel">
+                <div class="listwarpper"><a class="btn btn-default btn-block" href="#service-four" id="s-4" data-toggle="tab"><i class="fa fa-tree"></i>收費標準</a></div>
+                <div class="list" id="service-four">
+                    <div class="text-area">
+                        <h4>Service Four</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="responPanel">
+                <div class="listwarpper"><a class="btn btn-default btn-block" href="#service-five" id="s-5" data-toggle="tab"><i class="fa fa-tree"></i>辦公位址</a></div>
+                <div class="list" id="service-five">
+                    <div class="text-area">
+                        <h4>Service Five</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae repudiandae fugiat illo cupiditate excepturi esse officiis consectetur, laudantium qui voluptatem. Ad necessitatibus velit, accusantium expedita debitis impedit rerum totam id. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus quibusdam recusandae illum, nesciunt, architecto, saepe facere, voluptas eum incidunt dolores magni itaque autem neque velit in. At quia quaerat asperiores.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-        <!-- Controls -->
-        <a class="left slider-control" href="#CarouselDown" data-slide="prev">
-            <span class="icon-prev"></span>
-        </a>
-        <a class="right slider-control" href="#CarouselDown" data-slide="next">
-            <span class="icon-next"></span>
-        </a>
-    </header>
 {% endblock container %}
 
 
@@ -93,28 +126,26 @@
     <script src="{% static "lawyerFinder/js/bootstrap-multiselect.js" %}"></script>
     <link href="{% static "lawyerFinder/css/bootstrap-multiselect.css" %}" rel="stylesheet">
     
-    <script src="{% static "lawyerFinder/js/hammer.js" %}"></script>
-
     <script>
       $(function() {
-          var myElement = document.getElementById('CarouselDown');
-          var mc = new Hammer(myElement);
-          // listen to events
-          mc.on("panleft", function(ev) {
-              $('.carousel').carousel('next');
-          });
-          mc.on("panright", function(ev) {
-              $('.carousel').carousel('prev');
-          })
+        $('a').click(function(){
+        
+          var element = $(this).parent().next();
+          
+          if(element.attr('class').indexOf('marker') == -1){ //if no marker class
+            if(element.attr('class') == 'list'){
+              $(element.addClass('expanded')); //add class
+            }else{
+              $(element.attr('class', 'list')); //replace class
+            }
+          }
+          
+        });
       });
-      
-      $('.carousel').carousel({
-        interval: 0 //changes the speed
-      })
       
       
     </script>
+    
 {% endblock js %}
 </body>
-
 </html>

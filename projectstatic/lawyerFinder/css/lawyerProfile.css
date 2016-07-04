@@ -1,5 +1,6 @@
 /*!
  * CSS for _serach_results and _lawyer_home
+ * conflict with header's css, now disalbed
  */
 body
 {
@@ -50,7 +51,7 @@ span.tags
 }
 .dropdown-menu 
 {
-    background-color: #34495e;    
+    background-color: #34495e;
     box-shadow: none;
     -webkit-box-shadow: none;
     width: 250px;

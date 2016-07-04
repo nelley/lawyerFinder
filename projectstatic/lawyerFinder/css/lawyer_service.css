@@ -1,0 +1,76 @@
+/*
+    style sheet for lawyer home service block
+
+*/
+
+.nav-tabs.nav-justified > .marker{
+  /*hide elements when using mobile device*/
+  display: none;
+  width: 1%;
+}
+.tab-content{
+  display:none;
+}
+
+/*
+.nav-tabs.nav-justified > .marker.active{
+  display: table-cell;
+  width: 1%;
+}*/
+
+
+.responPanel{
+  /*show elements when using mobile device*/
+  display:block;
+  /*outline: 1px solid orange;*/
+  /*border: 1px solid #ccc;*/
+  /*border-radius: 6px;*/
+  
+  
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.list{
+  display:none;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  margin-top: -12px;
+}
+
+.text-area{
+  padding:10px;
+}
+
+.list.expanded{
+  display:block;
+}
+
+.listwarpper{
+    padding-top: 0px;
+    align: left;
+
+}
+
+@media (min-width: 768px) {
+/* styles for browsers larger than 768; ex:PC*/
+
+  .nav-tabs.nav-justified > .marker{
+    /*show elements when using PC*/
+    display: table-cell;
+    width: 1%;
+  }
+  
+  .tab-content{
+    display:block;
+  }
+  
+  .responPanel{
+    /*hide elements when using PC*/
+    display:none;
+  }
+}
