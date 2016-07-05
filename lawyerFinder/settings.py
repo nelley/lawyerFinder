@@ -108,8 +108,8 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.1.4',
-        #'HOST': '192.168.43.215',
+        #'HOST': '192.168.1.4',
+        'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
