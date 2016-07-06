@@ -33,7 +33,7 @@
   border-bottom-right-radius: 0px;
 }
 
-.open{
+.elastic-row{
   /*init status*/
   border-right: 1px solid #ccc;
   border-left: 1px solid #ccc;
@@ -41,7 +41,7 @@
   
 }
 
-.open.active{
+.elastic-row.active{
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-left: 1px solid #ccc;
