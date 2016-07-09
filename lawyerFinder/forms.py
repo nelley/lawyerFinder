@@ -15,6 +15,7 @@ from ckeditor.widgets import CKEditorWidget
 
 
 class Lawyer_infosForm(forms.ModelForm):
+    # used for all fields(strongfield, finishedCases.....)
     basic = forms.CharField(widget=CKEditorWidget(config_name='default'),
                               label='')
     class Meta:

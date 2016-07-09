@@ -35,7 +35,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         logger.debug('db cmd start!')
-
+        DEFAULT_INFOS = '<h4>Your Service</h4><p>Please Edit Your Service</p>'
 
         try:
             with transaction.atomic():
@@ -105,6 +105,15 @@ class Command(BaseCommand):
                                    gender=g, premiumType=grade, careerYear=cy)
                         i += 1
                         l.save()
+                        
+                        # add default data to lawyer_info table
+                        l_infos =Lawyer_infos(lawyer_id=l.user_id,
+                                             basic=DEFAULT_INFOS,
+                                             strongFields=DEFAULT_INFOS,
+                                             finishedCases=DEFAULT_INFOS,
+                                             feeStd=DEFAULT_INFOS,
+                                             companyInfos=DEFAULT_INFOS)
+                        l_infos.save()
                         
                         # relate lawyer to its registered area in random
                         to = len(Barassociation.AREAS)-1

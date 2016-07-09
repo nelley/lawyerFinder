@@ -9,6 +9,7 @@ from lawyerFinder.settings import *
 import boto
 from boto.sqs.message import Message
 from boto.regioninfo import RegionInfo
+from lawyerFinder.settings import SITE_URL
 
 def gen_tokens(id):
     time = datetime.now().isoformat()
@@ -19,7 +20,7 @@ def gen_tokens(id):
 def mailSender(mail_to=None, pw=None, token=None):
     print mail_to
     mail_context=''
-    URL = 'http://192.168.0.108:8000/accounts/registConfirm/'
+    URL = SITE_URL + 'accounts/registConfirm/'
     mail_to='doublenunchakus@gmail.com'
     
     cusRegion = RegionInfo()

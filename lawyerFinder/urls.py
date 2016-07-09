@@ -24,7 +24,7 @@ urlpatterns = [
     
     url(r'^$', views.home , name='home'),
     url(r'^accounts/', include('accounts.urls')),
-    url(r'^lawyerHome/(?P<lawyer_id>\d{2,10})$', views.lawyerHome, name='lawyer_home'),
+    url(r'^lawyerHome/(?P<law_id>\d{2,10})$', views.lawyerHome, name='lawyer_home'),
     url(r'^undercons/$', views.undercons, name='undercons'),
     url(r'^ckeditor/$', include('ckeditor_uploader.urls')),
     

@@ -13,7 +13,11 @@ import operator
 from random import randint
 import json
 import re
+from django.http import HttpResponse
 from django.core.handlers.wsgi import logger
+from django.db import IntegrityError, transaction
+from django.contrib.messages.api import success
+
 
 
 
@@ -165,33 +169,65 @@ def home(request):
     
     
     
-def lawyerHome(request, lawyer_id):
+def lawyerHome(request, law_id):
     args =''
     
-    # retrieve data from DB
-    law_info = Lawyer.objects.filter(lawyerNo=lawyer_id)
-    if not law_info: 
-        logger.debug("No corresponding lawyer!")
-        return redirectHome(request)
+    if request.method=='POST' and request.is_ajax():
+        data = {} # for response
+        
+        if request.method == 'POST':
+            logger.debug("Post & Ajax start")
+            submitted_form = Lawyer_infosForm(request.POST)
+            if submitted_form.is_valid():
+                commitedContent = updateLawyerInfo(request, submitted_form)
+                
+                data['result'] = 'success'
+                data['message'] = 'Upload Completed'
+                data['contents'] = commitedContent
+                data['type'] = request.POST['type']
+                
+            else:
+                data['result'] = 'danger'
+                data['message'] = 'Upload Failed'
+                logger.debug("Upload Failed!!")
+                
+            return HttpResponse(json.dumps(data), content_type="application/json")
+        else:
+            return HttpResponse('ajax get call')
     
-    #if lawyer itself, show full access page
+    elif request.method == 'POST':
+        logger.debug("POST ONLY!")
+        return HttpResponse('hello world')
+        
+    else:
+        logger.debug("GET ONLY!")
+        # retrieve data from DB
+        law_selected = Lawyer.objects.filter(lawyerNo=law_id)
+        if law_selected: 
+            law_iform = Lawyer_infosForm();#init ckeditor
+            law_infos = Lawyer_infos.objects.filter(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
+            if law_infos:
+                args = {'law_selected':law_selected,
+                        'law_iform':law_iform,
+                        'law_infos':law_infos[0],}
+                
+                logger.debug("Lawyer Info rendered!")
+                return render_to_response('lawyerFinder/_lawyer_home.html',
+                                          args,
+                                          context_instance=RequestContext(request)
+                                          )
+            
+        else:
+            logger.debug("No corresponding lawyer!")
+            return redirectHome(request)
     
     
-    #if not, show limited page
-    
-    
-    #prepare for querying from user like email
-    #if request.method == 'POST':
-    #    pass
-    args = {'law_info':law_info}
-    
-    
+    logger.debug("default return")
     return render_to_response(
         'lawyerFinder/_lawyer_home.html',
         args,
         context_instance=RequestContext(request)
     )
-    
     
     
 #===============================================================================
@@ -224,7 +260,7 @@ def tmp(request):
         
     elif request.method == 'GET': #display main page
         lawyer_infosForm = Lawyer_infosForm()
-        lawyer_input = Lawyer_infos.objects.get(lawyer_id='3')
+        lawyer_input = Lawyer_infos.objects.get(lawyer_id='205')
         
     # template name
     redirect = 'base/tmp.html'
@@ -237,5 +273,37 @@ def tmp(request):
         args,
         context_instance=RequestContext(request)
     )
+    
+
+def updateLawyerInfo(res, form):
+    logger.debug("updateLawyerInfo Start")
+    
+    newInfos = form.cleaned_data['basic']
+    type = res.POST['type']
+    userid = res.session['_auth_user_id']
+    try:
+        l = Lawyer.objects.get(user_id= userid)
+        lawinfo = Lawyer_infos.objects.get(lawyer_id = l.user_id)
+        
+        if type == '1': #basic
+            lawinfo.basic = newInfos
+        elif type == '2': #strongFields
+            lawinfo.strongFields = newInfos
+        elif type =='3': # finishedCases
+            lawinfo.finishedCases = newInfos
+        elif type == '4': #feeStd
+            lawinfo.feeStd = newInfos
+        elif type == '5': #companyInfos
+            lawinfo.companyInfos= newInfos
+        else:
+            pass
+        
+        lawinfo.save()
+        logger.debug("db updating completed")
+        
+    except model.DoesNotExist:
+        return False
+    
+    return newInfos
     
     

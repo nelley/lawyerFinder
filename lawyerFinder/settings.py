@@ -108,7 +108,7 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.254.103',
+        'HOST': '192.168.0.104',
         #'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
@@ -226,6 +226,8 @@ CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'office2013',
+        'width':'100%',
+        'height':'100%',
         'toolbar': (
             ['div', 'NewPage', 'Preview', '-', 'Templates'],
             ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', '', ''],

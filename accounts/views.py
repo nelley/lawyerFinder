@@ -66,8 +66,8 @@ def register_lawyer_view(request):
     lawyer_regform = ''
     agreement_regform = ''
     confirm_form = ''
-    
-        
+    DEFAULT_INFOS = '<h4>Your Service</h4><p>Please Edit Your Service</p>'
+
     if request.method == 'POST' and request.POST['flag'] == '3':
         logger.debug('save user info start')
         
@@ -98,6 +98,15 @@ def register_lawyer_view(request):
                 fields = LitigationType.objects.filter(category__in=request.session['specialty'])
                 LawyerSpecialty.objects.create_in_bulk(l, fields)
                 
+                # add default data to lawyer_info table
+                l_infos =Lawyer_infos(lawyer_id=l.user_id,
+                             basic=DEFAULT_INFOS,
+                             strongFields=DEFAULT_INFOS,
+                             finishedCases=DEFAULT_INFOS,
+                             feeStd=DEFAULT_INFOS,
+                             companyInfos=DEFAULT_INFOS)
+                l_infos.save()
+                
                 messages.success(request, _('Lawyer Member Registeration Successed'))
                 logger.debug('user added!')
                 #clean sessions
@@ -110,6 +119,7 @@ def register_lawyer_view(request):
             messages.error(request, _('Lawyer Member Registeration Failed'))
             logger.debug('Add Lawyer Failed')
             logger.debug(e.message)
+            return HttpResponseRedirect(reverse('home'))
     
     elif request.method == 'POST' and request.POST['flag'] == '2':
         logger.debug('Confirm page Start')

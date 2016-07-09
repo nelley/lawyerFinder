@@ -1,3 +1,6 @@
+<!-- lawyer_home = 
+        _consulting + _service
+-->
 <!DOCTYPE html>
 {% load staticfiles %}
 {% load bootstrap3 %}
@@ -59,7 +62,7 @@
         <!-- /.row -->
 
         <!-- Image Header -->
-        {% for law in law_info%}
+        {% for law in law_selected%}
         <div class="row">
             <div class="row">
                 <div class="col-sm-12">
@@ -160,7 +163,7 @@
             });
         });
         
-        // select by tag with some kind of id
+        // select by tag with id in a-*
         $("a[id*='a-']").click(function(){
             var element = $(this).parent().next();
             var num = element.attr('id').split("-")[1];
@@ -188,6 +191,80 @@
       
     </script>
     
+    <!-- js for getting ckeditor with modal -->
+    <script>
+        $("button[id*='c-']").on('click', function () {
+            // change to s-1
+            var clickedE= $(this).attr('id')
+            var titleId = clickedE.replace('c' , 's');
+            var title = document.getElementById(titleId).textContent;
+            $('.modal-title').text(title);
+            
+            $('input[name=editType]').attr('value', clickedE.split('-')[1]);
+            
+            var textDisplay = $(this).parent().children().html();
+            
+            // init ckeditor's notent(id_basic is the id of textarea)
+            CKEDITOR.instances.id_basic.setData( textDisplay, function(){
+                this.checkDirty();  // true
+            });
+            
+        });
+        
+        var url = '{% url 'lawyer_home' '01' %}';
+        
+        $("#editCommit").on('click', function(){
+            $.ajaxSetup({ 
+                beforeSend: function(xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    function updateCKEditor(){
+                        for (instance in CKEDITOR.instances) {
+                            CKEDITOR.instances[instance].updateElement();
+                        }
+                    }
+                    
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    updateCKEditor();
+                }
+            });
+            
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {type:$('input[name=editType]').val(),
+                       basic:CKEDITOR.instances.id_basic.getData()
+                      },
+                success: function(data, textStatus, jqXHR) {
+                    $('#m-body').append('<div id="fadeOut" class="alert alert-' + data.result+ '">' + data.message + '</div>');
+                    $('#service-'+ data.type + ' .service-content').html(data.contents);
+                    setTimeout(function(){
+                        $('#fadeOut').fadeOut("slow", function(){
+                            $('#fadeOut').remove();
+                        });
+                    }, 1000);
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        });
+        
+    </script>
     
 </body>
 
