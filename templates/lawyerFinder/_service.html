@@ -21,7 +21,7 @@
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="service-1">
                 <div class="service-content">{{ law_infos.basic|safe }}</div>
-                {% if request|is_mypage %}<hr>
+                {% if request|is_mypage %}
                     <button id="c-1" type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">
                     Edit
                     </button>
@@ -29,7 +29,7 @@
             </div>
             <div class="tab-pane fade" id="service-2">
                 <div class="service-content">{{ law_infos.strongFields|safe }}</div>
-                {% if request|is_mypage %}<hr>
+                {% if request|is_mypage %}
                     <button id="c-2" type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">
                     Edit
                     </button>
@@ -37,7 +37,7 @@
             </div>
             <div class="tab-pane fade" id="service-3">
                 <div class="service-content">{{ law_infos.finishedCases|safe }}</div>
-                {% if request|is_mypage %}<hr>
+                {% if request|is_mypage %}
                     <button id="c-3" type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">
                     Edit
                     </button>
@@ -45,7 +45,7 @@
             </div>
             <div class="tab-pane fade" id="service-4">
                 <div class="service-content">{{ law_infos.feeStd|safe }}</div>
-                {% if request|is_mypage %}<hr>
+                {% if request|is_mypage %}
                     <button id="c-4" type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">
                     Edit
                     </button>
@@ -53,7 +53,7 @@
             </div>
             <div class="tab-pane fade" id="service-5">
                 <div class="service-content">{{ law_infos.companyInfos|safe }}</div>
-                {% if request|is_mypage %}<hr>
+                {% if request|is_mypage %}
                     <button id="c-5" type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal">
                     Edit
                     </button>
@@ -102,23 +102,23 @@
     
     <!--Modal-->
     {% if request|is_mypage %}
-    <div id="editModal" class="modal fade" tabindex='-1'>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
+    <div id="editModal" class="modal fade service" tabindex='-1'>
+        <div class="modal-dialog service">
+            <div class="modal-content service">
+                <div class="modal-header service">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">title</h4>
+                    <h4 class="modal-title service">title</h4>
                 </div>
-                <div class="modal-body" id="m-body">
+                <div class="modal-body service" id="m-body">
                     <form id="editBox">
                         {% csrf_token %}
                         {{ law_iform.media }}
                         {{ law_iform.as_p }}
                         <input type="hidden" name="editType" value="-1">
                     </form>
-                    <!--<div class="alert alert-danger" align="center"></div>-->
+                    
                 </div>
-                <div class="modal-footer" style="margin-top:0px">
+                <div class="modal-footer service" style="margin-top:0px">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button id="editCommit" type="button" class="btn btn-primary">Save</button>
                 </div>
@@ -129,4 +129,133 @@
     <!-- /.modal -->
     
     
-    </div>
+    
+    
+    
+    
+    <!-- js for service block-->
+    <script>
+      $(function() {
+        // init heights of 5 elements
+        var s_one = $('#ser-0').outerHeight();
+        var s_two = $('#ser-1').outerHeight();
+        var s_three = $('#ser-2').outerHeight();
+        var s_four = $('#ser-3').outerHeight();
+        var s_five = $('#ser-4').outerHeight();
+        
+        var heightArr = [s_one, s_two, s_three, s_four, s_five];
+        
+        $('.elastic-row').each(function(i){
+            $(this).animate({
+                height: "0px"
+            }, 1500, function() {
+                //alert($(this).attr('id'));
+                $('#a-' + i).removeClass('expanding');
+            });
+        });
+        
+        // select by tag with id in a-*
+        $("a[id*='a-']").click(function(){
+            var element = $(this).parent().next();
+            var num = element.attr('id').split("-")[1];
+
+            if(element.hasClass('active')) {// expanded
+            
+              element.removeClass('active');
+            
+              $(element).animate({
+                  height: "0px"
+              }, 1000, function() {
+                  $('#a-' + num).removeClass('expanding');
+              });
+            
+            } else {//folded
+              $(this).addClass('expanding');
+              element.addClass('active');
+            
+              $(element).animate({
+                  height: heightArr[num]
+              }, 1000, function() {/*do something after anim*/});
+          }
+        });
+      });
+      
+    </script>
+    
+    
+    
+    <!-- js for getting ckeditor with modal -->
+    <script>
+        $("button[id*='c-']").on('click', function () {
+            // change to s-1
+            var clickedE= $(this).attr('id')
+            var titleId = clickedE.replace('c' , 's');
+            var title = document.getElementById(titleId).textContent;
+            $('.modal-title.service').text(title);
+            
+            $('input[name=editType]').attr('value', clickedE.split('-')[1]);
+            
+            var textDisplay = $(this).parent().children().html();
+            
+            // init ckeditor's notent(id_basic is the id of textarea)
+            CKEDITOR.instances.id_basic.setData( textDisplay, function(){
+                this.checkDirty();  // true
+            });
+            
+        });
+        
+        var url = '{% url 'lawyer_home' '01' %}';
+        
+        $("#editCommit").on('click', function(){
+            $.ajaxSetup({ 
+                beforeSend: function(xhr, settings) {
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    function updateCKEditor(){
+                        for (instance in CKEDITOR.instances) {
+                            CKEDITOR.instances[instance].updateElement();
+                        }
+                    }
+                    
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    updateCKEditor();
+                }
+            });
+            
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {type:$('input[name=editType]').val(),
+                       basic:CKEDITOR.instances.id_basic.getData()
+                      },
+                success: function(data, textStatus, jqXHR) {
+                    
+                    $('#m-body').append('<div id="fadeOut" class="alert alert-' + data.result+ '">' + data.message + '</div>');
+                    $('#service-'+ data.type + ' .service-content').html(data.contents);
+                    setTimeout(function(){
+                        $('#fadeOut').fadeOut("slow", function(){
+                            $('#fadeOut').remove();
+                        });
+                    }, 1000);
+                },
+                error:function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        });
+        
+    </script>

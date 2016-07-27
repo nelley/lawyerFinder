@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import render_to_response
+from django.shortcuts import render, redirect, render_to_response
 from django.template import Context, RequestContext
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
@@ -202,14 +201,17 @@ def lawyerHome(request, law_id):
     else:
         logger.debug("GET ONLY!")
         # retrieve data from DB
-        law_selected = Lawyer.objects.filter(lawyerNo=law_id)
+        law_selected = Lawyer.objects.get(lawyerNo=law_id)
         if law_selected: 
             law_iform = Lawyer_infosForm();#init ckeditor
-            law_infos = Lawyer_infos.objects.filter(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
+            law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
             if law_infos:
+                lawyer_regform = Lawyer_RegForm(instance=law_selected, lawyer=law_selected)
+                #print law_selected
                 args = {'law_selected':law_selected,
                         'law_iform':law_iform,
-                        'law_infos':law_infos[0],}
+                        'law_infos':law_infos,
+                        'lawyer_regform':lawyer_regform}
                 
                 logger.debug("Lawyer Info rendered!")
                 return render_to_response('lawyerFinder/_lawyer_home.html',
@@ -306,4 +308,21 @@ def updateLawyerInfo(res, form):
     
     return newInfos
     
+def home_page(request):
+    if request.method == 'POST':
+        Item.objects.create(text=request.POST['item_text'])
+        return redirect('/lists/the-only-list-in-the-world/')
     
+    items = Item.objects.all()
+    
+    return render(request, 'unittest/test.html', {'items': items})
+
+def view_list(request):
+    items = Item.objects.all()
+    return render(request, 'unittest/test.html', {'items': items})
+
+
+
+
+
+

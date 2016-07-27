@@ -30,5 +30,9 @@ urlpatterns = [
     
     url(r'^tmp/$', views.tmp, name='tmp'),
     
+    # for TTD
+    url(r'^home_page/$', views.home_page, name='home_page'),
+    url(r'^lists/the-only-list-in-the-world/$', views.view_list, name='view_list'),
+    
     
 ]

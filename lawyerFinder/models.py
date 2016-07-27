@@ -166,3 +166,9 @@ class LawyerSpecialty(models.Model):
     
     # custom manager
     objects = LawyerSpecialtyManager()
+    
+    
+    
+class Item(models.Model):
+    text = models.TextField(default='default')
+    

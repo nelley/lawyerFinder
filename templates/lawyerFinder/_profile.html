@@ -1,0 +1,99 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load getArea %}
+{% load getField %}
+{% load is_mypage %}
+        
+        
+        <!-- Image Header -->
+        <div class="row">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-xs-12 col-sm-3 text-center">
+                        <figure>
+                            <h2><img src="http://placehold.it/150x150" alt="" class="img-rounded img-responsive"></h2>
+                        </figure>
+                    </div>
+                    <div class="col-xs-12 col-sm-9">
+                        <h2><a href="/lawyerHome/{{ law_selected.lawyerNo }}">{{ law_selected.user.first_name }}</a></h2>
+                        <figcaption class="ratings">
+                                <p>Ratings
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <a href="#">
+                                     <span class="fa fa-star-o"></span>
+                                </a> 
+                                </p>
+                        </figcaption>
+                        <p><strong>執業年數: </strong>{{ law_selected.careerYear }}</p>
+                        <p><strong>執業地區: </strong>{{ law_selected|get_area }}</p>
+                        <p><strong>擅長領域: </strong>
+                            {% for field in law_selected|get_field %}
+                                <span class="tags">{{ field.litigations.category_cn }}</span>
+                            {% endfor %}
+                        </p>
+                        
+                        {% if request|is_mypage %}
+                            <button id="profile-edit" type="button" class="btn btn-warning" data-toggle="modal" data-target="#editProfileModal">
+                            Edit
+                            </button>
+                        {% endif %} 
+                        
+                    </div>
+                </div>
+        </div>
+        <!-- /.Image Header -->
+        
+        
+        
+        <!--Modal-->
+        {% if request|is_mypage %}
+        <div id="editProfileModal" class="modal fade profile" tabindex='-1'>
+            <div class="modal-dialog profile">
+                <div class="modal-content profile">
+                    <div class="modal-header profile">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title profile">編輯基本資料</h4>
+                    </div>
+                    <div class="modal-body profile" id="m-body-service">
+                        <form id="ediProfiletBox">
+                            {% bootstrap_form lawyer_regform %}
+                            <input type="hidden" name="editType" value="-1">
+                        </form>
+                    </div>
+                    <div class="modal-footer profile" style="margin-top:0px">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button id="editProfileCommit" type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <script src="{% static "lawyerFinder/js/jquery.js" %}"></script>
+        
+        <!-- js for getting ckeditor with modal -->
+        <script>
+        
+            $(function() {
+                $('#profile-edit').on('click', function () {
+                    //alert('aa');
+                });
+            
+            
+            });
+            
+        
+        
+        
+        </script>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from lawyerFinder.models import Lawyer, LitigationType, Barassociation, Lawyer_infos
+from lawyerFinder.models import *
 from django.forms.extras.widgets import *
 from lawyerFinder.settings import *
 from django.core.exceptions import ValidationError
@@ -12,6 +12,9 @@ from django.utils.safestring import mark_safe
 from accounts.forms import User_reg_form
 from django.contrib.contenttypes import fields
 from ckeditor.widgets import CKEditorWidget
+from django.utils.html import format_html
+from django.utils.encoding import force_text
+from django.forms import Widget
 
 
 class Lawyer_infosForm(forms.ModelForm):
@@ -64,6 +67,44 @@ class HorizontalCheckBoxRenderer(forms.CheckboxSelectMultiple.renderer):
         return tmp
         #return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
     
+class PartialSelectedCheckBox(forms.CheckboxSelectMultiple):
+    """Renders custom regBarAss/specialty into an html string
+    
+    """
+    
+    def __init__(self, *args, **kwargs):
+        if 'userobj' in kwargs:
+            self.userobj = kwargs.pop('userobj')
+        if 'value' in kwargs:#strong field | registered area
+            self.value = kwargs.pop('value')
+        super(PartialSelectedCheckBox, self).__init__(*args, **kwargs)
+        
+    def render(self, name, value, attrs=None):
+        id_ = self.attrs.get('id', None)
+        start_tag = format_html('<div id="{0}">', id_) if id_ else '<div>'
+        output = [start_tag]
+        iterate_items = ''
+        
+        if name=='regBarAss':
+            #convert queryset to list
+            iterate_items = self.userobj.regBarAss.all().values_list('area',flat=True)
+        else:
+            #get the No of category, and convert to list
+            matchField = LitigationType.objects.all()
+            litigationtype_id = self.userobj.lawyerspecialty_set.filter(litigations=matchField).values_list('litigations',flat=True)
+            iterate_items = LitigationType.objects.filter(id__in=litigationtype_id).values_list('category',flat=True)
+            
+        #print iterate_items
+        for i, val in enumerate(self.value):
+            if val[0] in iterate_items:
+                output.append(format_html(u'<label for="id_{0}_{1}"><input class="" id="id_{0}_{1}" name="{0}" checked="checked" title="可複選" type="checkbox" value="{2}" /> {3}</label>',
+                                          id_, i, val[0], val[1]))
+            else:
+                output.append(format_html(u'<label for="id_{0}_{1}"><input class="" id="id_{0}_{1}" name="{0}" title="可複選" type="checkbox" value="{2}" /> {3}</label>',
+                                          id_, i, val[0], val[1]))
+        output.append(u'</div>')
+        return mark_safe('\n'.join(output))
+        
 class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
@@ -91,6 +132,29 @@ class Lawyer_RegForm(forms.ModelForm):
                   'careerYear', 'companyAddress', 
                   'regBarAss', 'specialty', ]#'photos']
         #fields = ['photos']
+        
+    def __init__(self, *args, **kwargs):
+        #when calling in lawyer_home
+        if 'lawyer' in kwargs:
+            self.lawyer = kwargs.pop('lawyer')
+            super(Lawyer_RegForm, self).__init__(*args, **kwargs)
+            
+            self.fields['regBarAss'] = forms.MultipleChoiceField(required=True,
+                                                                 label=_('Registered Area'),
+                                                                 help_text=_('multi-selection is permitted'),
+                                                                 widget=PartialSelectedCheckBox(value=Barassociation.AREAS,
+                                                                                                userobj=self.lawyer)
+                                                                 )
+            self.fields['specialty'] = forms.MultipleChoiceField(required=True,
+                                                                 label=_('Strong Field'),
+                                                                 help_text=_('multi-selection is permitted'),
+                                                                 widget=PartialSelectedCheckBox(value=LitigationType.CATEGORYS,
+                                                                                                userobj=self.lawyer)
+                                                                 )
+            
+            
+        else:
+            super(Lawyer_RegForm, self).__init__(*args, **kwargs)
         
     def save_custom(self):
         print 'Lawyer_RegForm saved!!'

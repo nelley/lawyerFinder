@@ -96,7 +96,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'lawyerFinder.wsgi.application'
 
 
-SITE_URL = 'http://192.168.0.108:8000/'
+SITE_URL = 'http://192.168.43.204:8000/'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 DATABASES = {
@@ -108,8 +108,8 @@ DATABASES = {
         'NAME': 'lawyerFinder',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '192.168.0.104',
-        #'HOST': '192.168.43.215',
+        #'HOST': '192.168.2.19',
+        'HOST': '192.168.43.215',
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
@@ -199,7 +199,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
     },

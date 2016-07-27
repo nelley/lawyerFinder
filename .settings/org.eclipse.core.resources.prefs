@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//functional_tests/tests.py=utf-8
 encoding//lawyerFinder/forms.py=utf-8
 encoding//lawyerFinder/management/commands/dbcmd.py=utf-8
 encoding//lawyerFinder/management/commands/querys.py=utf-8

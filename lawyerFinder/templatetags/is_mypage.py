@@ -13,7 +13,8 @@ def is_mypage(res):
         g = res.user.groups.all()[0].name
         
         if g=='LAWYER':
-            tmpL = Lawyer.objects.get(user=res.user)
+            tmpLOld = Lawyer.objects.get(user=res.user)
+            tmpL = Lawyer.objects.get(user_id= res.session['_auth_user_id'])
             if tmpL and tmpL.lawyerNo == res.path.split('/')[2]:
                 #avoid duplication when clicking mypage button in multi-times
                 return True
