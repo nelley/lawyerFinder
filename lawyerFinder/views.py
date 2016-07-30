@@ -17,6 +17,7 @@ from django.core.handlers.wsgi import logger
 from django.db import IntegrityError, transaction
 from django.contrib.messages.api import success
 
+from bootstrap3.forms import render_form
 
 
 
@@ -174,8 +175,8 @@ def lawyerHome(request, law_id):
     if request.method=='POST' and request.is_ajax():
         data = {} # for response
         
-        if request.method == 'POST':
-            logger.debug("Post & Ajax start")
+        if request.method == 'POST' and 'service_edit' in request.POST:
+            logger.debug("Service Edit's Ajax start")
             submitted_form = Lawyer_infosForm(request.POST)
             if submitted_form.is_valid():
                 commitedContent = updateLawyerInfo(request, submitted_form)
@@ -191,6 +192,24 @@ def lawyerHome(request, law_id):
                 logger.debug("Upload Failed!!")
                 
             return HttpResponse(json.dumps(data), content_type="application/json")
+        
+        elif(request.method == 'POST' and 'profile_fetch' in request.POST):
+            logger.debug("Profile Fetch's Ajax start")
+            lawyerObj = getLawyerInfo(request)
+            
+            
+            lawyer_regform = Lawyer_RegForm(instance=lawyerObj, lawyer=lawyerObj)
+            #print render_form(lawyer_regform)
+            
+            if lawyerObj:
+                return HttpResponse(render_form(lawyer_regform))
+                #return HttpResponse(lawyerObj.print_json(), content_type="application/json")
+            else:
+                data['result'] = 'danger'
+                data['message'] = 'Upload Failed'
+                logger.debug("Profile Fetch Failed!!")
+                return HttpResponse(json.dumps(data), content_type="application/json")
+        
         else:
             return HttpResponse('ajax get call')
     
@@ -201,17 +220,17 @@ def lawyerHome(request, law_id):
     else:
         logger.debug("GET ONLY!")
         # retrieve data from DB
-        law_selected = Lawyer.objects.get(lawyerNo=law_id)
-        if law_selected: 
+        try:
+            law_selected = Lawyer.objects.get(lawyerNo=law_id)
             law_iform = Lawyer_infosForm();#init ckeditor
             law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
             if law_infos:
-                lawyer_regform = Lawyer_RegForm(instance=law_selected, lawyer=law_selected)
+                #lawyer_regform = Lawyer_RegForm(instance=law_selected, lawyer=law_selected)
                 #print law_selected
                 args = {'law_selected':law_selected,
                         'law_iform':law_iform,
-                        'law_infos':law_infos,
-                        'lawyer_regform':lawyer_regform}
+                        'law_infos':law_infos,}
+                        #'lawyer_regform':lawyer_regform}
                 
                 logger.debug("Lawyer Info rendered!")
                 return render_to_response('lawyerFinder/_lawyer_home.html',
@@ -219,7 +238,7 @@ def lawyerHome(request, law_id):
                                           context_instance=RequestContext(request)
                                           )
             
-        else:
+        except Lawyer.DoesNotExist:
             logger.debug("No corresponding lawyer!")
             return redirectHome(request)
     
@@ -303,11 +322,19 @@ def updateLawyerInfo(res, form):
         lawinfo.save()
         logger.debug("db updating completed")
         
-    except model.DoesNotExist:
+    except Lawyer.DoesNotExist:
         return False
     
     return newInfos
     
+def getLawyerInfo(res):
+    userid = res.session['_auth_user_id']
+    try:
+        l = Lawyer.objects.get(user_id= userid)
+    except Lawyer.DoesNotExist:
+        return False
+    return l
+#========================================================================
 def home_page(request):
     if request.method == 'POST':
         Item.objects.create(text=request.POST['item_text'])

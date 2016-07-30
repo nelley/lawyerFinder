@@ -121,8 +121,18 @@ class Lawyer(models.Model):
                                                 for field in self.lawyerspecialty_set.filter(litigations=matchField))
                                       )
 
-
-
+    def print_json(self):
+        matchField = LitigationType.objects.all()
+        return "{\"first_name\":\"%s\",\"careerYear\":\"%s\",\"gender\":\"%s\",\"premiumType\":\"%s\",\"lawyerNo\":\"%s\",\"area\":[%s],\"strongField\":[%s]}" % (
+                                      self.user.first_name,
+                                      self.careerYear,
+                                      self.gender, 
+                                      self.premiumType,
+                                      self.lawyerNo,
+                                      ",".join('\"'+bar.area+'\"' for bar in self.regBarAss.all()), 
+                                      ",".join(('\"'+field.litigations.category+'\"')
+                                                for field in self.lawyerspecialty_set.filter(litigations=matchField))
+                                      )
 
 class Lawyer_infos(models.Model):
     lawyer = models.OneToOneField(Lawyer, on_delete=models.CASCADE, 

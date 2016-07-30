@@ -77,9 +77,12 @@ class PartialSelectedCheckBox(forms.CheckboxSelectMultiple):
             self.userobj = kwargs.pop('userobj')
         if 'value' in kwargs:#strong field | registered area
             self.value = kwargs.pop('value')
+            
         super(PartialSelectedCheckBox, self).__init__(*args, **kwargs)
         
+        
     def render(self, name, value, attrs=None):
+        
         id_ = self.attrs.get('id', None)
         start_tag = format_html('<div id="{0}">', id_) if id_ else '<div>'
         output = [start_tag]
