@@ -23,6 +23,13 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Item',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('text', models.TextField(default=b'default')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Lawyer',
             fields=[
                 ('user', models.OneToOneField(related_name='foobar', primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),

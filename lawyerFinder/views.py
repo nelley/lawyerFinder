@@ -197,7 +197,6 @@ def lawyerHome(request, law_id):
             logger.debug("Profile Fetch's Ajax start")
             lawyerObj = getLawyerInfo(request)
             
-            
             lawyer_regform = Lawyer_RegForm(instance=lawyerObj, lawyer=lawyerObj)
             #print render_form(lawyer_regform)
             
@@ -210,7 +209,22 @@ def lawyerHome(request, law_id):
                 logger.debug("Profile Fetch Failed!!")
                 return HttpResponse(json.dumps(data), content_type="application/json")
         
+        elif(request.method == 'POST' and 'editCommit' in request.POST):
+            logger.debug("Profile edit commit Ajax start")
+            submittedForm = json.loads(request.POST['form'])
+            objForInit = rearrangeForm(submittedForm)
+            lawyer_regform_edit = Lawyer_RegForm(objForInit)
+            
+            if lawyer_regform_edit.is_valid():
+                updateLawyerProfile(request, objForInit)
+                #print lawyerObj
+                
+            else:
+                print 'not valid'
+            return HttpResponse(render_form(lawyer_regform_edit))
+        
         else:
+            
             return HttpResponse('ajax get call')
     
     elif request.method == 'POST':
@@ -296,6 +310,25 @@ def tmp(request):
     )
     
 
+def updateLawyerProfile(req, arrangedObj):
+    logger.debug("updateLawyerProfile Start")
+    userid = req.session['_auth_user_id']
+
+    try:
+        l = Lawyer.objects.get(user_id= userid)
+        l.lawyerNo = arrangedObj['lawyerNo']
+        l.gender = arrangedObj['gender']
+        l.careerYear = arrangedObj['careerYear']
+        l.companyAddress = arrangedObj['companyAddress']
+        l.save()
+        #areas = Barassociation.objects.filter(area__in = arrangedObj['regBarAss'])
+        #LawyerMembership.objects.create_in_bulk(l, areas)
+        #print areas
+    except IntegrityError:
+        return False
+        
+        
+
 def updateLawyerInfo(res, form):
     logger.debug("updateLawyerInfo Start")
     
@@ -334,6 +367,34 @@ def getLawyerInfo(res):
     except Lawyer.DoesNotExist:
         return False
     return l
+
+
+'''
+    rebuild json data to reg_form object's format
+'''
+def rearrangeForm(tmpForm):
+    formObject={}
+    tmp_regBarAss = []
+    tmp_specialty = []
+    
+    for i in tmpForm:
+        if i['name'] == 'lawyerNo':
+            formObject['lawyerNo'] = i['value']
+        elif i['name'] == 'careerYear':
+            formObject['careerYear'] = i['value']
+        elif i['name'] == 'gender':
+            formObject['gender'] = i['value']
+        elif i['name'] == 'companyAddress':
+            formObject['companyAddress'] = i['value']
+        elif 'regBarAss' in i['name'] :
+            tmp_regBarAss.append(i['value'])
+        elif 'specialty' in i['name']:
+            tmp_specialty.append(i['value'])
+            
+    formObject['regBarAss'] = tmp_regBarAss
+    formObject['specialty'] = tmp_specialty
+
+    return formObject
 #========================================================================
 def home_page(request):
     if request.method == 'POST':

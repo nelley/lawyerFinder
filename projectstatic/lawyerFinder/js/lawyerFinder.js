@@ -1,7 +1,66 @@
+/*
+    used in lawyer_home/_profile.html
+    when lawyer clicked the save button(profile)
+
+*/
+function ajaxCall_profileCommit(url_profile){
+
+    $('#editProfileCommit').on('click', function () {
+        $.ajaxSetup({ 
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
+        
+        var json_object = $("#editProfileBox");
+        //alert(JSON.stringify(json_object.serializeArray()));
+        
+        
+        $.ajax({
+            type: 'POST',
+            url: url_profile,
+            data: {editCommit:'action',
+                   form:JSON.stringify(json_object.serializeArray())
+            },
+            success: function(data, textStatus, jqXHR) {
+                //alert('ssss');
+                var profileForm = document.getElementById("editProfileBox");
+                while (profileForm.hasChildNodes()) {
+                    profileForm.removeChild(profileForm.lastChild);
+                }
+                $('#editProfileBox').append(data);
+                
+            },
+            error:function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });<!-- end of ajax-->
+    });
+
+}
 
 
 
+/*
+    used in lawyer_home/_profile.html
+    when lawyer clicked the edit box(profile)
 
+*/
 
 function ajaxCall_profile(url_profile) {
     
@@ -30,9 +89,7 @@ function ajaxCall_profile(url_profile) {
         $.ajax({
             type: 'POST',
             url: url_profile,
-            data: {type:$('input[name=editType]').val(),
-                   profile_fetch:'action'
-            },
+            data: {profile_fetch:'action'},
             success: function(data, textStatus, jqXHR) {
                 var profileForm = document.getElementById("editProfileBox");
                 while (profileForm.hasChildNodes()) {
@@ -49,11 +106,11 @@ function ajaxCall_profile(url_profile) {
     });<!-- end of profile-edit-->
     
 }
+/*
+    used in lawyer_home/_service.html
+    when lawyer want to change their service content
 
-
-
-
-
+*/
 function ajaxCall_service(url_service) {
     
     $("#editCommit").on('click', function(){
@@ -91,7 +148,7 @@ function ajaxCall_service(url_service) {
             url: url_service,
             data: {type:$('input[name=editType]').val(),
                    basic:CKEDITOR.instances.id_basic.getData(),
-                   service_edit:'profile_fetch'
+                   service_edit:'action'
                   },
             success: function(data, textStatus, jqXHR) {
                 
@@ -111,6 +168,13 @@ function ajaxCall_service(url_service) {
 
 }
 
+
+/*
+    used in lawyer_home/_service.html
+    when lawyer edit their service,
+    this function will get the clicked service title
+
+*/
 function get_service_title() {
     $("button[id*='c-']").on('click', function () {
             // change to s-1

@@ -192,6 +192,7 @@ class Lawyer_RegForm(forms.ModelForm):
         return specialty
     
     def clean_photos(self):
+        print 'clean_photos'
         logger.debug('clean photos starts')
         try:
             photo = self.cleaned_data.get('photos', False)

@@ -95,6 +95,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     #l    return self.email
     
     
+'''
+using for regist confirmation
+'''
 class RegistTokens(models.Model):
     email = models.EmailField(max_length=100)
     registkey = models.CharField(max_length=255)

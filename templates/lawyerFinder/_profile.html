@@ -66,7 +66,9 @@
                         <h4 class="modal-title profile">編輯基本資料</h4>
                     </div>
                     <div class="modal-body profile" id="m-body-profile">
-                        <form id="editProfileBox"></form>
+                        <form id="editProfileBox" action="" method="post">
+                        {% csrf_token %}
+                        </form>
                     </div>
                     <div class="modal-footer profile" style="margin-top:0px">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -85,6 +87,12 @@
             $(function() {
                 ajaxCall_profile(url)
                 
+                ajaxCall_profileCommit(url)
+                
+                
             });
+            
+            
+            
             
         </script>
