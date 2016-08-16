@@ -123,7 +123,7 @@ def register_lawyer_view(request):
     
     elif request.method == 'POST' and request.POST['flag'] == '2':
         logger.debug('Confirm page Start')
-        lawyer_regform = Lawyer_RegForm(request.POST)
+        lawyer_regform = Lawyer_RegForm(request, request.POST)
         if lawyer_regform.is_valid():
             #get value from POST
             request.session['lawyerNo'] = lawyer_regform.cleaned_data['lawyerNo']
@@ -154,7 +154,7 @@ def register_lawyer_view(request):
             request.session['id'] = agreement_regform.cleaned_data['username']
             request.session['pw'] = agreement_regform.cleaned_data['password']
         
-            lawyer_regform = Lawyer_RegForm()
+            lawyer_regform = Lawyer_RegForm(request)
             stageflag = '2'
         else:
             stageflag = '1'

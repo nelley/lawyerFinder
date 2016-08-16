@@ -35,11 +35,6 @@ msgstr "使用者密碼"
 msgid "Please input something."
 msgstr "此為必填項目"
 
-#lawyerFinder/forms.py:170
-msgid "This Lawyer Number has been registered"
-msgstr "此律師證號已登錄"
-
-
 #: accounts/forms.py:67
 msgid "double check password"
 msgstr "確認密碼"

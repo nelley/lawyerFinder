@@ -197,7 +197,7 @@ def lawyerHome(request, law_id):
             logger.debug("Profile Fetch's Ajax start")
             lawyerObj = getLawyerInfo(request)
             
-            lawyer_regform = Lawyer_RegForm(instance=lawyerObj, lawyer=lawyerObj)
+            lawyer_regform = Lawyer_RegForm(request, instance=lawyerObj, lawyer=lawyerObj)
             #print render_form(lawyer_regform)
             
             if lawyerObj:
@@ -213,14 +213,14 @@ def lawyerHome(request, law_id):
             logger.debug("Profile edit commit Ajax start")
             submittedForm = json.loads(request.POST['form'])
             objForInit = rearrangeForm(submittedForm)
-            lawyer_regform_edit = Lawyer_RegForm(objForInit)
+            lawyer_regform_edit = Lawyer_RegForm(request, objForInit)
             
             if lawyer_regform_edit.is_valid():
                 updateLawyerProfile(request, objForInit)
-                #print lawyerObj
                 
             else:
-                print 'not valid'
+                logger.debug("Validation Failed")
+                
             return HttpResponse(render_form(lawyer_regform_edit))
         
         else:

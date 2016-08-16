@@ -112,7 +112,7 @@ class Lawyer_RegForm(forms.ModelForm):
     PROFILE_IMAGE_WIDTH = 120
     PROFILE_IMAGE_HEIGHT = 120
     
-    lawyerNo = forms.CharField(max_length=5, required=False, label=_('Certification Number'))
+    lawyerNo = forms.CharField(max_length=7, required=False, label=_('Certification Number'))
     careerYear = forms.IntegerField(required=False, label=_('Work Years'))
     companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
     #photos = forms.ImageField(required=False, label=_('Profile Photo'))
@@ -136,7 +136,7 @@ class Lawyer_RegForm(forms.ModelForm):
                   'regBarAss', 'specialty', ]#'photos']
         #fields = ['photos']
         
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         #when calling in lawyer_home
         if 'lawyer' in kwargs:
             self.lawyer = kwargs.pop('lawyer')
@@ -157,17 +157,28 @@ class Lawyer_RegForm(forms.ModelForm):
             
             
         else:
+            self.request = request
             super(Lawyer_RegForm, self).__init__(*args, **kwargs)
         
     def save_custom(self):
         print 'Lawyer_RegForm saved!!'
         
     def clean_lawyerNo(self):
-        lawyerNo = self.cleaned_data['lawyerNo']
-        if (not lawyerNo) or lawyerNo is None:
+        tmpLawyerNo = self.cleaned_data['lawyerNo']
+        if tmpLawyerNo and tmpLawyerNo is not None:
+            if self.request.user.is_authenticated():
+                session_Lawyer = Lawyer.objects.filter(user_id = self.request.session['_auth_user_id'])
+                if session_Lawyer[0].lawyerNo == tmpLawyerNo:
+                    logger.debug('lawyerNo is the same')
+                    return tmpLawyerNo #
+                else:
+                    tmpLawyer = Lawyer.objects.filter(lawyerNo=tmpLawyerNo)
+                    if tmpLawyer.count() > 0:
+                        raise forms.ValidationError(_("This Lawyer Number has been registered"))
+        else:
             raise forms.ValidationError(_("Please input something."))
         
-        return lawyerNo
+        return tmpLawyerNo
     
     def clean_careerYear(self):
         careerYear = self.cleaned_data['careerYear']
