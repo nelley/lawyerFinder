@@ -16,10 +16,9 @@ from django.http import HttpResponse
 from django.core.handlers.wsgi import logger
 from django.db import IntegrityError, transaction
 from django.contrib.messages.api import success
-
 from bootstrap3.forms import render_form
-
-
+from common.utilities import ajax_session_check
+from lawyerFinder.settings import SITE_URL
 
 
 def redirectHome(re):
@@ -175,6 +174,14 @@ def lawyerHome(request, law_id):
     if request.method=='POST' and request.is_ajax():
         data = {} # for response
         
+        #check session timeout when ajax call
+        if(not ajax_session_check(request)):
+            data['result'] = 'timeout'
+            data['home_url'] = SITE_URL
+            logger.debug("session timeout")
+            return HttpResponse(json.dumps(data), content_type="application/json")
+        
+        
         if request.method == 'POST' and 'service_edit' in request.POST:
             logger.debug("Service Edit's Ajax start")
             submitted_form = Lawyer_infosForm(request.POST)
@@ -217,12 +224,14 @@ def lawyerHome(request, law_id):
             
             if lawyer_regform_edit.is_valid():
                 updateLawyerProfile(request, objForInit)
-                
+                data['result'] = 'success'
+                data['message'] = 'Edit Success'
+                return HttpResponse(json.dumps(data), content_type="application/json")
+            
             else:
                 logger.debug("Validation Failed")
-                
-            return HttpResponse(render_form(lawyer_regform_edit))
-        
+                return HttpResponse(render_form(lawyer_regform_edit))
+            
         else:
             
             return HttpResponse('ajax get call')
@@ -320,9 +329,11 @@ def updateLawyerProfile(req, arrangedObj):
         l.gender = arrangedObj['gender']
         l.careerYear = arrangedObj['careerYear']
         l.companyAddress = arrangedObj['companyAddress']
-        l.save()
+        #l.regBarAss = []
         #areas = Barassociation.objects.filter(area__in = arrangedObj['regBarAss'])
         #LawyerMembership.objects.create_in_bulk(l, areas)
+        
+        l.save()
         #print areas
     except IntegrityError:
         return False

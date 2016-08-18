@@ -1,6 +1,21 @@
 /*
+    ajax session timeout checker
+*/
+function is_ajax_session_timeout(d){
+    if(d.result == 'timeout'){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+/*
     used in lawyer_home/_profile.html
-    when lawyer clicked the save button(profile)
+    when lawyer clicked the save button(profile).
+    First ajax call checks the session timeout.
+    if OK, save the modification.
+    if NG, show the session timeout dialog
 
 */
 function ajaxCall_profileCommit(url_profile){
@@ -38,13 +53,23 @@ function ajaxCall_profileCommit(url_profile){
                    form:JSON.stringify(json_object.serializeArray())
             },
             success: function(data, textStatus, jqXHR) {
-                //alert('ssss');
-                var profileForm = document.getElementById("editProfileBox");
-                while (profileForm.hasChildNodes()) {
-                    profileForm.removeChild(profileForm.lastChild);
-                }
-                $('#editProfileBox').append(data);
                 
+                if(is_ajax_session_timeout(data)){
+                    $('#sessionModal').modal('show');
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: url_profile,
+                        data: {profile_fetch:'action'},
+                        success: function(data, textStatus, jqXHR){
+                            var profileForm = document.getElementById("editProfileBox");
+                            while (profileForm.hasChildNodes()) {
+                                profileForm.removeChild(profileForm.lastChild);
+                            }
+                            $('#editProfileBox').append(data);
+                        }
+                    });
+                }
             },
             error:function(jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
@@ -59,6 +84,9 @@ function ajaxCall_profileCommit(url_profile){
 /*
     used in lawyer_home/_profile.html
     when lawyer clicked the edit box(profile)
+    first ajax call will check the session timeout,
+    if success, it will triggered the second ajax call.
+    if NG, redirect to the home page
 
 */
 
@@ -91,11 +119,25 @@ function ajaxCall_profile(url_profile) {
             url: url_profile,
             data: {profile_fetch:'action'},
             success: function(data, textStatus, jqXHR) {
-                var profileForm = document.getElementById("editProfileBox");
-                while (profileForm.hasChildNodes()) {
-                    profileForm.removeChild(profileForm.lastChild);
+                
+                if(is_ajax_session_timeout(data)){
+                    $('#sessionModal').modal('show');
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: url_profile,
+                        data: {profile_fetch:'action'},
+                        success: function(data, textStatus, jqXHR){
+                            $('#editProfileModal').modal('show');
+                            
+                            var profileForm = document.getElementById("editProfileBox");
+                            while (profileForm.hasChildNodes()) {
+                                profileForm.removeChild(profileForm.lastChild);
+                            }
+                            $('#editProfileBox').append(data);
+                        }
+                    });
                 }
-                $('#editProfileBox').append(data);
                 
             },
             error:function(jqXHR, textStatus, errorThrown) {
@@ -111,7 +153,7 @@ function ajaxCall_profile(url_profile) {
     when lawyer want to change their service content
 
 */
-function ajaxCall_service(url_service) {
+function ajaxCall_service_edit_commit(url_service) {
     
     $("#editCommit").on('click', function(){
         $.ajaxSetup({ 
@@ -151,7 +193,6 @@ function ajaxCall_service(url_service) {
                    service_edit:'action'
                   },
             success: function(data, textStatus, jqXHR) {
-                
                 $('#m-body').append('<div id="fadeOut" class="alert alert-' + data.result+ '">' + data.message + '</div>');
                 $('#service-'+ data.type + ' .service-content').html(data.contents);
                 setTimeout(function(){
@@ -159,6 +200,10 @@ function ajaxCall_service(url_service) {
                         $('#fadeOut').remove();
                     });
                 }, 1000);
+                
+                
+                
+                
             },
             error:function(jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);

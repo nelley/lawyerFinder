@@ -21,7 +21,7 @@ class LawyerSpecialtyManager(models.Manager):
         
         values_data = []
         for value in obs:
-            num = randint(0,100)
+            num = randint(0,100) # num is caseNum
             tmpTuple = (target.user_id, value.id, num)
             values_data.append(tmpTuple)
             

@@ -65,6 +65,24 @@
         {% include "lawyerFinder/_service.html" %}
         
         
+        <div id="sessionModal" class="modal fade service" tabindex='-1' data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog session">
+                <div class="modal-content session">
+                    <div class="modal-header session">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title session">Session Timeout</h4>
+                    </div>
+                    <div class="modal-body service" id="m-body">
+                    Your Session Is Expired!!
+                    </div>
+                    <div class="modal-footer session" style="margin-top:0px">
+                        <button id="sessionOK" type="button" class="btn btn-danger" data-dismiss="modal">O.K</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
         <!-- Footer -->
         <footer>
             <div class="row">
@@ -93,10 +111,14 @@
       
       $('.carousel').carousel({
         interval: 0 //changes the speed
-      })
+      });
+      
+      
+      $('#sessionOK').on('click', function () {
+          window.location.href = url;
+      });
       
     </script>
-    
     
 </body>
 

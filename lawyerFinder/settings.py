@@ -97,6 +97,7 @@ WSGI_APPLICATION = 'lawyerFinder.wsgi.application'
 
 
 SITE_URL = 'http://192.168.43.204:8000/'
+#SITE_URL = 'http://10.39.5.152:8000/'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 DATABASES = {

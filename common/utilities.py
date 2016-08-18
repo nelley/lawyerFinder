@@ -10,6 +10,7 @@ import boto
 from boto.sqs.message import Message
 from boto.regioninfo import RegionInfo
 from lawyerFinder.settings import SITE_URL
+import datetime
 
 def gen_tokens(id):
     time = datetime.now().isoformat()
@@ -52,6 +53,28 @@ def mailSender(mail_to=None, pw=None, token=None):
                        )
     
     logger.debug(result)
+
+
+def ajax_session_check(request):
+    logger.debug(request.get_full_path())
+    if request.user.is_authenticated():
+        logger.debug('logged in user!')
+        if 'lastRequest' in request.session:
+            elapsedTime = datetime.datetime.now() - \
+                          request.session['lastRequest']
+            if elapsedTime.seconds > SESSION_FRONT_AGE:
+                del request.session['lastRequest'] 
+                logout(request)
+                return False
+
+        request.session['lastRequest'] = datetime.datetime.now()
+        return True
+    else:
+        logger.debug('not yet logged in user!')
+        if 'lastRequest' in request.session:
+            del request.session['lastRequest']
+            
+        return False
 
 class RestrictedImageField(ImageField):
     content_type = None
