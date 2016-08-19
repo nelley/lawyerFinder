@@ -64,24 +64,42 @@
         {% include "lawyerFinder/_consulting.html" %}
         {% include "lawyerFinder/_service.html" %}
         
+        <form id="sessionForm">
+            <div id="sessionModal" class="modal fade service" tabindex='-1' data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog session">
+                    <div class="modal-content session">
+                        <div class="modal-header session">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title session">Session Timeout</h4>
+                        </div>
+                        <div class="modal-body service" id="m-body">
+                        Your Session Is Expired!!
+                        </div>
+                        <div class="modal-footer session" style="margin-top:0px">
+                            <button id="sessionOK" type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         
-        <div id="sessionModal" class="modal fade service" tabindex='-1' data-keyboard="false" data-backdrop="static">
-            <div class="modal-dialog session">
-                <div class="modal-content session">
-                    <div class="modal-header session">
+        
+        <div id="msgModal" class="modal fade service" tabindex='-1'>
+            <div class="modal-dialog msg">
+                <div class="modal-content msg">
+                    <div class="modal-header msg">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title session">Session Timeout</h4>
+                        <h4 class="modal-title msg" id="m-title-msg">Message Here</h4>
                     </div>
-                    <div class="modal-body service" id="m-body">
-                    Your Session Is Expired!!
+                    <div class="modal-body service" id="m-body-msg">
+                    Msg Here!!
                     </div>
-                    <div class="modal-footer session" style="margin-top:0px">
-                        <button id="sessionOK" type="button" class="btn btn-danger" data-dismiss="modal">O.K</button>
+                    <div class="modal-footer msg" style="margin-top:0px">
+                        <button id="msgBtn" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                     </div>
                 </div>
             </div>
         </div>
-        
         
         <!-- Footer -->
         <footer>
@@ -116,6 +134,14 @@
       
       $('#sessionOK').on('click', function () {
           window.location.href = url;
+      });
+      
+      $('#sessionForm').submit(function(event){
+          // prevent default browser behaviour
+          event.preventDefault();
+          alert('ssssss');
+          //do stuff with your form here
+          
       });
       
     </script>

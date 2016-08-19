@@ -19,7 +19,6 @@ function is_ajax_session_timeout(d){
 
 */
 function ajaxCall_profileCommit(url_profile){
-
     $('#editProfileCommit').on('click', function () {
         $.ajaxSetup({ 
             beforeSend: function(xhr, settings) {
@@ -53,22 +52,39 @@ function ajaxCall_profileCommit(url_profile){
                    form:JSON.stringify(json_object.serializeArray())
             },
             success: function(data, textStatus, jqXHR) {
-                
                 if(is_ajax_session_timeout(data)){
                     $('#sessionModal').modal('show');
                 }else{
-                    $.ajax({
-                        type: "POST",
-                        url: url_profile,
-                        data: {profile_fetch:'action'},
-                        success: function(data, textStatus, jqXHR){
-                            var profileForm = document.getElementById("editProfileBox");
-                            while (profileForm.hasChildNodes()) {
-                                profileForm.removeChild(profileForm.lastChild);
+                    if(data.result == 'success'){
+                        $('#m-body-msg').html(data.message);
+                        $('#m-title-msg').html(data.result);
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: url_profile,
+                            data: {profile_fetch:'action'},
+                            success: function(data, textStatus, jqXHR){
+                                var profileForm = document.getElementById("editProfileBox");
+                                while (profileForm.hasChildNodes()) {
+                                    profileForm.removeChild(profileForm.lastChild);
+                                }
+                                $('#editProfileBox').append(data);
+                                
+                                //show the msg modal
+                                $('#msgModal').modal('show');
+                                
                             }
-                            $('#editProfileBox').append(data);
+                        });
+                    }else{
+                        var profileForm = document.getElementById("editProfileBox");
+                        while (profileForm.hasChildNodes()) {
+                            profileForm.removeChild(profileForm.lastChild);
                         }
-                    });
+                        $('#editProfileBox').append(data);
+                    }
+                    
+                    
+                    
                 }
             },
             error:function(jqXHR, textStatus, errorThrown) {

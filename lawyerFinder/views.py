@@ -404,7 +404,7 @@ def rearrangeForm(tmpForm):
             
     formObject['regBarAss'] = tmp_regBarAss
     formObject['specialty'] = tmp_specialty
-
+    
     return formObject
 #========================================================================
 def home_page(request):
