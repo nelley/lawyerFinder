@@ -28,7 +28,6 @@ class LawyerSpecialtyManager(models.Manager):
         curs = connection.cursor()
         curs.executemany(base_sql, values_data)
         
-    
 class LawyerMembershipManager(models.Manager):
     def create_in_bulk(self, target, obs):
         base_sql = "INSERT INTO lawyerfinder_lawyermembership (lawyerNo_id, barAssociation_id, date_joined) VALUES (%s, %s, %s) "
@@ -41,7 +40,6 @@ class LawyerMembershipManager(models.Manager):
             
         curs = connection.cursor()
         curs.executemany(base_sql, values_data)
-        
 # group
 class Barassociation(models.Model):
     # tuple

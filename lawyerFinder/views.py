@@ -329,17 +329,20 @@ def updateLawyerProfile(req, arrangedObj):
         l.gender = arrangedObj['gender']
         l.careerYear = arrangedObj['careerYear']
         l.companyAddress = arrangedObj['companyAddress']
-        #l.regBarAss = []
-        #areas = Barassociation.objects.filter(area__in = arrangedObj['regBarAss'])
-        #LawyerMembership.objects.create_in_bulk(l, areas)
+
+        LawyerMembership.objects.filter(lawyerNo=userid).delete()
+        areas = Barassociation.objects.filter(area__in = arrangedObj['regBarAss'])
+        LawyerMembership.objects.create_in_bulk(l, areas)
+        
+        LawyerSpecialty.objects.filter(lawyerNo=l.user_id).delete()
+        fields = LitigationType.objects.filter(category__in = arrangedObj['specialty'])
+        LawyerSpecialty.objects.create_in_bulk(l, fields)
         
         l.save()
-        #print areas
+        
     except IntegrityError:
         return False
         
-        
-
 def updateLawyerInfo(res, form):
     logger.debug("updateLawyerInfo Start")
     

@@ -31,23 +31,6 @@ class Command(BaseCommand):
         logger.debug('sandbox start!')
         
         print sep
-        #area_selected = ['YILAN', 'PINGTUNG', 'TAINAN']
-        #areas = Barassociation.objects.filter(area__in = area_selected)
-        
-        #field_selected = ['PC', 'EC']
-        #fields = LitigationType.objects.filter(category__in=field_selected)
-        
-        #lawyers = Lawyer.objects.select_related('user').prefetch_related("specialty").filter(
-        #                      lawyerspecialty__litigations=fields).distinct()
-        
-        '''
-        # std to fetch data from intermediate table
-        lawyers = Lawyer.objects.get(lawyerNo='13-000')
-        bb = LitigationType.objects.filter(category__in=('EC', 'IW'))
-        aaaa = lawyers.lawyerspecialty_set.filter(litigations=bb)
-        for aa in aaaa:
-            print aa.caseNum
-        '''
         
         # calculate std
         i = 0
@@ -69,105 +52,26 @@ class Command(BaseCommand):
         pattern = re.compile(userInput[1])
         match = pattern.findall(str)
         print len(match) 
+        print sep
+        
+        l = Lawyer.objects.get(user_id= '4')
+        print l.user_id
+        #l.regBarAss.all().delete()
+        #l.specialty.all().delete()
+        
+        print LawyerSpecialty.objects.filter(lawyerNo=l.user_id).delete()
+        #print l.regBarAss.all()
+        #print l.specialty.all()
 
+        #SomeModel.objects.filter(id=id).delete()
+        
+        #print ",".join('\"'+bar.area+'\"' for bar in l.regBarAss.all()),
         
         
-        #xwx = (aa.caseNum for aa in lawyers.lawyerspecialty_set.filter(litigations=LitigationType.objects.filter(category__in=LitigationType.CateGorys)))
-        #print xwx
-        
-        '''
-        # get the lawyers registered in TAIPEI & TAICHUNG(1)
-        area_selected = ['TAIPEI', 'TAICHUNG']
-        areas = Barassociation.objects.filter(area__in = area_selected)
-        lawyers = Lawyer.objects.filter(lawyermembership__barAssociation=areas)
-        for l in lawyers:
-            print 'lawyers in TAIWAN = %s' % l.lawyerId
-        '''
+        #print ",".join('\"'+bar.area_cn+'\"' for bar in l.regBarAss.all()),
+        #print ",".join('\"'+spec.category_cn+'\"' for spec in l.specialty.all()),
         
         
-
-        '''
-        # get lawyers by specialty(2)
-        field_selected = ['EC', 'EA']
-        fields = LitigationType.objects.filter(specialty__in = field_selected)
-        lawyers = Lawyer.objects.filter(lawyerspecialty__litigations=fields)
-        for l in lawyers:
-            print 'lawyers in TAIWAN = %s' % l.lawyerId
-        
-        # combine(1+2)
-        lawyers = Lawyer.objects.filter(lawyerspecialty__litigations=fields).filter(lawyermembership__barAssociation=areas)
-        for l in lawyers:
-            print 'lawyers in TAIWAN = %s' % l.lawyerId
-        
-        '''
-        '''
-        # get the lawyers registered in TAICHUNG
-        taichung = Barassociation.objects.get(area = 'TAICHUNG')
-        lawyerstwo = Lawyer.objects.filter(lawyermembership__barAssociation=taichung)
-        for ltwo in lawyerstwo:
-            print 'lawyers in TAICHUNG = %s' % ltwo.lawyerId
-        '''
-        
-        
-        # get lawyers by area + fields + gender
-        
-         
-        
-        # get the lawyers by AREA & FIELD
-        
-        '''
-        # relate LawyerSpecialty with lawyer
-        l = Lawyer.objects.get(lawyerId = '13-0003')
-        field_EA = LitigationType.objects.create(specialty='EA')
-        
-        s1 = LawyerSpecialty.objects.create(lawyerId=l, litigations=field_EA, caseNum=170)
-        s1.save()
-        '''
-        
-        #tmpu = User.objects.all()[0] # get all info from User table
-        #logger.debug(tmpu.has_perm('MANAGER'))
-        
-        #logger.debug(tmpu.groups)
-        #logger.debug(tmpu.group)
-        
-        #tmpu = User.objects.get(username='testLawyer@gmail.com')
-        #logger.debug(tmpu.has_perm('LAWYER')) #check permission of user
-        #logger.debug(tmpu.groups.filter(name='LAWYER').exists()) #check permission of user's group
-        #logger.debug(tmpu.get_group_permissions())
-        
-        '''
-        tmpu = User.objects.get(username='dragonbrucelee@gmail.com')
-        g = Group.objects.get(name='MANAGER')
-        g.user_set.add(tmpu)
-        '''
-        '''
-        tmpu.first_name = 'chen'
-        tmpu.save()
-        '''
-        
-        
-        
-        #tmp = taipei.members.all()
-        #print tmp[0].lawyer_id
-        #print tmp[1].lawyer_id
-        #nelley.barassociation_set.all()
-        
-        #m2 = Lawyer_membership.objects.create(lawyer_id=jerry, barAssociation=taipei)#, date_joined=date(1962, 8, 1))
-        #m2.save()
-        
-        #taipei.members.all()
-        #logger.debug(tmpu)
-        
-        # add user to a new group
-        
-        #tmpu = User.objects.get(username='testLawyer@gmail.com').delete()
-        
-        # get all user in STAFF group
-        '''
-        g = Group.objects.get(name='STAFF')
-        users = g.user_set.all()
-        logger.debug(users)
-        '''
         
         logger.debug('sandbox end!')
         
