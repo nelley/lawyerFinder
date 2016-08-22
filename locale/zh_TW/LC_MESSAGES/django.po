@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-16 16:52+0800\n"
+"POT-Creation-Date: 2016-08-22 10:54+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,37 +30,36 @@ msgstr "請輸入符合格式的電子郵件信箱"
 msgid "password"
 msgstr "使用者密碼"
 
-#: accounts/forms.py:50 accounts/forms.py:57 accounts/forms.py:115
-#: accounts/forms.py:122 accounts/forms.py:133 lawyerFinder/forms.py:89
+#: accounts/forms.py:56 accounts/forms.py:102 accounts/views.py:252
+msgid "This ID has not been activated. Please check your mailbox"
+msgstr "這個帳號尚未被啟用,請至信箱點擊確認信函中的連結"
+
+#: accounts/forms.py:58 accounts/forms.py:64 accounts/forms.py:104
+#: accounts/forms.py:133 accounts/forms.py:144 lawyerFinder/forms.py:179
 msgid "Please input something."
 msgstr "此為必填項目"
 
-#lawyerFinder/forms.py:170
-msgid "This Lawyer Number has been registered"
-msgstr "此律師證號已登錄"
-
-
-#: accounts/forms.py:67
+#: accounts/forms.py:74
 msgid "double check password"
 msgstr "確認密碼"
 
-#: accounts/forms.py:72
+#: accounts/forms.py:79
 msgid "agreements for site service policy"
 msgstr "同意服務條約"
 
-#: accounts/forms.py:95
-msgid "Password should be longer than 6 digits"
-msgstr "密碼長度必須要大於6碼"
-
-#: accounts/forms.py:102
-msgid "Passwords does not identical."
-msgstr "輸入的密碼並不一致"
-
-#: accounts/forms.py:113
+#: accounts/forms.py:100
 msgid "This ID has been registered."
 msgstr "這個帳號已有人使用"
 
-#: accounts/forms.py:131
+#: accounts/forms.py:118
+msgid "Password should be longer than 6 digits"
+msgstr "密碼長度必須要大於6碼"
+
+#: accounts/forms.py:125
+msgid "Passwords does not identical."
+msgstr "輸入的密碼並不一致"
+
+#: accounts/forms.py:142
 msgid "Please agree before you register."
 msgstr "使用本網站的服務前需要勾選同意喔"
 
@@ -81,57 +80,123 @@ msgstr "名"
 msgid "date joined"
 msgstr "加入時間"
 
-#: accounts/views.py:191
+#: accounts/models.py:105
+#, fuzzy
+#| msgid "date joined"
+msgid "date added"
+msgstr "加入時間"
+
+#: accounts/views.py:41 accounts/views.py:206
 msgid "ID or PW mismatching"
 msgstr "帳號或密碼錯誤"
 
-#: lawyerFinder/forms.py:18
+#: accounts/views.py:110
+msgid "Lawyer Member Registeration Successed"
+msgstr "成功申請成為律師會員,接下來請等待工作人員的審核"
+
+#: accounts/views.py:119
+msgid "Lawyer Member Registeration Failed"
+msgstr "由於系統錯誤,申請成為律師會員失敗！！"
+
+#: accounts/views.py:250
+msgid "Please check your new pw in your email account"
+msgstr "請到信箱確認您的新密碼"
+
+#: accounts/views.py:256
+msgid "This ID has been activated."
+msgstr "這個帳號已經被啟用"
+
+#: accounts/views.py:264 accounts/views.py:309
+msgid "Please Check The Comfirmation Mail In Your Mailbox"
+msgstr "請至信箱確認寄送的認證信"
+
+#: accounts/views.py:266
+msgid "ReComfirmation Failed"
+msgstr ""
+
+#: accounts/views.py:270
+msgid "This Email has not been registered"
+msgstr "這個電子郵件信箱不是本網站的會員"
+
+#: accounts/views.py:312
+#, fuzzy
+#| msgid "Lawyer Member Registeration Failed"
+msgid "User Member Registeration Failed"
+msgstr "由於系統錯誤,申請成為律師會員失敗！！"
+
+#: accounts/views.py:338
+msgid "Invalid register key due to exceed time limitation"
+msgstr "驗證碼已失效"
+
+#: accounts/views.py:343
+msgid "Account activated"
+msgstr "認證完畢"
+
+#: accounts/views.py:347
+msgid "Register Key does not exist"
+msgstr "驗證碼錯誤"
+
+
+#: common/utilities.py:96
+msgid "Filetype not supported."
+msgstr ""
+
+#: common/utilities.py:98
+#, python-format
+msgid "Keep filesize under %(max_size)s. Current filesize %(current_size)s."
+msgstr ""
+
+#: lawyerFinder/forms.py:33
 msgid "Gender"
 msgstr "性別"
 
-#: lawyerFinder/forms.py:28
+#: lawyerFinder/forms.py:43
 msgid "Categorys"
 msgstr "案件種類"
 
-#: lawyerFinder/forms.py:40
+#: lawyerFinder/forms.py:55
 msgid "Areas"
 msgstr "執業地區"
 
-#: lawyerFinder/forms.py:59
+#: lawyerFinder/forms.py:115
 msgid "Certification Number"
 msgstr "律師證號"
 
-#: lawyerFinder/forms.py:60
+#: lawyerFinder/forms.py:116
 msgid "Work Years"
 msgstr "執業年數"
 
-#: lawyerFinder/forms.py:61
+#: lawyerFinder/forms.py:117
 msgid "Company's Address"
 msgstr "事務所地址"
 
-#: lawyerFinder/forms.py:63
+#: lawyerFinder/forms.py:119
 msgid "gender"
 msgstr "性別"
 
-#: lawyerFinder/forms.py:66
+#: lawyerFinder/forms.py:122 lawyerFinder/forms.py:146
 msgid "Registered Area"
 msgstr "登記的律師公會"
 
-#: lawyerFinder/forms.py:67 lawyerFinder/forms.py:73
+#: lawyerFinder/forms.py:123 lawyerFinder/forms.py:129
+#: lawyerFinder/forms.py:147 lawyerFinder/forms.py:153
 msgid "multi-selection is permitted"
 msgstr "可複選"
 
-#: lawyerFinder/forms.py:72
+#: lawyerFinder/forms.py:128 lawyerFinder/forms.py:152
 msgid "Strong Field"
 msgstr "擅長領域"
 
-#: lawyerFinder/forms.py:98
-#, fuzzy
-#| msgid "Please input something."
-msgid "Please do not input minus number."
-msgstr "此為必填項目"
+# lawyerFinder/forms.py:170
+#: lawyerFinder/forms.py:177
+msgid "This Lawyer Number has been registered"
+msgstr "此律師證號已登錄"
 
-#: lawyerFinder/forms.py:104 lawyerFinder/forms.py:111
+#: lawyerFinder/forms.py:188
+msgid "Please do not input minus number."
+msgstr "請不要輸入負值"
+
+#: lawyerFinder/forms.py:194 lawyerFinder/forms.py:201
 msgid "Please at least choose one field."
 msgstr "請至少選擇一個項目"
 
@@ -143,92 +208,49 @@ msgstr "地區"
 msgid "Please Choose The Area"
 msgstr "請輸入可執業的地區"
 
-#: lawyerFinder/models.py:89
+#: lawyerFinder/models.py:88
 msgid "please input the lawyer certification number "
 msgstr "請輸入律師編號"
 
-#: lawyerFinder/models.py:92
+#: lawyerFinder/models.py:91
 msgid "please input the career year"
 msgstr "請輸入執業年數"
 
-#: lawyerFinder/models.py:93
+#: lawyerFinder/models.py:92
 msgid "please input the company's address"
 msgstr "請輸入事務所的地址"
 
-#: lawyerFinder/models.py:96
+#: lawyerFinder/models.py:95
 msgid "the area that lawyer have been registered in"
 msgstr "這位律師已登記的律師公會"
 
-#: lawyerFinder/models.py:97
+#: lawyerFinder/models.py:96
 msgid "Registered Bar Association"
 msgstr "登記的律師公會"
 
-#: lawyerFinder/models.py:101 lawyerFinder/models.py:102
+#: lawyerFinder/models.py:100 lawyerFinder/models.py:101
 msgid "the strong field of this lawyer"
 msgstr "這位律師的強項"
 
-#: lawyerFinder/models.py:142
+#: lawyerFinder/models.py:165
 msgid "Category:"
 msgstr "領域"
 
-#: lawyerFinder/models.py:143
+#: lawyerFinder/models.py:166
 msgid "Please Choose The Category"
 msgstr "請挑選擅長的領域"
 
-#: lawyerFinder/settings.py:131
+#: lawyerFinder/settings.py:138
 msgid "Japanease"
 msgstr "日文"
 
-#: lawyerFinder/settings.py:132
+#: lawyerFinder/settings.py:139
 msgid "Traditional Chinese"
 msgstr "繁體中文"
 
 #: templates/accounts/register_lawyer.html:23
 msgid "Please Confirm Again"
 msgstr "請再次確認已輸入的資料"
-
-#: lawyerFinder/accounts/views.py:228
-msgid "Please check your new pw in your email account"
-msgstr "請到信箱確認您的新密碼"
-
-#: lawyerFinder/accounts/views.py:245
-msgid "This Email has not been registered"
-msgstr "這個電子郵件信箱不是本網站的會員"
-
-#: lawyerFinder/accounts/views.py:99
-msgid "Lawyer Member Registeration Successed"
-msgstr "成功申請成為律師會員,接下來請等待工作人員的審核"
-
-#: lawyerFinder/accounts/views.py:108
-msgid "Lawyer Member Registeration Failed"
-msgstr "由於系統錯誤,申請成為律師會員失敗！！"
-
-#: lawyerFinder/accounts/forms.py:116
-#: lawyerFinder/accounts/views.py:230
-msgid "This ID has not been activated. Please check your mailbox"
-msgstr "這個帳號尚未被啟用,請至信箱點擊確認信函中的連結"
-
-#: lawyerFinder/accounts/views.py:238
-msgid "This ID has been activated."
-msgstr "這個帳號已經被啟用"
-
-#: lawyerFinder/accounts/views.py:286
-#: lawyerFinder/accounts/views.py:247
-msgid "Please Check The Comfirmation Mail In Your Mailbox"
-msgstr "請至信箱確認寄送的認證信"
-
-#: lawyerFinder/accounts/views.py:323
-msgid "Invalid register key due to exceed time limitation"
-msgstr "驗證碼已失效"
-
-#: lawyerFinder/accounts/views.py:328
-msgid "Account activated"
-msgstr "認證完畢"
-
-#: lawyerFinder/accounts/views.py:333
-msgid "Register Key does not exist"
-msgstr "驗證碼錯誤"
-
 
 #
 msgid "lawyer"
@@ -331,6 +353,7 @@ msgid "NANTOU"
 msgstr "南投"
 
 # ==========
+
 #
 msgid "EC"
 msgstr "感情事件"

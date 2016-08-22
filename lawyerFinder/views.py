@@ -223,7 +223,7 @@ def lawyerHome(request, law_id):
             lawyer_regform_edit = Lawyer_RegForm(request, objForInit)
             
             if lawyer_regform_edit.is_valid():
-                updateLawyerProfile(request, objForInit)
+                updateLawyerProfile(request, lawyer_regform_edit)
                 data['result'] = 'success'
                 data['message'] = 'Edit Success'
                 return HttpResponse(json.dumps(data), content_type="application/json")
@@ -319,23 +319,23 @@ def tmp(request):
     )
     
 
-def updateLawyerProfile(req, arrangedObj):
+def updateLawyerProfile(req, tmpForm):
     logger.debug("updateLawyerProfile Start")
     userid = req.session['_auth_user_id']
 
     try:
         l = Lawyer.objects.get(user_id= userid)
-        l.lawyerNo = arrangedObj['lawyerNo']
-        l.gender = arrangedObj['gender']
-        l.careerYear = arrangedObj['careerYear']
-        l.companyAddress = arrangedObj['companyAddress']
+        l.lawyerNo = tmpForm.cleaned_data['lawyerNo']
+        l.gender = tmpForm.cleaned_data['gender']
+        l.companyAddress = tmpForm.cleaned_data['companyAddress']
+        l.careerYear = tmpForm.cleaned_data['careerYear']
 
         LawyerMembership.objects.filter(lawyerNo=userid).delete()
-        areas = Barassociation.objects.filter(area__in = arrangedObj['regBarAss'])
+        areas = Barassociation.objects.filter(area__in = tmpForm.cleaned_data['regBarAss'])
         LawyerMembership.objects.create_in_bulk(l, areas)
         
         LawyerSpecialty.objects.filter(lawyerNo=l.user_id).delete()
-        fields = LitigationType.objects.filter(category__in = arrangedObj['specialty'])
+        fields = LitigationType.objects.filter(category__in = tmpForm.cleaned_data['specialty'])
         LawyerSpecialty.objects.create_in_bulk(l, fields)
         
         l.save()
