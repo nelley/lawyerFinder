@@ -19,6 +19,8 @@ from django.contrib.messages.api import success
 from bootstrap3.forms import render_form
 from common.utilities import ajax_session_check
 from lawyerFinder.settings import SITE_URL
+from PIL import Image
+from lawyerFinder.settings import *
 
 
 def redirectHome(re):
@@ -181,7 +183,6 @@ def lawyerHome(request, law_id):
             logger.debug("session timeout")
             return HttpResponse(json.dumps(data), content_type="application/json")
         
-        
         if request.method == 'POST' and 'service_edit' in request.POST:
             logger.debug("Service Edit's Ajax start")
             submitted_form = Lawyer_infosForm(request.POST)
@@ -209,7 +210,6 @@ def lawyerHome(request, law_id):
             
             if lawyerObj:
                 return HttpResponse(render_form(lawyer_regform))
-                #return HttpResponse(lawyerObj.print_json(), content_type="application/json")
             else:
                 data['result'] = 'danger'
                 data['message'] = 'Upload Failed'
@@ -232,8 +232,45 @@ def lawyerHome(request, law_id):
                 logger.debug("Validation Failed")
                 return HttpResponse(render_form(lawyer_regform_edit))
             
-        else:
+        elif(request.method == 'POST' and 'photo_fetch' in request.POST):
+            lawyer_photoform = Lawyer_photoForm()
+            return HttpResponse(render_form(lawyer_photoform))
+        
+        elif(request.method == 'POST' and 'photo_edit_commit' in request.POST):
+            if 'imgFile' in request.FILES:
+                try:
+                    imageFileBuf = request.FILES['imgFile']
+                    PIL_image = Image.open(imageFileBuf)
+                    
+                    #check width & height
+                    w,h = PIL_image.size
+                    if w > PROFILE_IMG_WIDTH or h > PROFILE_IMG_HEIGHT:
+                        PIL_image = PIL_image.resize((PROFILE_IMG_WIDTH, PROFILE_IMG_WIDTH))
+                    
+                    #save to the folder categoried by lawyer number
+                    tmpL = getLawyerInfo(request)
+                    save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo
+                    logger.debug('image store path = %s' % save_path)
+                    if not os.path.exists(save_path):
+                        os.makedirs(save_path)
+                    PIL_image.save(save_path + '/' + imageFileBuf.name, 'JPEG')
+                    
+                    #update data in DB
+                    tmpL.photos = save_path + '/' + imageFileBuf.name
+                    tmpL.save()
+                    return HttpResponse('ajax get call')
+                    
+                except IOError:
+                    return HttpResponse("file type doesn't permit.")
+
+                return HttpResponse('ajax get call')
+                
+            else:
+                logger.debug('there is no image file in the request')
             
+            return HttpResponse('ajax get call')
+            
+        else:
             return HttpResponse('ajax get call')
     
     elif request.method == 'POST':

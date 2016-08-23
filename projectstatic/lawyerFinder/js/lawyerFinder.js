@@ -7,8 +7,126 @@ function is_ajax_session_timeout(d){
     }else{
         return false;
     }
+}
+
+/*
+    used in lawyer_home/_profile.html
+    when lawyer clicked the upload button in edit photo box(profile)
+    first ajax call will check the session timeout,
+    if success, it will triggered the second ajax call.
+    if NG, redirect to the home page
+
+*/
+function ajaxCall_profilePhotoCommit(url_profile){
+    $('#editPhotoCommit').on('click', function(){
+        $.ajaxSetup({ 
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
+        
+        var fileInput = document.getElementById('id_photos');
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append('imgFile', file);
+        formData.append('photo_edit_commit', 'action');
+        
+        $.ajax({
+            type: "POST",
+            url: url_profile,
+            processData: false,   // tell jQuery not to process the data as string
+            contentType: false,   // tell jQuery not to set contentType
+            data: formData,
+            success: function(data, textStatus, jqXHR){
+                if(is_ajax_session_timeout(data)){
+                    $('#sessionModal').modal('show');
+                }else{
+                    alert('SUCCESSED!!');
+                    
+                    
+                }
+            }
+        });
+    
+    });
+
 
 }
+
+/*
+    used in lawyer_home/_profile.html
+    when lawyer clicked the edit photo box(profile)
+    first ajax call will check the session timeout,
+    if success, it will triggered the second ajax call.
+    if NG, redirect to the home page
+
+*/
+
+function ajaxCall_profilePhotoEdit(url_profile){
+    $('#profile-photo-edit').on('click', function () {
+        $.ajaxSetup({ 
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
+        
+        
+        $.ajax({
+            type: "POST",
+            url: url_profile,
+            data: {photo_fetch:'action'},
+            success: function(data, textStatus, jqXHR){
+                if(is_ajax_session_timeout(data)){
+                    $('#sessionModal').modal('show');
+                }else{
+                
+                    var photoForm = document.getElementById("editPhotoBox");
+                    while (photoForm.hasChildNodes()) {
+                        photoForm.removeChild(photoForm.lastChild);
+                    }
+                    $('#editPhotoModal').modal('show');
+                    $('#editPhotoBox').append(data);
+                
+                }
+            }
+        });
+        
+        
+        
+    });
+}
+
+
 
 /*
     used in lawyer_home/_profile.html
@@ -42,8 +160,6 @@ function ajaxCall_profileCommit(url_profile){
         });
         
         var json_object = $("#editProfileBox");
-        //alert(JSON.stringify(json_object.serializeArray()));
-        
         
         $.ajax({
             type: 'POST',

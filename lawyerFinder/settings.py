@@ -76,6 +76,7 @@ ROOT_URLCONF = 'lawyerFinder.urls'
 AUTH_USER_MODEL = 'accounts.User'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'lawyerFinder/media')
+MEDIA_URL = '/media/'
 
 TEMPLATES = [
     {
@@ -88,6 +89,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.media',
             ],
         },
     },
@@ -111,7 +113,9 @@ DATABASES = {
         'PASSWORD': '',
         #'HOST': '192.168.1.104',
         #'HOST': '192.168.43.215',
-        'HOST': '10.177.208.78',
+        #'HOST': '10.177.208.85',
+        'HOST': '10.137.134.110',
+        
         
         #'NAME': 'namimoch_lawyerFinder',
         #'USER': 'namimoch_root',
@@ -161,13 +165,12 @@ AWS_ACC_KEY_ID = config.get("DEFAULT","aws_access_key_id")
 AWS_SEC_ACC_KEY = config.get("DEFAULT","aws_secret_access_key")
 
 
-
-MEDIA_BANNER_IMAGE_VALID_FILETYPES = (
+PROFILE_IMG_WIDTH = 150
+PROFILE_IMG_HEIGHT = 150
+PROFILE_IMG_SIZE = 4*1024*1024
+PROFILE_IMG_VALID_FILETYPES = (
     'JPEG', 'GIF', 'PNG'
 )
-MEDIA_BANNER_IMAGE_WIDTH  = 250
-MEDIA_BANNER_IMAGE_HEIGHT = 250
-MEDIA_BANNER_IMAGE_MAX_UPLOAD_SIZE = 4*1024*1024
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

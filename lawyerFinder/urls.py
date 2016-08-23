@@ -17,9 +17,10 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
-urlpatterns = [
+urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     
     url(r'^$', views.home , name='home'),
@@ -33,6 +34,5 @@ urlpatterns = [
     # for TTD
     url(r'^home_page/$', views.home_page, name='home_page'),
     url(r'^lists/the-only-list-in-the-world/$', views.view_list, name='view_list'),
+    ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
-    
-]

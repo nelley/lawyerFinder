@@ -11,8 +11,14 @@
                 <div class="col-sm-12">
                     <div class="col-xs-12 col-sm-3 text-center">
                         <figure>
-                            <h2><img src="http://placehold.it/150x150" alt="" class="img-rounded img-responsive"></h2>
+                            <!--<h2><img src="http://placehold.it/150x150" alt="" class="img-rounded img-responsive"></h2>-->
+                            <h2><img src="{{MEDIA_URL}}13001/1edd584.jpg" alt="" class="img-rounded img-responsive"></h2>
                         </figure>
+                        {% if request|is_mypage %}
+                            <button id="profile-photo-edit" type="button" class="btn btn-warning" style="float: left;">
+                            Edit
+                            </button>
+                        {% endif %}
                     </div>
                     <div class="col-xs-12 col-sm-9">
                         <h2><a href="/lawyerHome/{{ law_selected.lawyerNo }}">{{ law_selected.user.first_name }}</a></h2>
@@ -78,6 +84,26 @@
             </div>
         </div>
         
+        
+        <div id="editPhotoModal" class="modal fade photo" tabindex='-1'>
+            <div class="modal-dialog photo">
+                <div class="modal-content photo">
+                    <div class="modal-header photo">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title profile">編輯照片</h4>
+                    </div>
+                    <div class="modal-body photo" id="m-body-photo">
+                        <form id="editPhotoBox" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        </form>
+                    </div>
+                    <div class="modal-footer photo" style="margin-top:0px">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button id="editPhotoCommit" type="button" class="btn btn-primary">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endif %}
         
         <script src="{% static "lawyerFinder/js/jquery.js" %}"></script>
@@ -89,6 +115,10 @@
                 ajaxCall_profile(url)
                 
                 ajaxCall_profileCommit(url)
+                
+                ajaxCall_profilePhotoEdit(url)
+                
+                ajaxCall_profilePhotoCommit(url)
                 
             });
             
