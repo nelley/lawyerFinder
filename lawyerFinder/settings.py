@@ -113,8 +113,8 @@ DATABASES = {
         'PASSWORD': '',
         #'HOST': '192.168.1.104',
         #'HOST': '192.168.43.215',
-        #'HOST': '10.177.208.85',
-        'HOST': '10.137.134.110',
+        'HOST': '10.177.208.70',
+        #'HOST': '10.137.134.110',
         
         
         #'NAME': 'namimoch_lawyerFinder',
@@ -166,7 +166,7 @@ AWS_SEC_ACC_KEY = config.get("DEFAULT","aws_secret_access_key")
 
 
 PROFILE_IMG_WIDTH = 150
-PROFILE_IMG_HEIGHT = 150
+PROFILE_IMG_HEIGHT = 200
 PROFILE_IMG_SIZE = 4*1024*1024
 PROFILE_IMG_VALID_FILETYPES = (
     'JPEG', 'GIF', 'PNG'

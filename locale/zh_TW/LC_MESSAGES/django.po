@@ -456,3 +456,21 @@ msgstr "房地糾紛"
 
 msgid "Profile Photo"
 msgstr "個人照片"
+
+#====================
+
+msgid "Edit Successed"
+msgstr "編輯成功"
+
+msgid "Please Select An Image File"
+msgstr "請選擇一張照片作為大頭照"
+
+
+msgid "Process Failed"
+msgstr "發生錯誤"
+
+
+msgid "Your Profile Image Is Changed"
+msgstr "大頭照已更換"
+
+

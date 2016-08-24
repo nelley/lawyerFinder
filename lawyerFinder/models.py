@@ -101,6 +101,7 @@ class Lawyer(models.Model):
                                      verbose_name=_('the strong field of this lawyer'))
     phoneNumber = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
                                     message="Phone number must be entered in the format: '+9999999999'. Up to 10 digits allowed.")
+    thumbnail = models.ImageField(u'thumbnail', max_length=255, blank=True)
     photos = models.ImageField(u'image', upload_to='/home/nelley/Downloads/', max_length=255, blank=True)
 
     def __str__(self):

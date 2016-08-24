@@ -21,6 +21,7 @@ from common.utilities import ajax_session_check
 from lawyerFinder.settings import SITE_URL
 from PIL import Image
 from lawyerFinder.settings import *
+from django.utils.translation import ugettext_lazy as _
 
 
 def redirectHome(re):
@@ -169,7 +170,7 @@ def home(request):
     
     
     
-    
+@transaction.atomic
 def lawyerHome(request, law_id):
     args =''
     
@@ -189,14 +190,18 @@ def lawyerHome(request, law_id):
             if submitted_form.is_valid():
                 commitedContent = updateLawyerInfo(request, submitted_form)
                 
-                data['result'] = 'success'
-                data['message'] = 'Upload Completed'
-                data['contents'] = commitedContent
-                data['type'] = request.POST['type']
+                data = {
+                        'result':'success',
+                        'message':unicode(_('Edit Successed')),
+                        'contents':commitedContent,
+                        'type':request.POST['type']
+                        }
                 
             else:
-                data['result'] = 'danger'
-                data['message'] = 'Upload Failed'
+                data = {
+                        'result':'danger',
+                        'message':unicode(_('Process Failed')),
+                        }
                 logger.debug("Upload Failed!!")
                 
             return HttpResponse(json.dumps(data), content_type="application/json")
@@ -224,8 +229,9 @@ def lawyerHome(request, law_id):
             
             if lawyer_regform_edit.is_valid():
                 updateLawyerProfile(request, lawyer_regform_edit)
+                
                 data['result'] = 'success'
-                data['message'] = 'Edit Success'
+                data['message'] = unicode(_('Edit Successed'))
                 return HttpResponse(json.dumps(data), content_type="application/json")
             
             else:
@@ -234,43 +240,81 @@ def lawyerHome(request, law_id):
             
         elif(request.method == 'POST' and 'photo_fetch' in request.POST):
             lawyer_photoform = Lawyer_photoForm()
+            
             return HttpResponse(render_form(lawyer_photoform))
         
         elif(request.method == 'POST' and 'photo_edit_commit' in request.POST):
             if 'imgFile' in request.FILES:
                 try:
-                    imageFileBuf = request.FILES['imgFile']
-                    PIL_image = Image.open(imageFileBuf)
+                    with transaction.atomic():
+                        imageFileBuf = request.FILES['imgFile']
+                        PIL_image = Image.open(imageFileBuf)
+                        tmpL = getLawyerInfo(request)
+                        
+                        thumbnail_save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo + '/thumbnail/'
+                        image_save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo + '/image/'
+                        
+                        logger.debug('thumbnail store path = %s' % thumbnail_save_path)
+                        logger.debug('original image store path = %s' % image_save_path)
+                        
+                        #folder check for thumbnail
+                        #if not os.path.exists(thumbnail_save_path):
+                        #    os.makedirs(thumbnail_save_path)
+                            
+                        #folder check for original image
+                        if not os.path.exists(image_save_path):
+                            os.makedirs(image_save_path)
+                            
+                        #check width & height before saving as thumbnail
+                        #w,h = PIL_image.size
+                        #if w > PROFILE_IMG_WIDTH or h > PROFILE_IMG_HEIGHT:
+                        #    PIL_thumbnail = PIL_image.resize((PROFILE_IMG_WIDTH, PROFILE_IMG_WIDTH))
+                        #    PIL_thumbnail.save(thumbnail_save_path + imageFileBuf.name.lower(), 'JPEG')
+                        #else:
+                        #    PIL_image.save(thumbnail_save_path + imageFileBuf.name.lower(), 'JPEG')
+                        
+                        #save to the folder categoried by lawyer number
+                        PIL_image.save(image_save_path + imageFileBuf.name.lower(), 'JPEG')
+                        
+                        logger.debug('thumbnail & image saving completed!')
+                        
+                        img_db_path = tmpL.lawyerNo + '/image/' + imageFileBuf.name.lower()
+                        #update data in DB
+                        tmpL.photos = img_db_path
+                        #tmpL.thumbnail = '/' + tmpL.lawyerNo + '/thumbnail/' + imageFileBuf.name.lower()
+                        tmpL.save()
+                        logger.debug('thumbnail & image path saving to DB completed!')
+                        
+                        data = { 'result':'Success',
+                                 'title':unicode(_('Edit Successed')),
+                                 'message':unicode(_('Your Profile Image Is Changed')),
+                                 'img_url':MEDIA_URL + img_db_path,
+                                }
+                        
+                        return HttpResponse(json.dumps(data), content_type="application/json")
                     
-                    #check width & height
-                    w,h = PIL_image.size
-                    if w > PROFILE_IMG_WIDTH or h > PROFILE_IMG_HEIGHT:
-                        PIL_image = PIL_image.resize((PROFILE_IMG_WIDTH, PROFILE_IMG_WIDTH))
-                    
-                    #save to the folder categoried by lawyer number
-                    tmpL = getLawyerInfo(request)
-                    save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo
-                    logger.debug('image store path = %s' % save_path)
-                    if not os.path.exists(save_path):
-                        os.makedirs(save_path)
-                    PIL_image.save(save_path + '/' + imageFileBuf.name, 'JPEG')
-                    
-                    #update data in DB
-                    tmpL.photos = save_path + '/' + imageFileBuf.name
-                    tmpL.save()
-                    return HttpResponse('ajax get call')
-                    
-                except IOError:
-                    return HttpResponse("file type doesn't permit.")
+                except Exception as e:
+                    return HttpResponse("ERROR happened!")
+                    logger.debug('%s (%s)' % (e.message, type(e)))
 
-                return HttpResponse('ajax get call')
+                data = {
+                        'result':'System Error',
+                        'message':'System Error, Please contact the administrator',
+                        }
                 
+                return HttpResponse(json.dumps(data), content_type="application/json")
             else:
                 logger.debug('there is no image file in the request')
-            
-            return HttpResponse('ajax get call')
+                data = {
+                        'result':'Failed',
+                        'title':unicode(_('Process Failed')),
+                        'message':unicode(_('Please Select An Image File')),
+                        }
+                
+                return HttpResponse(json.dumps(data), content_type="application/json")
             
         else:
+            logger.debug('ajax GET call comes')
             return HttpResponse('ajax get call')
     
     elif request.method == 'POST':
@@ -278,19 +322,17 @@ def lawyerHome(request, law_id):
         return HttpResponse('hello world')
         
     else:
-        logger.debug("GET ONLY!")
+        logger.debug("GET(Only) request from lawyerHome")
         # retrieve data from DB
         try:
             law_selected = Lawyer.objects.get(lawyerNo=law_id)
             law_iform = Lawyer_infosForm();#init ckeditor
             law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
             if law_infos:
-                #lawyer_regform = Lawyer_RegForm(instance=law_selected, lawyer=law_selected)
-                #print law_selected
                 args = {'law_selected':law_selected,
                         'law_iform':law_iform,
-                        'law_infos':law_infos,}
-                        #'lawyer_regform':lawyer_regform}
+                        'law_infos':law_infos,
+                        'img_path':law_selected.photos,}
                 
                 logger.debug("Lawyer Info rendered!")
                 return render_to_response('lawyerFinder/_lawyer_home.html',

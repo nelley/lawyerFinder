@@ -56,8 +56,25 @@ function ajaxCall_profilePhotoCommit(url_profile){
                 if(is_ajax_session_timeout(data)){
                     $('#sessionModal').modal('show');
                 }else{
-                    alert('SUCCESSED!!');
-                    
+                    if(data.result == 'Failed'){
+                        $('#m-title-msg').html(data.title);
+                        $('#m-body-msg').html(data.message);
+                        $('#msgModal-header').attr('class', 'modal-header msg modal-header-danger');
+                        $('#msgModal').modal('show');
+                        
+                        
+                    }else if(data.result == 'Success'){
+                        $('#m-title-msg').html(data.title);
+                        $('#m-body-msg').html(data.message);
+                        $('#msgModal-header').attr('class', 'modal-header msg modal-header-success');
+                        $('#msgModal').modal('show');
+                        
+                        $('#lawyerHome-profile-img').attr("src", data.img_url);
+                        $('#lawyerHome-profile-img').css('width', '150px');
+                        $('#lawyerHome-profile-img').css('height', '200px');
+                    }else{
+                        alert(data.message);
+                    }
                     
                 }
             }
@@ -187,6 +204,7 @@ function ajaxCall_profileCommit(url_profile){
                                 $('#editProfileBox').append(data);
                                 
                                 //show the msg modal
+                                $('#msgModal-header').attr('class', 'modal-header msg modal-header-success');
                                 $('#msgModal').modal('show');
                                 
                             }
