@@ -51,11 +51,11 @@
                 <div class="col-sm-12">
                     <div class="col-xs-12 col-sm-3 text-center">
                         <figure>
-                            <h2><img src="http://placehold.it/150x150" alt="" class="img-rounded img-responsive"></h2>
+                            <h2><img id="lawyer-research-img" src="{{MEDIA_URL}}{{lawyer.photos}}" alt="" class="img-rounded img-responsive" style="width: 150px; height: 200px;"></h2>
                         </figure>
                     </div>
                     <div class="col-xs-12 col-sm-9">
-                        <h2><a href="/lawyerHome/{{ lawyer.lawyerNo }}">{{ lawyer.user.first_name }}</a></h2>
+                        <h2><a href="/lawyerHome/{{ lawyer.lawyerNo }}">{{ lawyer.user.first_name }} {{ lawyer.user.last_name}} 律師</a></h2>
                         <figcaption class="ratings">
                                 <p>Ratings
                                 <a href="#">

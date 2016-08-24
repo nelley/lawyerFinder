@@ -17,10 +17,10 @@ from django.core.handlers.wsgi import logger
 from django.db import IntegrityError, transaction
 from django.contrib.messages.api import success
 from bootstrap3.forms import render_form
+from accounts.forms import *
 from common.utilities import ajax_session_check
-from lawyerFinder.settings import SITE_URL
-from PIL import Image
 from lawyerFinder.settings import *
+from PIL import Image
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -142,7 +142,10 @@ def home(request):
         #    print l
 
         redirect = 'lawyerFinder/_search_results.html'
+        #image_path = MEDIA_ROOT + lawyers.photos
+        
         args = {'queryed_lawyers':lawyers,
+                #'img_path':image_path,
                 'areas':areas,
                 'field':field,}
         
@@ -211,10 +214,13 @@ def lawyerHome(request, law_id):
             lawyerObj = getLawyerInfo(request)
             
             lawyer_regform = Lawyer_RegForm(request, instance=lawyerObj, lawyer=lawyerObj)
-            #print render_form(lawyer_regform)
+            
+            u = User.objects.get(id=lawyerObj.user_id)
+            lawyer_nameform = Lawyer_Nameform(instance=u)
             
             if lawyerObj:
-                return HttpResponse(render_form(lawyer_regform))
+                #return HttpResponse(render_form(lawyer_regform))
+                return HttpResponse(render_form(lawyer_nameform) + render_form(lawyer_regform))
             else:
                 data['result'] = 'danger'
                 data['message'] = 'Upload Failed'
@@ -224,19 +230,30 @@ def lawyerHome(request, law_id):
         elif(request.method == 'POST' and 'editCommit' in request.POST):
             logger.debug("Profile edit commit Ajax start")
             submittedForm = json.loads(request.POST['form'])
-            objForInit = rearrangeForm(submittedForm)
-            lawyer_regform_edit = Lawyer_RegForm(request, objForInit)
+            objForInit, userObj = rearrangeForm(submittedForm)
             
-            if lawyer_regform_edit.is_valid():
+            lawyer_regform_edit = Lawyer_RegForm(request, objForInit)
+            lawyer_nameform_edit = Lawyer_Nameform(userObj)
+
+            if lawyer_regform_edit.is_valid() and lawyer_nameform_edit.is_valid():
                 updateLawyerProfile(request, lawyer_regform_edit)
+                updateUserProfile(request, lawyer_nameform_edit)
                 
-                data['result'] = 'success'
-                data['message'] = unicode(_('Edit Successed'))
+                data = {
+                        'result':'success',
+                        'message':unicode(_('Edit Successed')),
+                        'first_name':userObj['first_name'],
+                        'last_name':userObj['last_name'],
+                        
+                        }
+                #data['result'] = 'success'
+                #data['message'] = unicode(_('Edit Successed'))
                 return HttpResponse(json.dumps(data), content_type="application/json")
             
             else:
                 logger.debug("Validation Failed")
-                return HttpResponse(render_form(lawyer_regform_edit))
+                return HttpResponse(render_form(lawyer_nameform_edit) + 
+                                    render_form(lawyer_regform_edit))
             
         elif(request.method == 'POST' and 'photo_fetch' in request.POST):
             lawyer_photoform = Lawyer_photoForm()
@@ -398,6 +415,19 @@ def tmp(request):
     )
     
 
+def updateUserProfile(req, userForm):
+    logger.debug("updateUserProfile")
+    userid = req.session['_auth_user_id']
+    
+    try:
+        uu = User.objects.get(id=userid)
+        uu.first_name = userForm.cleaned_data['first_name']
+        uu.last_name = userForm.cleaned_data['last_name']
+        uu.save()
+        
+    except IntegrityError:
+        return False
+    
 def updateLawyerProfile(req, tmpForm):
     logger.debug("updateLawyerProfile Start")
     userid = req.session['_auth_user_id']
@@ -467,6 +497,7 @@ def getLawyerInfo(res):
 '''
 def rearrangeForm(tmpForm):
     formObject={}
+    userObject={}
     tmp_regBarAss = []
     tmp_specialty = []
     
@@ -483,11 +514,15 @@ def rearrangeForm(tmpForm):
             tmp_regBarAss.append(i['value'])
         elif 'specialty' in i['name']:
             tmp_specialty.append(i['value'])
+        elif i['name'] in 'first_name':
+            userObject['first_name'] = i['value']
+        elif i['name'] in 'last_name':
+            userObject['last_name'] = i['value']
             
     formObject['regBarAss'] = tmp_regBarAss
     formObject['specialty'] = tmp_specialty
     
-    return formObject
+    return (formObject, userObject)
 #========================================================================
 def home_page(request):
     if request.method == 'POST':

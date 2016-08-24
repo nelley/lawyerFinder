@@ -119,7 +119,6 @@ class User_reg_form(User_Loginform):
 
             # check whether the user has been registered
             if password1 != password2:
-                print 'not same'
                 del cleaned_data['password']
                 del cleaned_data['checkpassword']
                 raise forms.ValidationError(_("Passwords does not identical."))
@@ -144,4 +143,32 @@ class User_reg_form(User_Loginform):
             raise forms.ValidationError(_("Please input something."))
         
         return siterule
+        
+        
+class Lawyer_Nameform(forms.ModelForm):
+
+    first_name  = forms.CharField(max_length=30, required=True, label=_('first name'))
+    last_name   = forms.CharField(max_length=30, required=True, label=_('last name'))
+    
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']
+        
+        
+    def clean_first_name(self):
+        logger.debug('last name confirmation')
+        tmpFN = self.cleaned_data['first_name']
+        if tmpFN and tmpFN is not None:
+            return tmpFN
+        else:
+            raise forms.ValidationError(_("Please Input First Name"))
+    
+    def clean_last_name(self):
+        logger.debug('last name confirmation')
+        tmpLN = self.cleaned_data['last_name']
+        if tmpLN and tmpLN is not None:
+            return tmpLN
+        else:
+            raise forms.ValidationError(_("Please Input Last Name"))
+        
         

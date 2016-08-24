@@ -257,31 +257,39 @@ msgid "lawyer"
 msgstr "律師"
 
 #
-msgid "Ausername"
+msgid "Afirstname"
+msgstr "姓"
+
+#
+msgid "Blastname"
+msgstr "名"
+
+#
+msgid "Cusername"
 msgstr "帳號名"
 
 #
-msgid "BlawyerNo"
+msgid "DlawyerNo"
 msgstr "律師證編號"
 
 #
-msgid "Cgender"
+msgid "Egender"
 msgstr "性別"
 
 #
-msgid "DcareerYear"
+msgid "FcareerYear"
 msgstr "執業年數"
 
 #
-msgid "EcompanyAddress"
+msgid "GcompanyAddress"
 msgstr "事務所地址"
 
 #
-msgid "FregBarAss"
+msgid "HregBarAss"
 msgstr "登記執業地區"
 
 #
-msgid "Gspecialty"
+msgid "Ispecialty"
 msgstr "擅長領域"
 
 #

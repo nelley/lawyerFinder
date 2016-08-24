@@ -191,6 +191,8 @@ function ajaxCall_profileCommit(url_profile){
                     if(data.result == 'success'){
                         $('#m-body-msg').html(data.message);
                         $('#m-title-msg').html(data.result);
+                        var tmpLawyerName = data.first_name + ' ' + data.last_name + '律師'
+                        $('#lawyer-profile-name').html(tmpLawyerName);
                         
                         $.ajax({
                             type: "POST",

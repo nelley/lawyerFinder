@@ -65,6 +65,7 @@ def register_lawyer_view(request):
     args = {}
     lawyer_regform = ''
     agreement_regform = ''
+    lawyer_nameform = ''
     confirm_form = ''
     DEFAULT_INFOS = '<h4>Your Service</h4><p>Please Edit Your Service</p>'
 
@@ -76,7 +77,9 @@ def register_lawyer_view(request):
                 # insert as a user
                 u = User.objects
                 u.create_user(username=request.session['id'], 
-                              email=request.session['id'], 
+                              first_name=request.session['first_name'],
+                              last_name=request.session['last_name'],
+                              email=request.session['id'],
                               password=request.session['pw'],
                               active_flag=False)
                 # add this ID to group
@@ -124,6 +127,12 @@ def register_lawyer_view(request):
     elif request.method == 'POST' and request.POST['flag'] == '2':
         logger.debug('Confirm page Start')
         lawyer_regform = Lawyer_RegForm(request, request.POST)
+        lawyer_nameform = Lawyer_Nameform(request.POST)
+        
+        if lawyer_nameform.is_valid():
+            request.session['first_name'] = lawyer_nameform.cleaned_data['first_name']
+            request.session['last_name'] = lawyer_nameform.cleaned_data['last_name']
+        
         if lawyer_regform.is_valid():
             #get value from POST
             request.session['lawyerNo'] = lawyer_regform.cleaned_data['lawyerNo']
@@ -134,13 +143,15 @@ def register_lawyer_view(request):
             request.session['specialty'] = lawyer_regform.cleaned_data['specialty']
             
             #display the confirm page's info in dict
-            confirm_form = {'Ausername':request.session['id'],
-                            'BlawyerNo':request.session['lawyerNo'],
-                            'Cgender':request.session['gender'],
-                            'DcareerYear':request.session['careerYear'],
-                            'EcompanyAddress':request.session['companyAddress'],
-                            'FregBarAss':request.session['regBarAss'],
-                            'Gspecialty':request.session['specialty'],}
+            confirm_form = {'Afirstname':request.session['first_name'],
+                            'Blastname':request.session['last_name'],
+                            'Cusername':request.session['id'],
+                            'DlawyerNo':request.session['lawyerNo'],
+                            'Egender':request.session['gender'],
+                            'FcareerYear':request.session['careerYear'],
+                            'GcompanyAddress':request.session['companyAddress'],
+                            'HregBarAss':request.session['regBarAss'],
+                            'Ispecialty':request.session['specialty'],}
             
             stageflag = '3'
             
@@ -155,6 +166,8 @@ def register_lawyer_view(request):
             request.session['pw'] = agreement_regform.cleaned_data['password']
         
             lawyer_regform = Lawyer_RegForm(request)
+            lawyer_nameform = Lawyer_Nameform()
+            
             stageflag = '2'
         else:
             stageflag = '1'
@@ -167,6 +180,7 @@ def register_lawyer_view(request):
         stageflag = '1'
         
     args = {'agreement_regform':agreement_regform,
+            'lawyer_nameform':lawyer_nameform,
             'lawyer_regform':lawyer_regform,
             'confirm_form':confirm_form,
             'title' : 'register',
