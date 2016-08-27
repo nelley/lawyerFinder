@@ -54,6 +54,8 @@ function ajaxCall_profilePhotoCommit(url_profile){
             data: formData,
             success: function(data, textStatus, jqXHR){
                 if(is_ajax_session_timeout(data)){
+                    $('#session-body').html(data.message);
+                    $('#session-title').html(data.title);
                     $('#sessionModal').modal('show');
                 }else{
                     if(data.result == 'Failed'){
@@ -128,7 +130,10 @@ function ajaxCall_profilePhotoEdit(url_profile){
             data: {photo_fetch:'action'},
             success: function(data, textStatus, jqXHR){
                 if(is_ajax_session_timeout(data)){
+                    $('#session-body').html(data.message);
+                    $('#session-title').html(data.title);
                     $('#sessionModal').modal('show');
+                    
                 }else{
                 
                     var photoForm = document.getElementById("editPhotoBox");
@@ -190,6 +195,8 @@ function ajaxCall_profileCommit(url_profile){
             },
             success: function(data, textStatus, jqXHR) {
                 if(is_ajax_session_timeout(data)){
+                    $('#session-body').html(data.message);
+                    $('#session-title').html(data.title);
                     $('#sessionModal').modal('show');
                 }else{
                     if(data.result == 'success'){
@@ -277,6 +284,8 @@ function ajaxCall_profile(url_profile) {
             success: function(data, textStatus, jqXHR) {
                 
                 if(is_ajax_session_timeout(data)){
+                    $('#session-body').html(data.message);
+                    $('#session-title').html(data.title);
                     $('#sessionModal').modal('show');
                 }else{
                     $.ajax({
@@ -349,14 +358,19 @@ function ajaxCall_service_edit_commit(url_service) {
                    service_edit:'action'
                   },
             success: function(data, textStatus, jqXHR) {
-                $('#m-body').append('<div id="fadeOut" class="alert alert-' + data.result+ '">' + data.message + '</div>');
-                $('#service-'+ data.type + ' .service-content').html(data.contents);
-                setTimeout(function(){
-                    $('#fadeOut').fadeOut("slow", function(){
-                        $('#fadeOut').remove();
-                    });
-                }, 1000);
-                
+                if(is_ajax_session_timeout(data)){
+                    $('#session-body').html(data.message);
+                    $('#session-title').html(data.title);
+                    $('#sessionModal').modal('show');
+                }else{
+                    $('#m-body').append('<div id="fadeOut" class="alert alert-' + data.result+ '">' + data.message + '</div>');
+                    $('#service-'+ data.type + ' .service-content').html(data.contents);
+                    setTimeout(function(){
+                        $('#fadeOut').fadeOut("slow", function(){
+                            $('#fadeOut').remove();
+                        });
+                    }, 1000);
+                }
                 
                 
                 

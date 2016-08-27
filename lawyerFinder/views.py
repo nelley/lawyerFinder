@@ -194,8 +194,14 @@ def lawyerHome(request, law_id):
         
         #check session timeout when ajax call
         if(not ajax_session_check(request)):
-            data['result'] = 'timeout'
-            data['home_url'] = SITE_URL
+            print 'session!!!!'
+            data = {
+                    'result':'timeout',
+                    'title':unicode(_('Session Timeout')),
+                    'message':unicode(_('Your Session Is Timeout')),
+                    'home_url':SITE_URL,
+                    }
+            
             logger.debug("session timeout")
             return HttpResponse(json.dumps(data), content_type="application/json")
         

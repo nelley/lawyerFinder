@@ -177,7 +177,7 @@ class Lawyer_RegForm(forms.ModelForm):
     lawyerNo = forms.CharField(max_length=7, required=False, label=_('Certification Number'))
     careerYear = forms.IntegerField(required=False, label=_('Work Years'))
     companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
-    
+    phone_number = forms.CharField(max_length=20, required=False)
     gender = forms.ChoiceField(choices=Lawyer.GENDER, required=True, label=_('gender'))
     regBarAss = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
                                                  choices=Barassociation.AREAS,
@@ -194,8 +194,8 @@ class Lawyer_RegForm(forms.ModelForm):
     class Meta:
         model = Lawyer
         fields = ['lawyerNo', 'gender', 
-                  'careerYear', 'companyAddress', 
-                  'regBarAss', 'specialty', ]
+                  'careerYear', 'companyAddress', 'phone_number',
+                  'regBarAss', 'specialty']
         
     def __init__(self, request, *args, **kwargs):
         #when calling in lawyer_home

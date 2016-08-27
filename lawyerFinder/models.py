@@ -99,8 +99,9 @@ class Lawyer(models.Model):
                                      blank=True, 
                                      help_text=_('the strong field of this lawyer'), 
                                      verbose_name=_('the strong field of this lawyer'))
-    phoneNumber = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
                                     message="Phone number must be entered in the format: '+9999999999'. Up to 10 digits allowed.")
+    phone_number = models.CharField(max_length=20, validators=[phone_regex], blank=True)
     thumbnail = models.ImageField(u'thumbnail', max_length=255, blank=True)
     photos = models.ImageField(u'image', upload_to='/home/nelley/Downloads/', max_length=255, blank=True)
 
@@ -180,7 +181,7 @@ class LawyerSpecialty(models.Model):
 
 class WebStaticContents(models.Model):
     key = models.CharField(max_length=130,blank=False)
-    contents = models.CharField(max_length=65536,blank=False)
+    contents = models.TextField(max_length=65536,blank=False)
 
 class Item(models.Model):
     text = models.TextField(default='default')

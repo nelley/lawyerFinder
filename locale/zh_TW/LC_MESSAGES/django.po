@@ -485,6 +485,9 @@ msgstr "選擇的檔案不是影像檔"
 msgid "Please select an image file"
 msgstr "請選擇一個影像檔作為你的大頭照"
 
+msgid "Session Timeout"
+msgstr "操作逾時"
 
-
+msgid "Your Session Is Timeout"
+msgstr "由於已放置了一段時間未操作,系統已自動登出"
 
