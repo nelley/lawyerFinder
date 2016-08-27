@@ -99,8 +99,8 @@ class Lawyer(models.Model):
                                      blank=True, 
                                      help_text=_('the strong field of this lawyer'), 
                                      verbose_name=_('the strong field of this lawyer'))
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
-                                    message="Phone number must be entered in the format: '+9999999999'. Up to 10 digits allowed.")
+    phone_regex = RegexValidator(regex=r'\d{2,4}\-\d{3,5}\-\d{3,5}$',
+                                    message=_("Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx"))
     phone_number = models.CharField(max_length=20, validators=[phone_regex], blank=True)
     thumbnail = models.ImageField(u'thumbnail', max_length=255, blank=True)
     photos = models.ImageField(u'image', upload_to='/home/nelley/Downloads/', max_length=255, blank=True)

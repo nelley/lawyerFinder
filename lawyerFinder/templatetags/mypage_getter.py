@@ -16,7 +16,7 @@ def mypage_getter(userObj):
         if tmpL:
             #print tmpL.lawyerNo
             #avoid duplication when clicking mypage button in multi-times
-            return SITE_URL + 'lawyerHome/'+tmpL.lawyerNo
+            return SITE_URL + 'lawyerHome/mypage/'+tmpL.lawyerNo
     
     elif g=='STAFF':
         logger.debug('STAFF')

@@ -158,6 +158,11 @@ msgstr "案件種類"
 msgid "Areas"
 msgstr "執業地區"
 
+#: lawyerFinder/forms.py
+msgid "Please Input Phone Number"
+msgstr "聯絡電話"
+
+
 #: lawyerFinder/forms.py:115
 msgid "Certification Number"
 msgstr "律師證號"
@@ -231,6 +236,10 @@ msgstr "登記的律師公會"
 #: lawyerFinder/models.py:100 lawyerFinder/models.py:101
 msgid "the strong field of this lawyer"
 msgstr "這位律師的強項"
+
+#: lawyerFinder/models.py
+msgid "Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx"
+msgstr "請照格式輸入xxxx-xxx-xxx或xx-xxxx-xxxx"
 
 #: lawyerFinder/models.py:165
 msgid "Category:"

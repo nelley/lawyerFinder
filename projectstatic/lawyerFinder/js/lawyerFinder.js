@@ -372,8 +372,6 @@ function ajaxCall_service_edit_commit(url_service) {
                     }, 1000);
                 }
                 
-                
-                
             },
             error:function(jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
@@ -392,20 +390,77 @@ function ajaxCall_service_edit_commit(url_service) {
 */
 function get_service_title() {
     $("button[id*='c-']").on('click', function () {
-            // change to s-1
-            var clickedE= $(this).attr('id')
-            var titleId = clickedE.replace('c' , 's');
-            var title = document.getElementById(titleId).textContent;
-            $('.modal-title.service').text(title);
-            
-            $('input[name=editType]').attr('value', clickedE.split('-')[1]);
-            
-            var textDisplay = $(this).parent().children().html();
-            
-            // init ckeditor's notent(id_basic is the id of textarea)
-            CKEDITOR.instances.id_basic.setData( textDisplay, function(){
-                this.checkDirty();  // true
-            });
+        // change to s-1
+        var clickedE= $(this).attr('id')
+        var titleId = clickedE.replace('c' , 's');
+        var title = document.getElementById(titleId).textContent;
+        $('.modal-title.service').text(title);
+        
+        $('input[name=editType]').attr('value', clickedE.split('-')[1]);
+        
+        var textDisplay = $(this).parent().children().html();
+        
+        // init ckeditor's notent(id_basic is the id of textarea)
+        CKEDITOR.instances.id_basic.setData( textDisplay, function(){
+            this.checkDirty();  // true
+        });
             
     });
+}
+
+/*
+
+*/
+function mail_consulting(url_consult){
+    $('#mailModal').on('click', function(){
+        $.ajaxSetup({ 
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: url_consult,
+            data: {mail_consult_fetch:'action'},
+            success: function(data, textStatus, jqXHR) {
+                $('#mailConsultTitle').html('郵件諮詢');
+                $('#mailConsultBody').append('ssssssssssssss');
+                $('#mailConsultModal').modal('show');
+                
+            },
+            error:function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });<!-- end of ajax-->
+        
+        
+        
+    });
+}
+
+function phone_consulting(){
+    $('#phoneModal').on('click', function(){
+        $('#phoneConsultTitle').html('電話諮詢');
+        $('#phoneConsultBody').append('saaaa');
+        $('#phoneConsultModal').modal('show');
+    
+    
+    });
+
 }

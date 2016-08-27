@@ -69,44 +69,50 @@
         </div>
         <!-- /.row -->
         
-        <div id="consultModal" class="modal fade service" tabindex='-1'>
+        <div id="mailConsultModal" class="modal fade service" tabindex='-1'>
             <div class="modal-dialog service">
                 <div class="modal-content service">
                     <div class="modal-header service modal-header-primary">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 id="consultTitle" class="modal-title service">title</h4>
+                        <h4 id="mailConsultTitle" class="modal-title service">title</h4>
                     </div>
-                    <div class="modal-body service" id="m-body-consult">
-                        <form id="consultingEditBody">
-                            
+                    <div id="mailConsultBody" class="modal-body service" id="m-body-consult">
+                        <form id="mailConsultBody" action="" method="post">
+                        {% csrf_token %}
                         </form>
-                        
                     </div>
                     <div class="modal-footer service" style="margin-top:0px">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button id="consultingCommit" type="button" class="btn btn-primary">Save</button>
+                        <button id="consultingCommit" type="button" class="btn btn-primary">Send</button>
                     </div>
                 </div>
             </div>
         </div>
         
+        <div id="phoneConsultModal" class="modal fade service" tabindex='-1'>
+            <div class="modal-dialog service">
+                <div class="modal-content service">
+                    <div class="modal-header service modal-header-primary">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 id="phoneConsultTitle" class="modal-title service">title</h4>
+                    </div>
+                    <div id="phoneConsultBody" class="modal-body service" id="m-body-consult">
+                    </div>
+                    <div class="modal-footer service" style="margin-top:0px">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button id="consultingCommit" type="button" class="btn btn-primary">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
         <script>
             $(function() {
-                $('#mailModal').on('click', function(){
-                    $('#consultTitle').html('郵件諮詢');
-                    //$('#consultingEditBody').append();
-                    $('#consultModal').modal('show');
+                var url = '{% url 'lawyer_home' '01' %}';
+                mail_consulting(url);
                 
-                
-                });
-                
-                $('#phoneModal').on('click', function(){
-                    $('#consultTitle').html('電話諮詢');
-                    //$('#consultingEditBody').append();
-                    $('#consultModal').modal('show');
-                
-                
-                });
-            
+                phone_consulting(url);
             });
         </script>

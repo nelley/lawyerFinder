@@ -27,13 +27,13 @@ urlpatterns = patterns('',
     url(r'^$', views.home , name='home'),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^lawyerHome/(?P<law_id>\d{2,10})$', views.lawyerHome, name='lawyer_home'),
+    url(r'^lawyerHome/mypage/(?P<law_id>\d{2,10})$', views.lawyerHomeMyPage, name='lawyer_home_mypage'),
+    
     url(r'^undercons/$', views.undercons, name='undercons'),
     url(r'^ckeditor/$', include('ckeditor_uploader.urls')),
     #url(r'^site_service_rule', TemplateView.as_view(template_name='common/site_service_rule.html'),name='service_rule'),
     url(r'^site_service_rule', views.service_rule, name='service_rule'),
-                       
-                       
-                       
+
     
     url(r'^tmp/$', views.tmp, name='tmp'),
     

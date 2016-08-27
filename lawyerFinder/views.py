@@ -184,17 +184,16 @@ def service_rule(request):
         args,
         context_instance=RequestContext(request)
     )
-    
+
+#for lawyer access
 @transaction.atomic
-def lawyerHome(request, law_id):
-    args =''
-    
+def lawyerHomeMyPage(request, law_id):
+    args = ''
     if request.method=='POST' and request.is_ajax():
         data = {} # for response
         
         #check session timeout when ajax call
         if(not ajax_session_check(request)):
-            print 'session!!!!'
             data = {
                     'result':'timeout',
                     'title':unicode(_('Session Timeout')),
@@ -348,8 +347,64 @@ def lawyerHome(request, law_id):
                         }
                 
                 return HttpResponse(json.dumps(data), content_type="application/json")
-            
+        elif(request.method == 'POST' and 'mail_consult_fetch' in request.POST):
+            print 'no'
+            return HttpResponse(render_form(''))
         else:
+            logger.debug('ajax GET call comes')
+            return HttpResponse('ajax get call')
+    
+    elif request.method == 'POST':
+        logger.debug("POST ONLY!")
+        return HttpResponse('hello world')
+        
+    else:
+        logger.debug("GET(Only) request from lawyerHome")
+        # retrieve data from DB
+        try:
+            law_selected = Lawyer.objects.get(lawyerNo=law_id)
+            law_iform = Lawyer_infosForm();#init ckeditor
+            law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
+            if law_infos:
+                args = {'law_selected':law_selected,
+                        'law_iform':law_iform,
+                        'law_infos':law_infos,
+                        'img_path':law_selected.photos,}
+                
+                logger.debug("Lawyer Info rendered!")
+                return render_to_response('lawyerFinder/_lawyer_home.html',
+                                          args,
+                                          context_instance=RequestContext(request)
+                                          )
+            
+        except Lawyer.DoesNotExist:
+            logger.debug("No corresponding lawyer!")
+            return redirectHome(request)
+    
+    
+    logger.debug("default return")
+    return render_to_response(
+        'lawyerFinder/_lawyer_home.html',
+        args,
+        context_instance=RequestContext(request)
+    )
+    
+
+
+#for guest/ordinary user access
+@transaction.atomic
+def lawyerHome(request, law_id):
+    args =''
+    print 'lawyerHome'
+    if request.method=='POST' and request.is_ajax():
+        data = {} # for response
+        
+        if request.method == 'POST' and 'mail_consult_fetch' in request.POST:
+            
+            return HttpResponse('ajax get call')
+        
+        else:
+            
             logger.debug('ajax GET call comes')
             return HttpResponse('ajax get call')
     
@@ -457,6 +512,7 @@ def updateLawyerProfile(req, tmpForm):
         l.gender = tmpForm.cleaned_data['gender']
         l.companyAddress = tmpForm.cleaned_data['companyAddress']
         l.careerYear = tmpForm.cleaned_data['careerYear']
+        l.phone_number = tmpForm.cleaned_data['phone_number']
 
         LawyerMembership.objects.filter(lawyerNo=userid).delete()
         areas = Barassociation.objects.filter(area__in = tmpForm.cleaned_data['regBarAss'])
@@ -519,7 +575,7 @@ def rearrangeForm(tmpForm):
     userObject={}
     tmp_regBarAss = []
     tmp_specialty = []
-    
+
     for i in tmpForm:
         if i['name'] == 'lawyerNo':
             formObject['lawyerNo'] = i['value']
@@ -527,6 +583,8 @@ def rearrangeForm(tmpForm):
             formObject['careerYear'] = i['value']
         elif i['name'] == 'gender':
             formObject['gender'] = i['value']
+        elif i['name'] == 'phone_number':
+            formObject['phone_number'] = i['value']
         elif i['name'] == 'companyAddress':
             formObject['companyAddress'] = i['value']
         elif 'regBarAss' in i['name'] :
