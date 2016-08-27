@@ -173,6 +173,18 @@ def home(request):
     
     
     
+def service_rule(request):
+    sr = WebStaticContents.objects.get(key='SERVICE_RULE')
+    args={
+          'service_rules':sr,
+          }
+    
+    return render_to_response(
+        'common/site_service_rule.html',
+        args,
+        context_instance=RequestContext(request)
+    )
+    
 @transaction.atomic
 def lawyerHome(request, law_id):
     args =''
@@ -246,8 +258,7 @@ def lawyerHome(request, law_id):
                         'last_name':userObj['last_name'],
                         
                         }
-                #data['result'] = 'success'
-                #data['message'] = unicode(_('Edit Successed'))
+                
                 return HttpResponse(json.dumps(data), content_type="application/json")
             
             else:
@@ -311,13 +322,15 @@ def lawyerHome(request, law_id):
                         return HttpResponse(json.dumps(data), content_type="application/json")
                     
                 except Exception as e:
-                    return HttpResponse("ERROR happened!")
-                    logger.debug('%s (%s)' % (e.message, type(e)))
-
-                data = {
+                    print e
+                    data = {
                         'result':'System Error',
-                        'message':'System Error, Please contact the administrator',
+                        'title':unicode(_('Selected file is not an image')),
+                        'message':unicode(_('Please select an image file')),
                         }
+                    return HttpResponse(json.dumps(data), content_type="application/json")
+                    logger.debug('%s (%s)' % (e.message, type(e)))
+                
                 
                 return HttpResponse(json.dumps(data), content_type="application/json")
             else:

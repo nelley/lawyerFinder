@@ -1,3 +1,5 @@
+{% load is_mypage %}
+
     <!-- Service Panels -->
         <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
         <div class="row">
@@ -19,7 +21,11 @@
                                 </div>
                                 <div class="panel-body">
                                     <h4>郵件諮詢</h4>
-                                    <a href="#" class="btn btn-primary">Learn More</a>
+                                    {% if request|is_mypage %}
+                                        <button id="consulting-mail-edit" type="button" class="btn btn-warning" style="float: center;">
+                                        Edit
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -35,7 +41,11 @@
                                 </div>
                                 <div class="panel-body">
                                     <h4>電話諮詢</h4>
-                                    <a href="#" class="btn btn-primary">Learn More</a>
+                                    {% if request|is_mypage %}
+                                        <button id="consulting-phone-edit" type="button" class="btn btn-warning" style="float: center;">
+                                        Edit
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -47,11 +57,11 @@
                                     <span class="fa-stack fa-5x">
                                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
                                           <a href="#"><i class="fa fa-comments-o fa-stack-1x fa-inverse"></i></a>
+                                          <i class="fa fa-ban fa-stack-2x text-danger"></i>
                                     </span>
                                 </div>
                                 <div class="panel-body">
-                                    <h4>線上諮詢</h4>
-                                    <a href="#" class="btn btn-primary">Learn More</a>
+                                    <h4>線上諮詢(開發中)</h4>
                                 </div>
                             </div>
                         </div>

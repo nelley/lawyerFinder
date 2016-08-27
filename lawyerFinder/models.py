@@ -177,7 +177,11 @@ class LawyerSpecialty(models.Model):
     objects = LawyerSpecialtyManager()
     
     
-    
+
+class WebStaticContents(models.Model):
+    key = models.CharField(max_length=130,blank=False)
+    contents = models.CharField(max_length=65536,blank=False)
+
 class Item(models.Model):
     text = models.TextField(default='default')
     

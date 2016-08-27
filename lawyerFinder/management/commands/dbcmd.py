@@ -131,6 +131,10 @@ class Command(BaseCommand):
                         fields = LitigationType.objects.filter(category__in = field_selected)
                         LawyerSpecialty.objects.create_in_bulk(l, fields)
                         
+                tContent = 'test'
+                tKey = 'SERVICE_RULE'
+                ws = WebStaticContents(key= tKey, contents=tContent)
+                ws.save()
                         
                 logger.debug('db cmd end!')
                 

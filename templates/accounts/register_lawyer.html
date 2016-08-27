@@ -10,12 +10,17 @@
 {% block containerTitle %}<h3 class="panel-title">律師註冊</h3>{%endblock containerTitle %}
 
 {% block container %}
-<form role="form" method="post" enctype="multipart/form-data">
+<form id="lawyer_regist_form" role="form" method="post" enctype="multipart/form-data">
 
     {% csrf_token %}
     
     {% if stageflag == "1" %}
-        {% bootstrap_form agreement_regform %}
+        {% bootstrap_field agreement_regform.username %}
+        {% bootstrap_field agreement_regform.password %}
+        {% bootstrap_field agreement_regform.checkpassword %}
+        <div id="siterule_div">
+        {% bootstrap_field agreement_regform.siterule %}
+        </div>
     {% elif stageflag == "2" %}
         {% bootstrap_form lawyer_nameform %}
         {% bootstrap_form lawyer_regform %}
@@ -48,3 +53,18 @@
     
 </form>
 {% endblock container %}
+
+
+{% block customJs %}
+<script>
+    $(function() {
+        var url = "{{ service_url }}";
+        $('#siterule_div').find('.control-label').empty();
+        $('#siterule_div').find('.control-label').prepend('同意<a id="site_rule_content" target="_blank" href="' + url + '">服務條約</a>');
+    });
+</script>
+
+{% endblock customJs %}
+
+
+

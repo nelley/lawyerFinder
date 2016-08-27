@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
@@ -28,6 +29,11 @@ urlpatterns = patterns('',
     url(r'^lawyerHome/(?P<law_id>\d{2,10})$', views.lawyerHome, name='lawyer_home'),
     url(r'^undercons/$', views.undercons, name='undercons'),
     url(r'^ckeditor/$', include('ckeditor_uploader.urls')),
+    #url(r'^site_service_rule', TemplateView.as_view(template_name='common/site_service_rule.html'),name='service_rule'),
+    url(r'^site_service_rule', views.service_rule, name='service_rule'),
+                       
+                       
+                       
     
     url(r'^tmp/$', views.tmp, name='tmp'),
     

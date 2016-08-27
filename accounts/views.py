@@ -175,8 +175,8 @@ def register_lawyer_view(request):
     else:# display register page
         logger.debug('Register page 1 start')
         # clean session related to registeration
-        
         agreement_regform = User_reg_form()
+        
         stageflag = '1'
         
     args = {'agreement_regform':agreement_regform,
@@ -184,6 +184,7 @@ def register_lawyer_view(request):
             'lawyer_regform':lawyer_regform,
             'confirm_form':confirm_form,
             'title' : 'register',
+            'service_url':SITE_URL+'site_service_rule/',
             'stageflag' : stageflag,
             }
 
@@ -330,10 +331,12 @@ def user_register_view(request):
             return redirect('home')
             
         logger.debug('input validation failed')
-        args={'user_reg_form':user_reg_regform}
+        args={'user_reg_form':user_reg_regform,
+              'service_url':SITE_URL+'site_service_rule/',}
     else:
         user_reg_form = User_reg_form()
-        args={'user_reg_form':user_reg_form}
+        args={'user_reg_form':user_reg_form,
+              'service_url':SITE_URL+'site_service_rule/',}
     
     
     return render_to_response(

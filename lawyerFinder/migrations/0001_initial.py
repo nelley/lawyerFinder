@@ -66,6 +66,14 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='WebStaticContents',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('key', models.CharField(max_length=130)),
+                ('contents', models.CharField(max_length=130)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Lawyer_infos',
             fields=[
                 ('lawyer', models.OneToOneField(related_name='lawyer_info', primary_key=True, serialize=False, to='lawyerFinder.Lawyer')),

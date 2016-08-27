@@ -473,12 +473,18 @@ msgstr "編輯成功"
 msgid "Please Select An Image File"
 msgstr "請選擇一張照片作為大頭照"
 
-
 msgid "Process Failed"
 msgstr "發生錯誤"
 
-
 msgid "Your Profile Image Is Changed"
 msgstr "大頭照已更換"
+
+msgid "Selected file is not an image"
+msgstr "選擇的檔案不是影像檔"
+
+msgid "Please select an image file"
+msgstr "請選擇一個影像檔作為你的大頭照"
+
+
 
 
