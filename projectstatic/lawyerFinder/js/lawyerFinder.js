@@ -439,8 +439,13 @@ function mail_consulting(url_consult){
             url: url_consult,
             data: {mail_consult_fetch:'action'},
             success: function(data, textStatus, jqXHR) {
-                $('#mailConsultTitle').html('郵件諮詢');
-                $('#mailConsultBody').append('ssssssssssssss');
+                var inquiryForm = document.getElementById("mailConsultBody");
+                while (inquiryForm.hasChildNodes()) {
+                    inquiryForm.removeChild(inquiryForm.lastChild);
+                }
+            
+                $('#mailConsultTitle').html('送郵件給律師');
+                $('#mailConsultBody').append(data);
                 $('#mailConsultModal').modal('show');
                 
             },
@@ -456,7 +461,7 @@ function mail_consulting(url_consult){
 
 function phone_consulting(){
     $('#phoneModal').on('click', function(){
-        $('#phoneConsultTitle').html('電話諮詢');
+        $('#phoneConsultTitle').html('打電話給律師');
         $('#phoneConsultBody').append('saaaa');
         $('#phoneConsultModal').modal('show');
     

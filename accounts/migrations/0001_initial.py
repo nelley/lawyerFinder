@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 import django.utils.timezone
+import django.core.validators
 
 
 class Migration(migrations.Migration):
@@ -23,6 +24,7 @@ class Migration(migrations.Migration):
                 ('first_name', models.CharField(max_length=30, verbose_name='first name', blank=True)),
                 ('last_name', models.CharField(max_length=30, verbose_name='last name', blank=True)),
                 ('email', models.EmailField(unique=True, max_length=100, verbose_name=b'email address', blank=True)),
+                ('phone_number', models.CharField(blank=True, max_length=20, validators=[django.core.validators.RegexValidator(regex=b'\\d{2,4}\\-\\d{3,5}\\-\\d{3,5}$', message='Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx')])),
                 ('is_active', models.BooleanField(default=False)),
                 ('is_staff', models.BooleanField(default=False)),
                 ('is_admin', models.BooleanField(default=False)),

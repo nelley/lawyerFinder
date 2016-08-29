@@ -76,7 +76,7 @@ class User_reg_form(User_Loginform):
                                     required = False)
     siterule = forms.ChoiceField(choices=CHOICES, 
                                  widget=forms.RadioSelect(renderer=HorizontalRadioRenderer,
-                                                          attrs={'class':'dddddddddd'}), 
+                                                          attrs={'class':'siterule_class'}), 
                                  label=_('agreements for site service policy'),
                                  required = False)
     

@@ -146,6 +146,38 @@ msgstr ""
 msgid "Keep filesize under %(max_size)s. Current filesize %(current_size)s."
 msgstr ""
 
+#: lawyerFinder/forms.py
+msgid "Please input phone number that can contact you"
+msgstr "希望律師回覆的電話"
+
+#: lawyerFinder/forms.py
+msgid "Please input email address that can contact you"
+msgstr "希望律師回覆的信箱"
+
+#: lawyerFinder/forms.py
+msgid "Input title"
+msgstr "諮詢主旨"
+
+#: lawyerFinder/forms.py
+msgid "Input contents"
+msgstr "諮詢內容細節"
+
+#: lawyerFinder/forms.py
+msgid "Please input title under 20 character"
+msgstr "請用20字簡述欲諮詢的內容"
+
+#: lawyerFinder/forms.py
+msgid "Please input by 5W1H"
+msgstr "請輸入諮詢內容,建議由人事時地物著手詳述"
+
+#: lawyerFinder/forms.py
+msgid "the location that incident happened"
+msgstr "案件所在地區"
+
+#: lawyerFinder/forms.py
+msgid "the type of incident"
+msgstr "案件類別"
+
 #: lawyerFinder/forms.py:33
 msgid "Gender"
 msgstr "性別"

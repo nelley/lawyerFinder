@@ -264,4 +264,38 @@ class Lawyer_RegForm(forms.ModelForm):
         
         return specialty
     
+class User_Inquiry_Form(forms.ModelForm):
+    email       = forms.EmailField(label=_('email address'), max_length=100, 
+                                   required=True,
+                                   widget=forms.TextInput(attrs={'placeholder': _('Please input email address that can contact you')}))
     
+    phone_number = forms.CharField(max_length=20, required=False,
+                                   label=_('Please Input Phone Number'), 
+                                   widget=forms.TextInput(attrs={'placeholder': _('Please input phone number that can contact you')}))
+    
+    inquiryTitle = forms.CharField(max_length=20, required=False,
+                                   label=_('Input title'), 
+                                   widget=forms.TextInput(attrs={'placeholder': _('Please input title under 20 character')}))
+
+    inquiryContents = forms.CharField(max_length=65536, required=False,
+                                      label=_('Input contents'), 
+                                      widget=forms.Textarea(attrs={'placeholder': _('Please input by 5W1H')}))
+    
+    incidentPlace = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
+                                                 choices=Barassociation.AREAS,
+                                                 label=_('the location that incident happened'),
+                                                 help_text=_(''),
+                                                 required=True)
+    
+    incidentType = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
+                                                 choices=LitigationType.CATEGORYS,
+                                                 label=_('the type of incident'),
+                                                 help_text=_(''),
+                                                 required=True)
+    
+    
+    class Meta:
+        model = UserInquiry
+        fields = ['inquiryTitle', 'incidentPlace', 
+                  'incidentType', 'inquiryContents', 'email',
+                  'phone_number']

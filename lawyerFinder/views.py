@@ -188,6 +188,7 @@ def service_rule(request):
 #for lawyer access
 @transaction.atomic
 def lawyerHomeMyPage(request, law_id):
+    logger.debug('lawyerHome access for lawyer')
     args = ''
     if request.method=='POST' and request.is_ajax():
         data = {} # for response
@@ -347,9 +348,7 @@ def lawyerHomeMyPage(request, law_id):
                         }
                 
                 return HttpResponse(json.dumps(data), content_type="application/json")
-        elif(request.method == 'POST' and 'mail_consult_fetch' in request.POST):
-            print 'no'
-            return HttpResponse(render_form(''))
+            
         else:
             logger.debug('ajax GET call comes')
             return HttpResponse('ajax get call')
@@ -394,14 +393,18 @@ def lawyerHomeMyPage(request, law_id):
 #for guest/ordinary user access
 @transaction.atomic
 def lawyerHome(request, law_id):
+    logger.debug('lawyerHome access for ordinary user/guest')
+    print 'lawyerHome access for ordinary user/guest'
     args =''
-    print 'lawyerHome'
     if request.method=='POST' and request.is_ajax():
         data = {} # for response
         
         if request.method == 'POST' and 'mail_consult_fetch' in request.POST:
+            user_inquiry_form = User_Inquiry_Form()
             
-            return HttpResponse('ajax get call')
+            print 'mail consulting'
+            
+            return HttpResponse(render_form(user_inquiry_form))
         
         else:
             
@@ -442,7 +445,6 @@ def lawyerHome(request, law_id):
         args,
         context_instance=RequestContext(request)
     )
-    
     
 #===============================================================================
 def undercons(request):

@@ -179,6 +179,57 @@ class LawyerSpecialty(models.Model):
     
     
 
+'''
+using for mail consulting
+'''
+class UserInquiry(models.Model):
+    # tuple
+    INCIDENT_TYPE = (
+        ('EC', '感情事件'), ('IP', '智慧財產'), ('MD', '醫療糾紛'), ('IW', '網路世界'), ('EP', '毒品問題'),
+        ('PC', '支付命令'), ('GP', '政府採購'), ('PE', '環境保護'), ('FC', '詐騙案件'), ('HI', '遺產繼承'),
+        ('CI', '公司經營'), ('CD', '車禍糾紛'), ('ID', '保險爭議'), ('RD', '營造工程'), ('BC', '兒少事件'),
+        ('SA', '性侵案件'), ('LA', '訴訟程序'), ('LP', '勞資糾紛'), ('BD', '銀行債務'), ('NC', '國家賠償'),
+        ('TP', '消費爭議'), ('EA', '選舉訴訟'), ('FM', '金融市場'), ('FT', '公平交易'), ('PN', '房地糾紛'),
+    )
+    
+    INCIDENT_PLACE = (
+        ('KEELUNG', '基隆'),
+        ('TAIPEI', '台北'),
+        ('HSINCHU', '新竹'),
+        ('TAICHUNG', '台中'),
+        ('TAINAN', '台南'),
+        ('YILAN', '宜蘭'),
+        ('TAOYUAN', '桃園'),
+        ('MIAOLI', '苗栗'),
+        ('CHANGHUS', '彰化'),
+        ('YUNLIN', '雲林'),
+        ('CHIAYI', '嘉義'),
+        ('PINGTUNG', '屏東'),
+        ('TAITUNG', '台東'),
+        ('HUALIEN', '花蓮'),
+        ('PENGHU', '澎湖'),
+        ('KAOHSIUNG', '高雄'),
+        ('NANTOU', '南投'),
+    )
+    
+    phone_regex = RegexValidator(regex=r'\d{2,4}\-\d{3,5}\-\d{3,5}$',
+                                    message=_("Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx"))
+    
+    email       = models.EmailField(verbose_name=_('email address'), max_length=100, unique=True, blank=True)
+    phone_number = models.CharField(verbose_name=_('phone number'), max_length=20, validators=[phone_regex], blank=True)
+    incidentPlace = models.CharField(max_length=20, choices=INCIDENT_PLACE, blank=True)
+    
+    incidentType = models.CharField(max_length=20, choices=INCIDENT_TYPE, blank=True)
+    
+    dateHappened = models.DateTimeField(_('date of incident happened'), default=timezone.now)
+    dateInquiry = models.DateTimeField(_('inquiry date'), default=timezone.now)
+    
+    inquiryTitle = models.CharField(verbose_name=_('inquiry title'), max_length=20, blank=False)
+    inquiryContents = models.TextField(verbose_name=_('inquiry contents'), max_length=65536, blank=False)
+    
+
+
+
 class WebStaticContents(models.Model):
     key = models.CharField(max_length=130,blank=False)
     contents = models.TextField(max_length=65536,blank=False)
