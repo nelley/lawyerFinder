@@ -651,6 +651,7 @@ def rearrangeSentForm(tmpForm):
 '''
 def rearrangeForm(tmpForm):
     formObject={}
+    userObject={} # usage: display in first/last_name in template
     tmp_regBarAss = []
     tmp_specialty = []
 
