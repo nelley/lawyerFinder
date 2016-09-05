@@ -11,7 +11,7 @@ import boto
 from boto.sqs.message import Message
 from boto.regioninfo import RegionInfo
 from lawyerFinder.settings import SITE_URL
-import datetime
+from datetime import datetime
 
 def gen_tokens(id):
     time = datetime.now().isoformat()
@@ -19,17 +19,7 @@ def gen_tokens(id):
     token = sha1(plain)
     return token.hexdigest()
 
-def userInquirySender(mail_to, inquiryContent):
-    logger.debug(mail_to)
-    
-    
-    mail_html = render_to_string('email/user_inquiry.html', {'user': 'NELLEY',
-                                                      'lawyerName': 'NELLEY',
-                                                      'userInquiry': inquiryContent},
-                                )
-    
-    
-    
+def aws_ses_config():
     cusRegion = RegionInfo()
     cusRegion.endpoint='email.us-west-2.amazonaws.com'
     cusRegion.name='us-west-2'
@@ -38,11 +28,20 @@ def userInquirySender(mail_to, inquiryContent):
                       aws_access_key_id=AWS_ACC_KEY_ID,
                       aws_secret_access_key=AWS_SEC_ACC_KEY,
                       region=cusRegion,)
+    return connection
+
+def userInquirySender(mail_to, inquiryContent):
+    logger.debug(mail_to)
+    
+    mail_html = render_to_string('email/user_inquiry.html', {'user': 'NELLEY',
+                                                      'lawyerName': 'NELLEY',
+                                                      'userInquiry': inquiryContent},
+                                )
+    connection = aws_ses_config()
+    
     
     #mail_html = render_to_string('email/_base.html', {'user': 'NELLEY'})
 
-    
-    # test emails
     # complaint@simulator.amazonses.com
     # bounce@simulator.amazonses.com
     result = connection.send_email(
@@ -57,36 +56,34 @@ def userInquirySender(mail_to, inquiryContent):
                        ,return_path=''
                        )
     
-def mailSender(mail_to=None, pw=None, token=None):
-    print mail_to
+def mailSender(mail_to=None, pw=None, token=None):#used in repw_view
     mail_context=''
     URL = SITE_URL + 'accounts/registConfirm/'
-    mail_to='doublenunchakus@gmail.com'
-    
-    cusRegion = RegionInfo()
-    cusRegion.endpoint='email.us-west-2.amazonaws.com'
-    cusRegion.name='us-west-2'
+    MAIL_TITLE = ''
+    #mail_to='doublenunchakus@gmail.com'
     
     if pw:
-        mail_context='pw=' + pw
+        MAIL_TITLE=_('repassword mail resend')
+        mail_html = render_to_string('email/repassword.html', 
+                                     {'new_pw': pw,},
+                                )
     else:
-        mail_context=URL + token
+        #re-verify
+        verify_link=URL + token
+        MAIL_TITLE=_('verify mail resend')
+        mail_html = render_to_string('email/reverify.html',
+                                    {'verify_link': verify_link,},
+                                )
         
-    #print mail_context
-    connection = boto.connect_ses(
-                      aws_access_key_id=AWS_ACC_KEY_ID,
-                      aws_secret_access_key=AWS_SEC_ACC_KEY,
-                      region=cusRegion,)
+    connection = aws_ses_config()
     
-    # test emails
-    # complaint@simulator.amazonses.com
-    # bounce@simulator.amazonses.com
     result = connection.send_email('dragonbrucelee@gmail.com' # from
-                       ,'TestMail'
-                       ,mail_context
+                       ,MAIL_TITLE
+                       ,mail_html
                        ,mail_to # to
                        ,cc_addresses=[]
                        ,bcc_addresses=[]
+                       ,format='html'
                        ,reply_addresses=''
                        ,return_path=''
                        )

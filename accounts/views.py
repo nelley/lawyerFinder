@@ -247,7 +247,7 @@ def repw_view(request):
     if request.POST:
         emailID = request.POST['username']
         type = request.POST['type']
-        re = User.objects.get(username = emailID)
+        re = User.objects.filter(username = emailID)
         # user is existed or not
         if re:
             is_active = re.is_active

@@ -360,6 +360,16 @@ msgstr "希望律師回覆的信箱"
 msgid "phoneNumber"
 msgstr "希望律師聯絡的電話號碼"
 
+#==========repassword & re-verify mail==============
+msgid "repassword mail resend"
+msgstr "好律師你在哪裡-密碼更新"
+
+msgid "verify mail resend"
+msgstr "好律師你在哪裡-驗證信重寄"
+
+
+#=========================================
+
 #
 msgid "KEELUNG"
 msgstr "基隆"
