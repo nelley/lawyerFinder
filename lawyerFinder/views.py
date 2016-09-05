@@ -418,10 +418,10 @@ def lawyerHome(request, law_id):
                 # translate incidentType & incidentPlace
                 sentFormObj['incidentPlace'] = Barassociation.objects.get(area=''.join(sentFormObj['incidentPlace'])).area_cn
                 sentFormObj['incidentType'] = LitigationType.objects.get(category=''.join(sentFormObj['incidentType'])).category_cn
+                # send mail to lawyer
+                userInquirySender(u, sentFormObj)
                 
-                userInquirySender(u.email, sentFormObj)
-
-                '''
+                # store inquiry info into DB
                 try:
                     #retrieve user id & lawyer id
                     user_inquiry = user_inquiry_form_edit.save(commit=False)
@@ -438,9 +438,6 @@ def lawyerHome(request, law_id):
                     user_inquiry.save()
                 except IntegrityError:
                     return False
-                '''
-                #send mail
-                #l = Lawyer.objects.get(lawyerNo=request.build_absolute_uri().split("/")[-1])
                 
                 
                 data = {
@@ -452,6 +449,15 @@ def lawyerHome(request, law_id):
                 logger.debug("Validation Failed")
                 return HttpResponse(render_form(user_inquiry_form_edit))
             
+            return HttpResponse(json.dumps(data), content_type="application/json")
+        elif request.method == 'POST' and 'fetch_phoneNumber' in request.POST:
+            l = Lawyer.objects.get(lawyerNo = request.build_absolute_uri().split("/")[-1])
+            if l:
+                data = {'result':'success',
+                        'phone_number': l.phoneNumber}
+            else:
+                data = {'result':'Failed',
+                        'phone_number': _('No Phone Number Registered')}
             return HttpResponse(json.dumps(data), content_type="application/json")
         
         else:
@@ -564,7 +570,7 @@ def updateLawyerProfile(req, tmpForm):
         l.gender = tmpForm.cleaned_data['gender']
         l.companyAddress = tmpForm.cleaned_data['companyAddress']
         l.careerYear = tmpForm.cleaned_data['careerYear']
-        l.phone_number = tmpForm.cleaned_data['phone_number']
+        l.phoneNumber = tmpForm.cleaned_data['phoneNumber']
 
         LawyerMembership.objects.filter(lawyerNo=userid).delete()
         areas = Barassociation.objects.filter(area__in = tmpForm.cleaned_data['regBarAss'])
@@ -662,8 +668,8 @@ def rearrangeForm(tmpForm):
             formObject['careerYear'] = i['value']
         elif i['name'] == 'gender':
             formObject['gender'] = i['value']
-        elif i['name'] == 'phone_number':
-            formObject['phone_number'] = i['value']
+        elif i['name'] == 'phoneNumber':
+            formObject['phoneNumber'] = i['value']
         elif i['name'] == 'companyAddress':
             formObject['companyAddress'] = i['value']
         elif 'regBarAss' in i['name'] :

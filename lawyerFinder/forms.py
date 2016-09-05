@@ -177,8 +177,10 @@ class Lawyer_RegForm(forms.ModelForm):
     lawyerNo = forms.CharField(max_length=7, required=False, label=_('Certification Number'))
     careerYear = forms.IntegerField(required=False, label=_('Work Years'))
     companyAddress = forms.CharField(required=False, label=_('Company\'s Address'))
-    phone_number = forms.CharField(max_length=20, required=False,
-                                   label=_('Please Input Phone Number'), )
+    phoneNumber = forms.CharField(max_length=20, required=False,
+                                   label=_('Please Input Phone Number'), 
+                                   widget=forms.TextInput(attrs={'placeholder': _('Please input phone number in xx-xxxx-xxxx')}))
+    
     gender = forms.ChoiceField(choices=Lawyer.GENDER, required=True, label=_('gender'))
     regBarAss = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
                                                  choices=Barassociation.AREAS,
@@ -195,7 +197,7 @@ class Lawyer_RegForm(forms.ModelForm):
     class Meta:
         model = Lawyer
         fields = ['lawyerNo', 'gender', 
-                  'careerYear', 'companyAddress', 'phone_number',
+                  'careerYear', 'companyAddress', 'phoneNumber',
                   'regBarAss', 'specialty']
         
     def __init__(self, request, *args, **kwargs):

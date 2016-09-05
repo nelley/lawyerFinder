@@ -30,15 +30,13 @@ def aws_ses_config():
                       region=cusRegion,)
     return connection
 
-def userInquirySender(mail_to, inquiryContent):
-    logger.debug(mail_to)
-    
-    mail_html = render_to_string('email/user_inquiry.html', {'user': 'NELLEY',
-                                                      'lawyerName': 'NELLEY',
-                                                      'userInquiry': inquiryContent},
+def userInquirySender(userObj, inquiryContent):
+    logger.debug('mail to %s' % userObj.email)
+    mail_html = render_to_string('email/user_inquiry.html', {'lawyer_firstname': userObj.first_name,
+                                                             'lawyer_lastname': userObj.last_name,
+                                                             'userInquiry': inquiryContent},
                                 )
     connection = aws_ses_config()
-    
     
     #mail_html = render_to_string('email/_base.html', {'user': 'NELLEY'})
 
@@ -48,8 +46,8 @@ def userInquirySender(mail_to, inquiryContent):
                         source='dragonbrucelee@gmail.com' # from
                        ,subject='Inquiry Mail'
                        ,body=mail_html
-                       ,to_addresses='dragonbrucelee@gmail.com' # to
-                       ,cc_addresses=[]
+                       ,to_addresses=userObj.email # to
+                       ,cc_addresses=['dragonbrucelee@gmail.com']
                        ,bcc_addresses=[]
                        ,format='html'
                        ,reply_addresses=''

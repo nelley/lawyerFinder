@@ -148,7 +148,15 @@ msgstr ""
 
 #: lawyerFinder/forms.py
 msgid "Please input phone number that can contact you"
-msgstr "希望律師回覆的電話"
+msgstr "希望律師回覆的電話. 例：xx-xxxx-xxxx或者xxxx-xxx-xxx"
+
+#: lawyerFinder/forms.py
+msgid "Please input phone number in xx-xxxx-xxxx"
+msgstr "請輸入聯絡電話. 例：xx-xxxx-xxxx或者xxxx-xxx-xxx"
+
+#: accounts/models
+msgid "Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx"
+msgstr "輸入的電話號碼要符合xx-xxxx-xxxx或者xx-xxxx-xxxx格式"
 
 #: lawyerFinder/forms.py
 msgid "Please input email address that can contact you"
@@ -277,9 +285,6 @@ msgstr "登記的律師公會"
 msgid "the strong field of this lawyer"
 msgstr "這位律師的強項"
 
-#: lawyerFinder/models.py
-msgid "Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx"
-msgstr "請照格式輸入xxxx-xxx-xxx或xx-xxxx-xxxx"
 
 #: lawyerFinder/models.py:165
 msgid "Category:"
@@ -315,7 +320,7 @@ msgstr "名"
 
 #
 msgid "Cusername"
-msgstr "帳號名"
+msgstr "帳號"
 
 #
 msgid "DlawyerNo"
@@ -334,11 +339,15 @@ msgid "GcompanyAddress"
 msgstr "事務所地址"
 
 #
-msgid "HregBarAss"
+msgid "HphoneNumber"
+msgstr "聯絡電話"
+
+#
+msgid "IregBarAss"
 msgstr "登記執業地區"
 
 #
-msgid "Ispecialty"
+msgid "Jspecialty"
 msgstr "擅長領域"
 
 #===========user inquiry table===========

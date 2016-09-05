@@ -459,11 +459,51 @@ function ajax_mail_consulting(url_consult){
     });
 }
 
-function ajax_phone_consulting(){
+function ajax_phone_consulting(url_consult){
     $('#phoneModal').on('click', function(){
-        $('#phoneConsultTitle').html('打電話給律師');
-        $('#phoneConsultBody').append('saaaa');
-        $('#phoneConsultModal').modal('show');
+        $.ajaxSetup({ 
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: url_consult,
+            data: {fetch_phoneNumber:'action'},
+            success: function(data, textStatus, jqXHR) {
+                if(data.result == 'success'){
+                    var phoneForm = document.getElementById("phoneConsultBody");
+                    while (phoneForm.hasChildNodes()) {
+                        phoneForm.removeChild(phoneForm.lastChild);
+                    }
+                    $('#phoneConsultTitle').html('打電話給律師');
+                    $('#phoneConsultBody').append(data.phone_number);
+                    $('#phoneConsultModal').modal('show');
+                    
+                }else{
+                    alert('failed');
+                }
+                
+            },
+            error:function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });<!-- end of ajax-->
     
     
     });

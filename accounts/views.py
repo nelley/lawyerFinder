@@ -139,6 +139,7 @@ def register_lawyer_view(request):
             request.session['gender'] = lawyer_regform.cleaned_data['gender']
             request.session['careerYear'] = lawyer_regform.cleaned_data['careerYear']
             request.session['companyAddress'] = lawyer_regform.cleaned_data['companyAddress']
+            request.session['phoneNumber'] = lawyer_regform.cleaned_data['phoneNumber']
             request.session['regBarAss'] = lawyer_regform.cleaned_data['regBarAss']
             request.session['specialty'] = lawyer_regform.cleaned_data['specialty']
             
@@ -150,8 +151,9 @@ def register_lawyer_view(request):
                             'Egender':request.session['gender'],
                             'FcareerYear':request.session['careerYear'],
                             'GcompanyAddress':request.session['companyAddress'],
-                            'HregBarAss':request.session['regBarAss'],
-                            'Ispecialty':request.session['specialty'],}
+                            'HphoneNumber':request.session['phoneNumber'],
+                            'IregBarAss':request.session['regBarAss'],
+                            'Jspecialty':request.session['specialty'],}
             
             stageflag = '3'
             

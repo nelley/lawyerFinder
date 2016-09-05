@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
                 ('gender', models.CharField(blank=True, max_length=20, choices=[(b'M', b'\xe7\x94\xb7\xe6\x80\xa7'), (b'F', b'\xe5\xa5\xb3\xe6\x80\xa7')])),
                 ('careerYear', models.IntegerField(default=0, help_text='please input the career year', null=True, blank=True)),
                 ('companyAddress', models.CharField(help_text="please input the company's address", max_length=50, blank=True)),
-                ('phone_number', models.CharField(blank=True, max_length=20, validators=[django.core.validators.RegexValidator(regex=b'\\d{2,4}\\-\\d{3,5}\\-\\d{3,5}$', message='Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx')])),
+                ('phoneNumber', models.CharField(blank=True, max_length=20, validators=[django.core.validators.RegexValidator(regex=b'\\d{2,4}\\-\\d{3,5}\\-\\d{3,5}$', message='Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx')])),
                 ('thumbnail', models.ImageField(upload_to=b'', max_length=255, verbose_name='thumbnail', blank=True)),
                 ('photos', models.ImageField(upload_to=b'/home/nelley/Downloads/', max_length=255, verbose_name='image', blank=True)),
             ],
