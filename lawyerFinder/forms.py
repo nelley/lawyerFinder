@@ -229,14 +229,20 @@ class Lawyer_RegForm(forms.ModelForm):
         tmpLawyerNo = self.cleaned_data['lawyerNo']
         if tmpLawyerNo and tmpLawyerNo is not None:
             if self.request.user.is_authenticated():
+                #used when lawyer edit their profile
                 session_Lawyer = Lawyer.objects.filter(user_id = self.request.session['_auth_user_id'])
                 if session_Lawyer[0].lawyerNo == tmpLawyerNo:
                     logger.debug('lawyerNo is the same')
-                    return tmpLawyerNo #
+                    return tmpLawyerNo
                 else:
                     tmpLawyer = Lawyer.objects.filter(lawyerNo=tmpLawyerNo)
                     if tmpLawyer.count() > 0:
                         raise forms.ValidationError(_("This Lawyer Number has been registered"))
+            else:
+                #userd when new lawyer regist
+                tmpLawyer = Lawyer.objects.filter(lawyerNo=tmpLawyerNo)
+                if tmpLawyer.count() > 0:
+                    raise forms.ValidationError(_("This Lawyer Number has been registered"))
         else:
             raise forms.ValidationError(_("Please input something."))
         

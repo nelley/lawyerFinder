@@ -56,7 +56,7 @@ def userInquirySender(mail_to, inquiryContent):
                        ,return_path=''
                        )
     
-def mailSender(mail_to=None, pw=None, token=None):#used in repw_view
+def mailSender(mail_to=None, pw=None, token=None):#used in repw_view, user_register_view
     mail_context=''
     URL = SITE_URL + 'accounts/registConfirm/'
     MAIL_TITLE = ''
@@ -96,14 +96,14 @@ def ajax_session_check(request):
     if request.user.is_authenticated():
         logger.debug('logged in user!')
         if 'lastRequest' in request.session:
-            elapsedTime = datetime.datetime.now() - \
+            elapsedTime = datetime.now() - \
                           request.session['lastRequest']
             if elapsedTime.seconds > SESSION_FRONT_AGE:
                 del request.session['lastRequest'] 
                 logout(request)
                 return False
 
-        request.session['lastRequest'] = datetime.datetime.now()
+        request.session['lastRequest'] = datetime.now()
         return True
     else:
         logger.debug('not yet logged in user!')

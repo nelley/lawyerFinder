@@ -54,15 +54,10 @@ class Command(BaseCommand):
         print len(match) 
         print sep
         
-        l = Lawyer.objects.get(user_id= '4')
-        print l.user_id
-        #l.regBarAss.all().delete()
-        #l.specialty.all().delete()
+        u = User.objects.get(username= 'doublenunchakus@gmail.com')
+        print u.id
+        print u.delete()
         
-        print LawyerSpecialty.objects.filter(lawyerNo=l.user_id).delete()
-        #print l.regBarAss.all()
-        #print l.specialty.all()
-
         #SomeModel.objects.filter(id=id).delete()
         
         #print ",".join('\"'+bar.area+'\"' for bar in l.regBarAss.all()),
