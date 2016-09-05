@@ -178,6 +178,14 @@ msgstr "案件所在地區"
 msgid "the type of incident"
 msgstr "案件類別"
 
+#: lawyerFinder/forms.py
+msgid "Mail sent"
+msgstr "諮詢郵件寄送成功"
+
+#: lawyerFinder/forms.py
+msgid "Please choose only one field"
+msgstr "這個項目只能單選喔"
+
 #: lawyerFinder/forms.py:33
 msgid "Gender"
 msgstr "性別"
@@ -332,6 +340,25 @@ msgstr "登記執業地區"
 #
 msgid "Ispecialty"
 msgstr "擅長領域"
+
+#===========user inquiry table===========
+msgid "inquiryTitle"
+msgstr "諮詢主旨"
+
+msgid "inquiryContents"
+msgstr "諮詢內容細節"
+
+msgid "incidentPlace"
+msgstr "案件所在地區"
+
+msgid "incidentType"
+msgstr "案件類別"
+
+msgid "email"
+msgstr "希望律師回覆的信箱"
+
+msgid "phoneNumber"
+msgstr "希望律師聯絡的電話號碼"
 
 #
 msgid "KEELUNG"

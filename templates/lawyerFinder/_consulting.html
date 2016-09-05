@@ -76,14 +76,14 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 id="mailConsultTitle" class="modal-title service">title</h4>
                     </div>
-                    <div id="mailConsultBody" class="modal-body service" id="m-body-consult">
+                    <div id="mailConsultDiv" class="modal-body service" id="m-body-consult">
                         <form id="mailConsultBody" action="" method="post">
                         {% csrf_token %}
                         </form>
                     </div>
                     <div class="modal-footer service" style="margin-top:0px">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button id="consultingCommit" type="button" class="btn btn-primary">Send</button>
+                        <button id="sendMail" type="button" class="btn btn-primary">Send</button>
                     </div>
                 </div>
             </div>
@@ -110,9 +110,13 @@
         
         <script>
             $(function() {
-                var url = '{% url 'lawyer_home' '01' %}';
-                mail_consulting(url);
                 
-                phone_consulting(url);
+                var url = '{{ ajax_path }}';
+                ajax_mail_consulting(url);
+                
+                ajax_phone_consulting(url);
+                
+                ajax_mail_send(url);
+                
             });
         </script>

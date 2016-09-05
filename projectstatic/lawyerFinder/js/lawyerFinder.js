@@ -411,7 +411,7 @@ function get_service_title() {
 /*
 
 */
-function mail_consulting(url_consult){
+function ajax_mail_consulting(url_consult){
     $('#mailModal').on('click', function(){
         $.ajaxSetup({ 
             beforeSend: function(xhr, settings) {
@@ -459,11 +459,70 @@ function mail_consulting(url_consult){
     });
 }
 
-function phone_consulting(){
+function ajax_phone_consulting(){
     $('#phoneModal').on('click', function(){
         $('#phoneConsultTitle').html('打電話給律師');
         $('#phoneConsultBody').append('saaaa');
         $('#phoneConsultModal').modal('show');
+    
+    
+    });
+
+}
+
+
+function ajax_mail_send(url_consult){
+    $('#sendMail').on('click', function(){
+        $.ajaxSetup({ 
+            beforeSend: function(xhr, settings) {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
+        
+        var json_obj = $("#mailConsultBody");
+        $.ajax({
+            type: 'POST',
+            url: url_consult,
+            data: {send_mail:'action',
+                   form:JSON.stringify(json_obj.serializeArray())},
+            success: function(data, textStatus, jqXHR) {
+                if(data.result == 'success'){
+                    $('#m-title-msg').html(data.title);
+                    $('#m-body-msg').html(data.message);
+                    $('#msgModal-header').attr('class', 'modal-header msg modal-header-success');
+                    $('#msgModal').modal('show');
+                    
+                    
+                    
+                    
+                }else{
+                    var inquiryForm = document.getElementById("mailConsultBody");
+                    while (inquiryForm.hasChildNodes()) {
+                        inquiryForm.removeChild(inquiryForm.lastChild);
+                    }
+                    $('#mailConsultBody').append(data);
+                }
+                
+            },
+            error:function(jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });<!-- end of ajax-->
     
     
     });

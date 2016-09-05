@@ -3,6 +3,7 @@ from django.forms import ValidationError
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext as _
 from datetime import datetime
+from django.template.loader import render_to_string
 from hashlib import sha1
 from accounts.models import *
 from lawyerFinder.settings import *
@@ -18,6 +19,44 @@ def gen_tokens(id):
     token = sha1(plain)
     return token.hexdigest()
 
+def userInquirySender(mail_to, inquiryContent):
+    logger.debug(mail_to)
+    
+    
+    mail_html = render_to_string('email/user_inquiry.html', {'user': 'NELLEY',
+                                                      'lawyerName': 'NELLEY',
+                                                      'userInquiry': inquiryContent},
+                                )
+    
+    
+    
+    cusRegion = RegionInfo()
+    cusRegion.endpoint='email.us-west-2.amazonaws.com'
+    cusRegion.name='us-west-2'
+    
+    connection = boto.connect_ses(
+                      aws_access_key_id=AWS_ACC_KEY_ID,
+                      aws_secret_access_key=AWS_SEC_ACC_KEY,
+                      region=cusRegion,)
+    
+    #mail_html = render_to_string('email/_base.html', {'user': 'NELLEY'})
+
+    
+    # test emails
+    # complaint@simulator.amazonses.com
+    # bounce@simulator.amazonses.com
+    result = connection.send_email(
+                        source='dragonbrucelee@gmail.com' # from
+                       ,subject='Inquiry Mail'
+                       ,body=mail_html
+                       ,to_addresses='dragonbrucelee@gmail.com' # to
+                       ,cc_addresses=[]
+                       ,bcc_addresses=[]
+                       ,format='html'
+                       ,reply_addresses=''
+                       ,return_path=''
+                       )
+    
 def mailSender(mail_to=None, pw=None, token=None):
     print mail_to
     mail_context=''

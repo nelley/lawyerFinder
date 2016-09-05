@@ -22,7 +22,7 @@ from common.utilities import ajax_session_check
 from lawyerFinder.settings import *
 from PIL import Image
 from django.utils.translation import ugettext_lazy as _
-
+from common.utilities import *
 
 def redirectHome(re):
     logger.debug("redirect to top page")
@@ -351,7 +351,7 @@ def lawyerHomeMyPage(request, law_id):
             
         else:
             logger.debug('ajax GET call comes')
-            return HttpResponse('ajax get call')
+            return HttpResponse('ajax get call LA')
     
     elif request.method == 'POST':
         logger.debug("POST ONLY!")
@@ -364,11 +364,13 @@ def lawyerHomeMyPage(request, law_id):
             law_selected = Lawyer.objects.get(lawyerNo=law_id)
             law_iform = Lawyer_infosForm();#init ckeditor
             law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
+            ajax_path = '/lawyerHome/mypage/' + law_id
             if law_infos:
                 args = {'law_selected':law_selected,
                         'law_iform':law_iform,
                         'law_infos':law_infos,
-                        'img_path':law_selected.photos,}
+                        'img_path':law_selected.photos,
+                        'ajax_path':ajax_path,}
                 
                 logger.debug("Lawyer Info rendered!")
                 return render_to_response('lawyerFinder/_lawyer_home.html',
@@ -394,17 +396,63 @@ def lawyerHomeMyPage(request, law_id):
 @transaction.atomic
 def lawyerHome(request, law_id):
     logger.debug('lawyerHome access for ordinary user/guest')
-    print 'lawyerHome access for ordinary user/guest'
     args =''
+    
     if request.method=='POST' and request.is_ajax():
         data = {} # for response
         
         if request.method == 'POST' and 'mail_consult_fetch' in request.POST:
             user_inquiry_form = User_Inquiry_Form()
-            
-            print 'mail consulting'
-            
             return HttpResponse(render_form(user_inquiry_form))
+        
+        elif request.method == 'POST' and 'send_mail' in request.POST:
+            sentForm = json.loads(request.POST['form'])
+            
+            sentFormObj = rearrangeSentForm(sentForm)
+            user_inquiry_form_edit = User_Inquiry_Form(sentFormObj)
+            
+            if user_inquiry_form_edit.is_valid():
+                l = Lawyer.objects.get(lawyerNo = request.build_absolute_uri().split("/")[-1])
+                u = User.objects.get(id = l.user_id)
+                
+                # translate incidentType & incidentPlace
+                sentFormObj['incidentPlace'] = Barassociation.objects.get(area=''.join(sentFormObj['incidentPlace'])).area_cn
+                sentFormObj['incidentType'] = LitigationType.objects.get(category=''.join(sentFormObj['incidentType'])).category_cn
+                
+                userInquirySender(u.email, sentFormObj)
+
+                '''
+                try:
+                    #retrieve user id & lawyer id
+                    user_inquiry = user_inquiry_form_edit.save(commit=False)
+                    user_inquiry.lawyerNo = request.build_absolute_uri().split("/")[-1]
+                    
+                    user_inquiry.incidentType = user_inquiry_form_edit.cleaned_data['incidentType']
+                    user_inquiry.incidentPlace = user_inquiry_form_edit.cleaned_data['incidentPlace']
+                    
+                    if '_auth_user_id' in request.session:
+                        user_inquiry.user_id = request.session['_auth_user_id']
+                    else:
+                        user_inquiry.user = None
+                        
+                    user_inquiry.save()
+                except IntegrityError:
+                    return False
+                '''
+                #send mail
+                #l = Lawyer.objects.get(lawyerNo=request.build_absolute_uri().split("/")[-1])
+                
+                
+                data = {
+                        'result':'success',
+                        'title':unicode(_('Mail sent')),
+                        'message':unicode(_('Mail sent')),
+                        }
+            else:
+                logger.debug("Validation Failed")
+                return HttpResponse(render_form(user_inquiry_form_edit))
+            
+            return HttpResponse(json.dumps(data), content_type="application/json")
         
         else:
             
@@ -422,11 +470,13 @@ def lawyerHome(request, law_id):
             law_selected = Lawyer.objects.get(lawyerNo=law_id)
             law_iform = Lawyer_infosForm();#init ckeditor
             law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
+            ajax_path = '/lawyerHome/' + law_id 
             if law_infos:
                 args = {'law_selected':law_selected,
                         'law_iform':law_iform,
                         'law_infos':law_infos,
-                        'img_path':law_selected.photos,}
+                        'img_path':law_selected.photos,
+                        'ajax_path':ajax_path}
                 
                 logger.debug("Lawyer Info rendered!")
                 return render_to_response('lawyerFinder/_lawyer_home.html',
@@ -570,11 +620,37 @@ def getLawyerInfo(res):
 
 
 '''
+    rebuild json data to 
+'''
+def rearrangeSentForm(tmpForm):
+    formObject={}
+    tmp_incidentPlace = []
+    tmp_incidentType = []
+    
+    for i in tmpForm:
+        if i['name'] == 'inquiryTitle':
+            formObject['inquiryTitle'] = i['value']
+        elif i['name'] == 'inquiryContents':
+            formObject['inquiryContents'] = i['value']
+        elif i['name'] == 'email':
+            formObject['email'] = i['value']
+        elif i['name'] == 'phoneNumber':
+            formObject['phoneNumber'] = i['value']
+        elif 'incidentPlace' in i['name']:
+            tmp_incidentPlace.append(i['value'])
+        elif 'incidentType' in i['name']:
+            tmp_incidentType.append(i['value'])
+            
+        formObject['incidentPlace'] = tmp_incidentPlace
+        formObject['incidentType'] = tmp_incidentType
+    
+    return formObject
+
+'''
     rebuild json data to reg_form object's format
 '''
 def rearrangeForm(tmpForm):
     formObject={}
-    userObject={}
     tmp_regBarAss = []
     tmp_specialty = []
 

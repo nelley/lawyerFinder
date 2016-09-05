@@ -11,7 +11,6 @@ def is_mypage(res):
     # check logged in or not
     if res.user.is_authenticated():
         g = res.user.groups.all()[0].name
-        
         if g=='LAWYER':
             tmpLOld = Lawyer.objects.get(user=res.user)
             tmpL = Lawyer.objects.get(user_id= res.session['_auth_user_id'])
@@ -26,7 +25,7 @@ def is_mypage(res):
             return '/'
         elif g=='ORDINARYUSER':
             logger.debug('ORDINARYUSER')
-            return '/'
+            return False
         else:
             logger.debug('No matching')
             return ''

@@ -269,33 +269,44 @@ class User_Inquiry_Form(forms.ModelForm):
                                    required=True,
                                    widget=forms.TextInput(attrs={'placeholder': _('Please input email address that can contact you')}))
     
-    phone_number = forms.CharField(max_length=20, required=False,
+    phoneNumber = forms.CharField(max_length=20, required=True,
                                    label=_('Please Input Phone Number'), 
                                    widget=forms.TextInput(attrs={'placeholder': _('Please input phone number that can contact you')}))
     
-    inquiryTitle = forms.CharField(max_length=20, required=False,
+    inquiryTitle = forms.CharField(max_length=20, required=True,
                                    label=_('Input title'), 
                                    widget=forms.TextInput(attrs={'placeholder': _('Please input title under 20 character')}))
 
-    inquiryContents = forms.CharField(max_length=65536, required=False,
+    inquiryContents = forms.CharField(max_length=65536, required=True,
                                       label=_('Input contents'), 
                                       widget=forms.Textarea(attrs={'placeholder': _('Please input by 5W1H')}))
     
     incidentPlace = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
-                                                 choices=Barassociation.AREAS,
+                                                 choices=UserInquiry.INCIDENT_PLACE,
                                                  label=_('the location that incident happened'),
-                                                 help_text=_(''),
-                                                 required=True)
+                                                 required=False)
     
     incidentType = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(renderer=HorizontalCheckBoxRenderer),
-                                                 choices=LitigationType.CATEGORYS,
+                                                 choices=UserInquiry.INCIDENT_TYPE,
                                                  label=_('the type of incident'),
-                                                 help_text=_(''),
-                                                 required=True)
-    
+                                                 required=False)
     
     class Meta:
         model = UserInquiry
         fields = ['inquiryTitle', 'incidentPlace', 
                   'incidentType', 'inquiryContents', 'email',
-                  'phone_number']
+                  'phoneNumber']
+    
+    
+    def clean_incidentPlace(self):
+        incidentPlaceList = self.cleaned_data['incidentPlace']
+        if len(incidentPlaceList) > 1:
+            raise forms.ValidationError(_("Please choose only one field"))
+        return ''.join(incidentPlaceList)
+    
+    def clean_incidentType(self):
+        incidentTypeList = self.cleaned_data['incidentType']
+        if len(incidentTypeList) > 1:
+            raise forms.ValidationError(_("Please choose only one field"))
+        return ''.join(incidentTypeList)
+        

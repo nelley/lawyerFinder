@@ -212,22 +212,23 @@ class UserInquiry(models.Model):
         ('NANTOU', '南投'),
     )
     
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='inquiry')
+    lawyerNo = models.CharField(max_length=32, blank=True, help_text=_('please input the lawyer certification number '))
+    
     phone_regex = RegexValidator(regex=r'\d{2,4}\-\d{3,5}\-\d{3,5}$',
                                     message=_("Phone number must be entered in the format xxxx-xxx-xxx or xx-xxxx-xxxx"))
     
-    email       = models.EmailField(verbose_name=_('email address'), max_length=100, unique=True, blank=True)
-    phone_number = models.CharField(verbose_name=_('phone number'), max_length=20, validators=[phone_regex], blank=True)
-    incidentPlace = models.CharField(max_length=20, choices=INCIDENT_PLACE, blank=True)
+    email = models.EmailField(verbose_name=_('email address'), max_length=100, blank=False)
+    phoneNumber = models.CharField(verbose_name=_('phone number'), max_length=20, validators=[phone_regex], blank=True)
+    incidentPlace = models.CharField(max_length=20, choices=INCIDENT_PLACE, blank=False)
     
-    incidentType = models.CharField(max_length=20, choices=INCIDENT_TYPE, blank=True)
+    incidentType = models.CharField(max_length=20, choices=INCIDENT_TYPE, blank=False)
     
     dateHappened = models.DateTimeField(_('date of incident happened'), default=timezone.now)
     dateInquiry = models.DateTimeField(_('inquiry date'), default=timezone.now)
     
     inquiryTitle = models.CharField(verbose_name=_('inquiry title'), max_length=20, blank=False)
     inquiryContents = models.TextField(verbose_name=_('inquiry contents'), max_length=65536, blank=False)
-    
-
 
 
 class WebStaticContents(models.Model):

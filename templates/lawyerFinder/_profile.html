@@ -123,7 +123,7 @@ span.tags
         
         <!-- js for getting ckeditor with modal -->
         <script>
-            var url = '{% url 'lawyer_home_mypage' '01' %}';
+            var url = '{{ ajax_path }}';
             $(function() {
                 ajaxCall_profile(url)
                 

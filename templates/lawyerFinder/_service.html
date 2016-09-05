@@ -186,6 +186,6 @@
     <!-- js for getting ckeditor with modal -->
     <script>
         get_service_title()
-        var url = '{% url 'lawyer_home_mypage' '01' %}';
+        var url = '{{ ajax_path }}';
         ajaxCall_service_edit_commit(url);
     </script>

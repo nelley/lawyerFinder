@@ -13,5 +13,5 @@ def get_translate(dict):
     for k in sortedDict.keys():
         k_output = _(k)
         sortedDict[k_output] = sortedDict.pop(k)
-        
+    
     return sortedDict
