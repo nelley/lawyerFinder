@@ -14,7 +14,7 @@ def is_mypage(res):
         if g=='LAWYER':
             tmpLOld = Lawyer.objects.get(user=res.user)
             tmpL = Lawyer.objects.get(user_id= res.session['_auth_user_id'])
-            if tmpL and '/lawyerHome/mypage/' + tmpL.lawyerNo == res.path:
+            if tmpL and '/lawyerHome/' + tmpL.lawyerNo == res.path:
                 #avoid duplication when clicking mypage button in multi-times
                 return True
             else:

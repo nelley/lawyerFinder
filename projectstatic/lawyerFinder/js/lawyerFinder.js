@@ -62,6 +62,7 @@ function ajaxCall_profilePhotoCommit(url_profile){
                         $('#m-title-msg').html(data.title);
                         $('#m-body-msg').html(data.message);
                         $('#msgModal-header').attr('class', 'modal-header msg modal-header-danger');
+                        $('#msgBtn').attr('class', 'btn btn-danger');
                         $('#msgModal').modal('show');
                         
                         
@@ -71,6 +72,7 @@ function ajaxCall_profilePhotoCommit(url_profile){
                         $('#msgModal-header').attr('class', 'modal-header msg modal-header-success');
                         $('#msgModal').modal('show');
                         
+                        // img update
                         $('#lawyerHome-profile-img').attr("src", data.img_url);
                         $('#lawyerHome-profile-img').css('width', '150px');
                         $('#lawyerHome-profile-img').css('height', '200px');
@@ -78,6 +80,7 @@ function ajaxCall_profilePhotoCommit(url_profile){
                         $('#m-title-msg').html(data.title);
                         $('#m-body-msg').html(data.message);
                         $('#msgModal-header').attr('class', 'modal-header msg modal-header-danger');
+                        $('#msgBtn').attr('class', 'btn btn-danger');
                         $('#msgModal').modal('show');
                         
                     }
@@ -200,8 +203,12 @@ function ajaxCall_profileCommit(url_profile){
                     $('#sessionModal').modal('show');
                 }else{
                     if(data.result == 'success'){
+                        //show the msg modal
                         $('#m-body-msg').html(data.message);
-                        $('#m-title-msg').html(data.result);
+                        $('#m-title-msg').html(data.title);
+                        $('#msgModal-header').attr('class', 'modal-header msg modal-header-success');
+                        $('#msgModal').modal('show');
+                        
                         var tmpLawyerName = data.first_name + ' ' + data.last_name + '律師'
                         $('#lawyer-profile-name').html(tmpLawyerName);
                         
@@ -215,11 +222,6 @@ function ajaxCall_profileCommit(url_profile){
                                     profileForm.removeChild(profileForm.lastChild);
                                 }
                                 $('#editProfileBox').append(data);
-                                
-                                //show the msg modal
-                                $('#msgModal-header').attr('class', 'modal-header msg modal-header-success');
-                                $('#msgModal').modal('show');
-                                
                             }
                         });
                     }else{
@@ -293,13 +295,23 @@ function ajaxCall_profile(url_profile) {
                         url: url_profile,
                         data: {profile_fetch:'action'},
                         success: function(data, textStatus, jqXHR){
-                            $('#editProfileModal').modal('show');
-                            
-                            var profileForm = document.getElementById("editProfileBox");
-                            while (profileForm.hasChildNodes()) {
-                                profileForm.removeChild(profileForm.lastChild);
+                            if (typeof data.result == 'undefined'){
+                                var profileForm = document.getElementById("editProfileBox");
+                                while (profileForm.hasChildNodes()) {
+                                    profileForm.removeChild(profileForm.lastChild);
+                                }
+                                
+                                $('#editProfileBox').append(data);
+                                $('#editProfileModal').modal('show');
+                            }else{
+                                $('#m-title-msg').html(data.title);
+                                $('#m-body-msg').html(data.message);
+                                $('#msgModal-header').attr('class', 'modal-header msg modal-header-danger');
+                                $('#msgBtn').attr('class', 'btn btn-danger');
+                                $('#msgModal').modal('show');
                             }
-                            $('#editProfileBox').append(data);
+                            
+                            
                         }
                     });
                 }
@@ -486,19 +498,18 @@ function ajax_phone_consulting(url_consult){
             url: url_consult,
             data: {fetch_phoneNumber:'action'},
             success: function(data, textStatus, jqXHR) {
-                if(data.result == 'success'){
-                    var phoneForm = document.getElementById("phoneConsultBody");
-                    while (phoneForm.hasChildNodes()) {
-                        phoneForm.removeChild(phoneForm.lastChild);
-                    }
-                    $('#phoneConsultTitle').html('打電話給律師');
-                    $('#phoneConsultBody').append(data.phone_number);
-                    $('#phoneConsultModal').modal('show');
-                    
-                }else{
-                    alert('failed');
+                var phoneForm = document.getElementById("phoneConsultBody");
+                while (phoneForm.hasChildNodes()) {
+                    phoneForm.removeChild(phoneForm.lastChild);
                 }
                 
+                if(data.result == 'success'){
+                    $('#phoneConsultBody').append('<h2 style="text-align: center;">律師的聯絡電話</h2><h2 style="text-align: center;">' + data.phone_number + '</h2>');
+                }else{
+                    $('#phoneConsultBody').append('<h2 style="text-align: center;">律師的聯絡電話</h2><h4 style="text-align: center;">本律師尚未登錄聯絡電話</h4>');
+                }
+                $('#phoneConsultTitle').html('打電話給律師');
+                $('#phoneConsultModal').modal('show');
             },
             error:function(jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);

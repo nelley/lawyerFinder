@@ -187,12 +187,80 @@ def service_rule(request):
 
 #for lawyer access
 @transaction.atomic
-def lawyerHomeMyPage(request, law_id):
+def lawyerHome(request, law_id):
     logger.debug('lawyerHome access for lawyer')
     args = ''
+    
     if request.method=='POST' and request.is_ajax():
         data = {} # for response
         
+        #----processing functions that does not need membership-----
+        if request.method == 'POST' and 'mail_consult_fetch' in request.POST:
+            logger.debug('mail_consult_fetch')
+            user_inquiry_form = User_Inquiry_Form()
+            return HttpResponse(render_form(user_inquiry_form))
+        
+        elif request.method == 'POST' and 'send_mail' in request.POST:
+            logger.debug('mail_consult_send')
+            sentForm = json.loads(request.POST['form'])
+            
+            sentFormObj = rearrangeSentForm(sentForm)
+            user_inquiry_form_edit = User_Inquiry_Form(sentFormObj)
+            
+            if user_inquiry_form_edit.is_valid():
+                l = Lawyer.objects.get(lawyerNo = request.build_absolute_uri().split("/")[-1])
+                u = User.objects.get(id = l.user_id)
+                
+                # translate incidentType & incidentPlace
+                sentFormObj['incidentPlace'] = Barassociation.objects.get(area=''.join(sentFormObj['incidentPlace'])).area_cn
+                sentFormObj['incidentType'] = LitigationType.objects.get(category=''.join(sentFormObj['incidentType'])).category_cn
+                # send mail to lawyer
+                userInquirySender(u, sentFormObj)
+                
+                # store inquiry info into DB
+                try:
+                    #retrieve user id & lawyer id
+                    user_inquiry = user_inquiry_form_edit.save(commit=False)
+                    user_inquiry.lawyerNo = request.build_absolute_uri().split("/")[-1]
+                    
+                    user_inquiry.incidentType = user_inquiry_form_edit.cleaned_data['incidentType']
+                    user_inquiry.incidentPlace = user_inquiry_form_edit.cleaned_data['incidentPlace']
+                    
+                    if '_auth_user_id' in request.session:
+                        user_inquiry.user_id = request.session['_auth_user_id']
+                    else:
+                        user_inquiry.user = None
+                        
+                    user_inquiry.save()
+                except IntegrityError:
+                    return False
+                
+                
+                data = {
+                        'result':'success',
+                        'title':unicode(_('Mail sent')),
+                        'message':unicode(_('Mail sent')),
+                        }
+                
+                return HttpResponse(json.dumps(data), content_type="application/json")
+            else:
+                logger.debug("Validation Failed")
+                return HttpResponse(render_form(user_inquiry_form_edit))
+            
+        elif request.method == 'POST' and 'fetch_phoneNumber' in request.POST:
+            logger.debug('fetch phone number')
+            l = Lawyer.objects.get(lawyerNo = request.build_absolute_uri().split("/")[-1])
+            
+            if l.phoneNumber and not l.phoneNumber.isspace():
+                data = {'result':'success',
+                        'phone_number': l.phoneNumber}
+            else:
+                data = {'result':'Failed',
+                        'phone_number': unicode(_('No Phone Number Registered'))}
+                
+            return HttpResponse(json.dumps(data), content_type="application/json")
+        
+        #----processing functions that needs membership----
         #check session timeout when ajax call
         if(not ajax_session_check(request)):
             data = {
@@ -237,11 +305,13 @@ def lawyerHomeMyPage(request, law_id):
             lawyer_nameform = Lawyer_Nameform(instance=u)
             
             if lawyerObj:
-                #return HttpResponse(render_form(lawyer_regform))
                 return HttpResponse(render_form(lawyer_nameform) + render_form(lawyer_regform))
             else:
-                data['result'] = 'danger'
-                data['message'] = 'Upload Failed'
+                data = {'result':'Failed',
+                        'title':unicode(_('Process Failed')),
+                        'message': unicode(_('Process Failed'))
+                        }
+                
                 logger.debug("Profile Fetch Failed!!")
                 return HttpResponse(json.dumps(data), content_type="application/json")
         
@@ -259,7 +329,8 @@ def lawyerHomeMyPage(request, law_id):
                 
                 data = {
                         'result':'success',
-                        'message':unicode(_('Edit Successed')),
+                        'title':unicode(_('Edit Successed')),
+                        'message':unicode(_('Your Profile Has Been Updated')),
                         'first_name':userObj['first_name'],
                         'last_name':userObj['last_name'],
                         
@@ -348,14 +419,16 @@ def lawyerHomeMyPage(request, law_id):
                         }
                 
                 return HttpResponse(json.dumps(data), content_type="application/json")
-            
+        
         else:
             logger.debug('ajax GET call comes')
             return HttpResponse('ajax get call LA')
     
+    #----POST & ajax call end----
+    
     elif request.method == 'POST':
         logger.debug("POST ONLY!")
-        return HttpResponse('hello world')
+        return HttpResponse('POST call only')
         
     else:
         logger.debug("GET(Only) request from lawyerHome")
@@ -364,125 +437,13 @@ def lawyerHomeMyPage(request, law_id):
             law_selected = Lawyer.objects.get(lawyerNo=law_id)
             law_iform = Lawyer_infosForm();#init ckeditor
             law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
-            ajax_path = '/lawyerHome/mypage/' + law_id
+            ajax_path = '/lawyerHome/' + law_id
             if law_infos:
                 args = {'law_selected':law_selected,
                         'law_iform':law_iform,
                         'law_infos':law_infos,
                         'img_path':law_selected.photos,
                         'ajax_path':ajax_path,}
-                
-                logger.debug("Lawyer Info rendered!")
-                return render_to_response('lawyerFinder/_lawyer_home.html',
-                                          args,
-                                          context_instance=RequestContext(request)
-                                          )
-            
-        except Lawyer.DoesNotExist:
-            logger.debug("No corresponding lawyer!")
-            return redirectHome(request)
-    
-    
-    logger.debug("default return")
-    return render_to_response(
-        'lawyerFinder/_lawyer_home.html',
-        args,
-        context_instance=RequestContext(request)
-    )
-    
-
-
-#for guest/ordinary user access
-@transaction.atomic
-def lawyerHome(request, law_id):
-    logger.debug('lawyerHome access for ordinary user/guest')
-    args =''
-    
-    if request.method=='POST' and request.is_ajax():
-        data = {} # for response
-        
-        if request.method == 'POST' and 'mail_consult_fetch' in request.POST:
-            user_inquiry_form = User_Inquiry_Form()
-            return HttpResponse(render_form(user_inquiry_form))
-        
-        elif request.method == 'POST' and 'send_mail' in request.POST:
-            sentForm = json.loads(request.POST['form'])
-            
-            sentFormObj = rearrangeSentForm(sentForm)
-            user_inquiry_form_edit = User_Inquiry_Form(sentFormObj)
-            
-            if user_inquiry_form_edit.is_valid():
-                l = Lawyer.objects.get(lawyerNo = request.build_absolute_uri().split("/")[-1])
-                u = User.objects.get(id = l.user_id)
-                
-                # translate incidentType & incidentPlace
-                sentFormObj['incidentPlace'] = Barassociation.objects.get(area=''.join(sentFormObj['incidentPlace'])).area_cn
-                sentFormObj['incidentType'] = LitigationType.objects.get(category=''.join(sentFormObj['incidentType'])).category_cn
-                # send mail to lawyer
-                userInquirySender(u, sentFormObj)
-                
-                # store inquiry info into DB
-                try:
-                    #retrieve user id & lawyer id
-                    user_inquiry = user_inquiry_form_edit.save(commit=False)
-                    user_inquiry.lawyerNo = request.build_absolute_uri().split("/")[-1]
-                    
-                    user_inquiry.incidentType = user_inquiry_form_edit.cleaned_data['incidentType']
-                    user_inquiry.incidentPlace = user_inquiry_form_edit.cleaned_data['incidentPlace']
-                    
-                    if '_auth_user_id' in request.session:
-                        user_inquiry.user_id = request.session['_auth_user_id']
-                    else:
-                        user_inquiry.user = None
-                        
-                    user_inquiry.save()
-                except IntegrityError:
-                    return False
-                
-                
-                data = {
-                        'result':'success',
-                        'title':unicode(_('Mail sent')),
-                        'message':unicode(_('Mail sent')),
-                        }
-            else:
-                logger.debug("Validation Failed")
-                return HttpResponse(render_form(user_inquiry_form_edit))
-            
-            return HttpResponse(json.dumps(data), content_type="application/json")
-        elif request.method == 'POST' and 'fetch_phoneNumber' in request.POST:
-            l = Lawyer.objects.get(lawyerNo = request.build_absolute_uri().split("/")[-1])
-            if l:
-                data = {'result':'success',
-                        'phone_number': l.phoneNumber}
-            else:
-                data = {'result':'Failed',
-                        'phone_number': _('No Phone Number Registered')}
-            return HttpResponse(json.dumps(data), content_type="application/json")
-        
-        else:
-            
-            logger.debug('ajax GET call comes')
-            return HttpResponse('ajax get call')
-    
-    elif request.method == 'POST':
-        logger.debug("POST ONLY!")
-        return HttpResponse('hello world')
-        
-    else:
-        logger.debug("GET(Only) request from lawyerHome")
-        # retrieve data from DB
-        try:
-            law_selected = Lawyer.objects.get(lawyerNo=law_id)
-            law_iform = Lawyer_infosForm();#init ckeditor
-            law_infos = Lawyer_infos.objects.get(lawyer_id=law_selected)#retrieve all info from lawyer_infos table(created when initing lawyer)
-            ajax_path = '/lawyerHome/' + law_id 
-            if law_infos:
-                args = {'law_selected':law_selected,
-                        'law_iform':law_iform,
-                        'law_infos':law_infos,
-                        'img_path':law_selected.photos,
-                        'ajax_path':ajax_path}
                 
                 logger.debug("Lawyer Info rendered!")
                 return render_to_response('lawyerFinder/_lawyer_home.html',

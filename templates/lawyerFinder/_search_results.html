@@ -59,7 +59,11 @@
                 <div class="col-sm-12">
                     <div class="col-xs-12 col-sm-3 text-center">
                         <figure>
-                            <h2><img id="lawyer-research-img" src="{{MEDIA_URL}}{{lawyer.photos}}" alt="" class="img-rounded img-responsive" style="width: 150px; height: 200px;"></h2>
+                            {% if lawyer.photos %}
+                                <h2><img id="lawyer-search-img" src="{{MEDIA_URL}}{{lawyer.photos}}" alt="" class="img-rounded img-responsive" style="width: 150px; height: 200px;"></h2>
+                            {% else %}
+                                <h2><img id="lawyer-search-img" src="http://placehold.it/150x200" alt="" class="img-rounded img-responsive"></h2>
+                            {% endif %}
                         </figure>
                     </div>
                     <div class="col-xs-12 col-sm-9">

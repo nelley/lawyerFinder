@@ -553,6 +553,8 @@ msgid "Profile Photo"
 msgstr "個人照片"
 
 #====================
+msgid "Your Profile Has Been Updated"
+msgstr "個人資料已更新"
 
 msgid "Edit Successed"
 msgstr "編輯成功"
