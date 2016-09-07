@@ -17,6 +17,12 @@
     {% bootstrap_field user_reg_form.siterule %}
     </div>
     
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" align="center">{{ message|safe }}</div>
+        {% endfor %}
+    {% endif %}
+    
     <div align=center>{% buttons submit='OK' %}{% endbuttons %}</div>
     
     

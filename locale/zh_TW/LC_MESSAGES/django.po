@@ -72,6 +72,10 @@ msgstr "密碼長度必須要大於6碼"
 msgid "Passwords does not identical."
 msgstr "輸入的密碼並不一致"
 
+#: accounts/forms.py
+msgid "Password should contain at least 1 number & 1 lower case & 1 upper case & 6 digits combination"
+msgstr "請輸入一組包含數字,大小寫英文字母的密碼"
+
 #: accounts/forms.py:142
 msgid "Please agree before you register."
 msgstr "使用本網站的服務前需要勾選同意喔"

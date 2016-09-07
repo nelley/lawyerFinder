@@ -164,7 +164,7 @@ def register_lawyer_view(request):
             
     elif request.method == 'POST' and request.POST['flag'] == '1':
         logger.debug('Register page 2 start')
-        agreement_regform = User_reg_form(request.POST)
+        agreement_regform = User_reg_form(request.POST, request=request)
         if agreement_regform.is_valid():# will call clean()
             request.session['id'] = agreement_regform.cleaned_data['username']
             request.session['pw'] = agreement_regform.cleaned_data['password']
@@ -338,7 +338,7 @@ def user_register_view(request):
     user_reg_form=''
     
     if request.POST:
-        user_reg_regform = User_reg_form(request.POST)
+        user_reg_regform = User_reg_form(request.POST, request=request)
         if user_reg_regform.is_valid():
             tid = user_reg_regform.cleaned_data['username']
             tpw = user_reg_regform.cleaned_data['password']

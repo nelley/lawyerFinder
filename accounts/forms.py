@@ -10,6 +10,8 @@ from django.core.validators import RegexValidator
 import re
 from django.contrib.auth.hashers import make_password
 from django.utils.safestring import mark_safe
+from django.contrib import messages
+from common.utilities import pwPolicyValidator
 
 
 # for temporary use
@@ -73,7 +75,7 @@ class User_repw_form(forms.Form):
                                required = False)
     
     newPassword = forms.CharField(label=_('new password'),
-                               widget=forms.PasswordInput,
+                               widget=forms.PasswordInput(attrs={'placeholder': _('Password should contain at least 1 number & 1 lower case & 1 upper case & 6 digits combination')}),
                                required = False)
     
     checkPassword = forms.CharField(label = _('double check the new password'), 
@@ -90,8 +92,11 @@ class User_repw_form(forms.Form):
         if (not self.errors):
             # password length check
             if len(password1) < 6:
-               raise forms.ValidationError(_("Password should be longer than 6 digits"))
-
+                raise forms.ValidationError(_("Password should be longer than 6 digits"))
+            
+            if not pwPolicyValidator(password1):
+                raise forms.ValidationError(_("Password should contain at least 1 number & 1 lower case & 1 upper case & 6 digits combination"))
+            
             # check whether the user has been registered
             if password1 != password2:
                 del cleaned_data['newPassword']
@@ -128,7 +133,6 @@ class User_repw_form(forms.Form):
         return checkpassword
 
 
-
 class User_reg_form(User_Loginform):
     
     CHOICES=[('YES','Yes'),
@@ -147,8 +151,9 @@ class User_reg_form(User_Loginform):
         fields = ['username', 'password', 'checkpassword', 'siterule']
     
     def __init__(self, *args, **kwargs):
-         super(User_reg_form, self).__init__(*args, **kwargs)
-         #self.fields['siterule'].widget.attrs['label'] = 'test'
+        self.request = kwargs.pop('request', None)
+        super(User_reg_form, self).__init__(*args, **kwargs)
+        #self.fields['siterule'].widget.attrs['label'] = 'test'
     
     def save_custom(self):
         print 'User_reg_form saved!!'
@@ -179,13 +184,19 @@ class User_reg_form(User_Loginform):
         if (not self.errors):
             # password length check
             if len(password1) < 6:
-               raise forms.ValidationError(_("Password should be longer than 6 digits"))
-
+                messages.error(self.request, _('Password should be longer than 6 digits'))
+                raise forms.ValidationError(_("Error"))
+            
+            if not pwPolicyValidator(password1):
+                messages.error(self.request, _('Password should contain at least 1 number & 1 lower case & 1 upper case & 6 digits combination'))
+                raise forms.ValidationError(_("Error"))
+            
             # check whether the user has been registered
             if password1 != password2:
                 del cleaned_data['password']
                 del cleaned_data['checkpassword']
-                raise forms.ValidationError(_("Passwords does not identical."))
+                messages.error(self.request, _('Passwords does not identical.'))
+                raise forms.ValidationError(_("Error"))
         
         return cleaned_data
     

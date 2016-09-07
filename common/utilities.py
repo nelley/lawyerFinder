@@ -115,6 +115,12 @@ def get_email_by_userid(req):
     u = User.objects.get(id=req.session['_auth_user_id'])
     return u.email
 
+def pwPolicyValidator(pw):
+    if re.search(r'\d', pw) and re.search(r'[A-Z]', pw) and re.search(r'[a-z]', pw):
+        return True
+    else:
+        return False
+
 
 class RestrictedImageField(ImageField):
     content_type = None

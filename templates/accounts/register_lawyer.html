@@ -21,6 +21,13 @@
         <div id="siterule_div">
         {% bootstrap_field agreement_regform.siterule %}
         </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" align="center">{{ message|safe }}</div>
+            {% endfor %}
+        {% endif %}
+        
     {% elif stageflag == "2" %}
         {% bootstrap_form lawyer_nameform %}
         {% bootstrap_form lawyer_regform %}
