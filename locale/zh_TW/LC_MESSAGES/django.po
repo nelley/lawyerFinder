@@ -43,6 +43,19 @@ msgstr "此為必填項目"
 msgid "double check password"
 msgstr "確認密碼"
 
+#: accounts/forms.py:
+msgid "old password"
+msgstr "舊密碼"
+
+#: accounts/forms.py:
+msgid "new password"
+msgstr "新密碼"
+
+#: accounts/forms.py
+msgid "double check the new password"
+msgstr "請再次輸入新密碼"
+
+
 #: accounts/forms.py:79
 msgid "agreements for site service policy"
 msgstr "同意服務條約"
@@ -117,6 +130,15 @@ msgstr ""
 #: accounts/views.py:270
 msgid "This Email has not been registered"
 msgstr "這個電子郵件信箱不是本網站的會員"
+
+#: accounts/views.py
+msgid "Old PW does not correct"
+msgstr "您輸入的舊密碼不正確"
+
+#: accounts/views.py
+msgid "New PW Is Updated"
+msgstr "密碼已更新"
+
 
 #: accounts/views.py:312
 #, fuzzy

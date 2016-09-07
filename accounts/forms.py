@@ -66,6 +66,69 @@ class User_Loginform(forms.ModelForm):
         return password
 
 
+class User_repw_form(forms.Form):
+    
+    oldPassword = forms.CharField(label=_('old password'),
+                               widget=forms.PasswordInput,
+                               required = False)
+    
+    newPassword = forms.CharField(label=_('new password'),
+                               widget=forms.PasswordInput,
+                               required = False)
+    
+    checkPassword = forms.CharField(label = _('double check the new password'), 
+                                    widget=forms.PasswordInput,
+                                    required = False)
+    
+    def clean(self): #this will be called at the last
+        logger.debug('user_repw_form full clean')
+        cleaned_data = self.cleaned_data
+        password1 = cleaned_data.get("newPassword")
+        password2 = cleaned_data.get("checkPassword")
+
+        #if the checks before all passed
+        if (not self.errors):
+            # password length check
+            if len(password1) < 6:
+               raise forms.ValidationError(_("Password should be longer than 6 digits"))
+
+            # check whether the user has been registered
+            if password1 != password2:
+                del cleaned_data['newPassword']
+                del cleaned_data['checkPassword']
+                raise forms.ValidationError(_("Passwords does not identical."))
+        
+        return cleaned_data
+    
+    def clean_oldPassword(self):
+        logger.debug('user_repw_form clean old password')
+        
+        oldpassword = self.cleaned_data['oldPassword']
+        if (not oldpassword) or oldpassword is None:
+            raise forms.ValidationError(_("Please input something."))
+        
+        return oldpassword
+        
+    def clean_newPassword(self):
+        logger.debug('user_repw_form clean new password')
+        
+        newpassword = self.cleaned_data['newPassword']
+        if (not newpassword) or newpassword is None:
+            raise forms.ValidationError(_("Please input something."))
+        
+        return newpassword
+    
+    def clean_checkPassword(self):
+        logger.debug('user_repw_form double check password')
+        
+        checkpassword = self.cleaned_data['checkPassword']
+        if (not checkpassword) or checkpassword is None:
+            raise forms.ValidationError(_("Please input something."))
+        
+        return checkpassword
+
+
+
 class User_reg_form(User_Loginform):
     
     CHOICES=[('YES','Yes'),

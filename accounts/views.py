@@ -14,6 +14,8 @@ from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 from common.utilities import *
 import datetime
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import update_session_auth_hash
 
 
 # Create your views here.
@@ -292,7 +294,44 @@ def repw_view(request):
         context_instance=RequestContext(request)
     )
     
+
+def user_repw(request):
+    args={}
+    user_repw_form = ''
+    repw_u = User.objects.get(id=request.session['_auth_user_id'])
     
+    if request.method == 'POST':
+        logger.debug('change pw start')
+        user_repw_form= User_repw_form(request.POST)
+        
+        if user_repw_form.is_valid():
+            logger.debug('change pw form validation passed')
+            
+            if repw_u.check_password(user_repw_form.cleaned_data['oldPassword']):
+                repw_u.set_password(user_repw_form.cleaned_data['newPassword'])
+                repw_u.save(update_fields=["password"])
+                update_session_auth_hash(request, repw_u)
+                
+                logger.debug('New PW Is Updated')
+                messages.success(request, _('New PW Is Updated'))
+            else:
+                logger.debug('Old PW does not correct')
+                messages.error(request, _('Old PW does not correct'))
+            
+            return render_to_response(
+                                        'accounts/user_repw.html',
+                                        {'user_repw_form': user_repw_form,
+                                         'user_email':repw_u.email},
+                                        context_instance=RequestContext(request))
+    else:
+        user_repw_form = User_repw_form()
+    
+    return render_to_response(
+        'accounts/user_repw.html',
+        {'user_repw_form': user_repw_form,
+         'user_email':repw_u.email},
+        context_instance=RequestContext(request))
+
 @transaction.atomic
 def user_register_view(request):
     logger.debug('User register Start')

@@ -1,0 +1,22 @@
+{% extends "accounts/_base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}<title>密碼重設</title>{% endblock title %}
+
+{% block containerTitle %}
+    <h3 class="panel-title">密碼重設</h3>
+{% endblock containerTitle %}
+
+{% block container %}
+<form role="form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3 style="text-align: center;">帳號：{{ user_email }}</h3>
+    {% bootstrap_form user_repw_form %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" align="center">{{ message|safe }}</div>
+        {% endfor %}
+    {% endif %}
+    <div align=center>{% buttons submit='OK' %}{% endbuttons %}</div>
+</form>
+{% endblock container %}

@@ -110,6 +110,12 @@ def ajax_session_check(request):
             
         return False
 
+
+def get_email_by_userid(req):
+    u = User.objects.get(id=req.session['_auth_user_id'])
+    return u.email
+
+
 class RestrictedImageField(ImageField):
     content_type = None
     max_upload_size = None

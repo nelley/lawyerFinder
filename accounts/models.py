@@ -18,6 +18,7 @@ from django.core.handlers.wsgi import logger
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password, active_flag, **extra_fields):
+        #logger.debug('email=%s pw=%s' % (email, password))
         """ Creates and saves User with the given email and password. """
         now = timezone.now()
         if not email:
