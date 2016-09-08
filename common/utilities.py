@@ -53,20 +53,47 @@ def userInquirySender(userObj, inquiryContent):
                        ,reply_addresses=''
                        ,return_path=''
                        )
+
+
+def user_regist_mailSender(mail_to=None, token=None):#used in repw_view, user_register_view
+    mail_context=''
+    URL = SITE_URL + 'accounts/registConfirm/'
+    MAIL_TITLE=_('New Member Verification')
     
-def mailSender(mail_to=None, pw=None, token=None):#used in repw_view, user_register_view
+    verify_link=URL + token
+    mail_html = render_to_string('email/reverify.html',
+                                 {'verify_link': verify_link,},
+                                )
+        
+    connection = aws_ses_config()
+    
+    result = connection.send_email('dragonbrucelee@gmail.com' # from
+                       ,MAIL_TITLE
+                       ,mail_html
+                       ,mail_to # to
+                       ,cc_addresses=[]
+                       ,bcc_addresses=[]
+                       ,format='html'
+                       ,reply_addresses=''
+                       ,return_path=''
+                       )
+    logger.debug('New Member Verification Mail Sent')
+    logger.debug(result)
+
+def mailSender(mail_to=None, pw=None, token=None):#used in repw_view
     mail_context=''
     URL = SITE_URL + 'accounts/registConfirm/'
     MAIL_TITLE = ''
     #mail_to='doublenunchakus@gmail.com'
     
     if pw:
+        logger.debug('repassword mail resend')
         MAIL_TITLE=_('repassword mail resend')
         mail_html = render_to_string('email/repassword.html', 
                                      {'new_pw': pw,},
                                 )
     else:
-        #re-verify
+        logger.debug('verify mail resend')
         verify_link=URL + token
         MAIL_TITLE=_('verify mail resend')
         mail_html = render_to_string('email/reverify.html',

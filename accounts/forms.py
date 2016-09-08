@@ -175,7 +175,7 @@ class User_reg_form(User_Loginform):
     
     
     def clean(self): #this will be called at the last
-        logger.debug('pw checkpw confirmation')
+        logger.debug('pw checkpw confirmation in user reg')
         cleaned_data = self.cleaned_data # individual field's clean methods have already been called
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("checkpassword")
@@ -201,7 +201,7 @@ class User_reg_form(User_Loginform):
         return cleaned_data
     
     def clean_checkpassword(self):
-        logger.debug('clean checkpassword!')
+        logger.debug('clean checkpassword in user reg')
         checkpassword = self.cleaned_data['checkpassword']
         if (not checkpassword) or checkpassword is None:
             raise forms.ValidationError(_("Please input something."))
@@ -209,7 +209,7 @@ class User_reg_form(User_Loginform):
         return checkpassword
     
     def clean_siterule(self):
-        logger.debug('clean siterule!')
+        logger.debug('clean siterule in user reg')
         siterule = self.cleaned_data['siterule']
         if siterule or siterule is not None:
             if siterule == 'NO' or (not siterule):

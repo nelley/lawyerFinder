@@ -186,6 +186,12 @@ STATICFILES_DIRS = (
 )
 
 
+# Dump all data from real DB
+#python manage.py dumpdata --indent=2 > BASE_DIR + lawyerFinder/fixtures/initial_data.json
+#FIXTURE_DIRS = (
+#    os.path.join(BASE_DIR, "lawyerFinder/fixtures/"),
+#)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

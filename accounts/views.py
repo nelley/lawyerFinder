@@ -351,7 +351,7 @@ def user_register_view(request):
                                   email=tid, 
                                   password=tpw,
                                   active_flag=False)
-                    # add this ID to gtoup
+                    # add this ID to group
                     insertedu = User.objects.get(username = tid)
                     tmpG = Group.objects.get(name = 'ORDINARYUSER')
                     insertedu.groups.add(tmpG)
@@ -361,7 +361,7 @@ def user_register_view(request):
                     RegistTokens.objects.create(email=tid, registkey=token)
                     
                     # send mail by SES with new token
-                    mailSender(token=token, mail_to = tid)
+                    user_regist_mailSender(mail_to=tid, token=token)
                     messages.success(request, _('Please Check The Comfirmation Mail In Your Mailbox'))
                     
             except IntegrityError as e:

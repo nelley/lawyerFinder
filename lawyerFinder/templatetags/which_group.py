@@ -7,5 +7,8 @@ register = template.Library()
 
 @register.filter(name='which_group')
 def which_group(u, group_name):
-    group = Group.objects.get(name=group_name)
-    return True if group in u.groups.all() else False
+    if u:
+        group = Group.objects.get(name=group_name)
+        return True if group in u.groups.all() else False
+    else:
+        return False
