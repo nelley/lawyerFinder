@@ -24,24 +24,7 @@ from PIL import Image
 from django.utils.translation import ugettext_lazy as _
 from common.utilities import *
 
-def redirectHome(re):
-    logger.debug("redirect to top page")
-    lawyer_searchform = Lawyer_SearchForm()
-    litigation_form = LitigationTypeForm()
-    barassociation_form = BarassociationForm()
 
-    args = {'lawyer_searchform':lawyer_searchform,
-            'litigation_form':litigation_form,
-            'barassociation_form':barassociation_form,
-            }
-    redirect = 'base/index.html'
-    
-    return render_to_response(
-        redirect,
-        args,
-        context_instance=RequestContext(re)
-    )
-    
 def searchLogic(area_selected, field_selected, gender_selected):
     sep = '========================================================================='
     print sep
@@ -119,6 +102,7 @@ def home(request):
     redirect = ''
     
     if request.method == 'POST':
+        logger.debug('lawyer search start')
         litigations = request.POST.getlist('category')
         barass = request.POST.getlist('area')
         gender = request.POST.getlist('gender')
@@ -137,20 +121,17 @@ def home(request):
                         '-rank', '-field', '-premiumType')[0:30]
                         #.values_list('rank', 'field', 'gender', 'premiumType')
         
-        #print len(lawyers)
-        #for l in lawyers:
-        #    print l
-
         redirect = 'lawyerFinder/_search_results.html'
-        #image_path = MEDIA_ROOT + lawyers.photos
         
         args = {'queryed_lawyers':lawyers,
-                #'img_path':image_path,
                 'areas':areas,
                 'field':field,}
+        logger.debug('lawyer search end')
         
         
-    elif request.method == 'GET': #display main page
+    elif request.method == 'GET':
+        logger.debug('display main page')
+        
         lawyer_searchform = Lawyer_SearchForm()
         litigation_form = LitigationTypeForm()
         barassociation_form = BarassociationForm()
@@ -161,7 +142,6 @@ def home(request):
         args = {'lawyer_searchform':lawyer_searchform,
                 'litigation_form':litigation_form,
                 'barassociation_form':barassociation_form,
-                'title' : 'lawyer',
                 }
     
     return render_to_response(
@@ -171,13 +151,9 @@ def home(request):
     )
     
     
-    
-    
 def service_rule(request):
     sr = WebStaticContents.objects.get(key='SERVICE_RULE')
-    args={
-          'service_rules':sr,
-          }
+    args={'service_rules':sr,}
     
     return render_to_response(
         'common/site_service_rule.html',
@@ -453,7 +429,7 @@ def lawyerHome(request, law_id):
             
         except Lawyer.DoesNotExist:
             logger.debug("No corresponding lawyer!")
-            return redirectHome(request)
+            return redirect('home')
     
     
     logger.debug("default return")
