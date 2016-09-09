@@ -7,7 +7,7 @@ class SessionControllerMiddleware(object):
     # session timeout checker
     def process_request(self, request):
         # check whether frontend or backend by domain(frontend 60min, backend 15min)
-        logger.debug(request.get_full_path())
+        logger.debug('get full path = %s' % request.get_full_path())
         if request.user.is_authenticated():
             logger.debug('logged in user!')
             if 'lastRequest' in request.session:

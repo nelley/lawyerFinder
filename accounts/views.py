@@ -296,9 +296,16 @@ def repw_view(request):
     
 
 def user_repw(request):
+    logger.debug('user repw start')
     args={}
     user_repw_form = ''
-    repw_u = User.objects.get(id=request.session['_auth_user_id'])
+    repw_u = ''
+    
+    if '_auth_user_id' in request.session:
+        logger.debug('get user from session')
+        repw_u = User.objects.get(id=request.session['_auth_user_id'])
+    else:
+        return redirect('home')
     
     if request.method == 'POST':
         logger.debug('change pw start')
@@ -318,11 +325,12 @@ def user_repw(request):
                 logger.debug('Old PW does not correct')
                 messages.error(request, _('Old PW does not correct'))
             
-            return render_to_response(
-                                        'accounts/user_repw.html',
+            return render_to_response( 'accounts/user_repw.html',
                                         {'user_repw_form': user_repw_form,
                                          'user_email':repw_u.email},
                                         context_instance=RequestContext(request))
+        else:
+            logger.debug('user repw form validation failed')
     else:
         user_repw_form = User_repw_form()
     
@@ -388,17 +396,24 @@ def user_register_view(request):
     
     
 def user_confirm(request, registkey):
+    logger.debug('user_confirm process start')
     try:
         emailId = RegistTokens.objects.get(registkey=registkey)
         if emailId:
+            logger.debug('user_confirm token validation')
+            
             now = datetime.datetime.now()
             if (now - emailId.created_at).total_seconds() > 60*60:#over 1 hour
+                logger.debug('user_cofirm over 1 hour')
                 messages.error(request, _('Invalid register key due to exceed time limitation'))
+                
             else:
+                logger.debug('user_cofirm update active flag')
                 u = User.objects.get(username=emailId.email)
                 u.is_active = 1
                 u.save()
                 messages.success(request, _('Account activated'))
+                
     except IntegrityError as e:
         logger.debug('DB Error!') 
     except RegistTokens.DoesNotExist:
