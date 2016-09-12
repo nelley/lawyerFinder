@@ -168,6 +168,7 @@ def lawyerHome(request, law_id):
     args = ''
     
     if request.method=='POST' and request.is_ajax():
+        logger.debug('request with ajax start')
         data = {} # for response
         
         #----processing functions that does not need membership-----
@@ -251,36 +252,49 @@ def lawyerHome(request, law_id):
         
         if request.method == 'POST' and 'service_edit' in request.POST:
             logger.debug("Service Edit's Ajax start")
-            submitted_form = Lawyer_infosForm(request.POST)
-            if submitted_form.is_valid():
-                commitedContent = updateLawyerInfo(request, submitted_form)
-                
-                data = {
-                        'result':'success',
-                        'message':unicode(_('Edit Successed')),
-                        'contents':commitedContent,
-                        'type':request.POST['type']
-                        }
-                
+            if is_lawyer(request):
+                submitted_form = Lawyer_infosForm(request.POST)
+                if submitted_form.is_valid():
+                    commitedContent = updateLawyerInfo(request, submitted_form)
+                    
+                    data = {
+                            'result':'success',
+                            'message':unicode(_('Edit Successed')),
+                            'contents':commitedContent,
+                            'type':request.POST['type']
+                            }
+                    logger.debug("Upload Successed!!")
+                    
+                else:
+                    data = {
+                            'result':'danger',
+                            'message':unicode(_('Process Failed')),
+                            }
+                    logger.debug("Upload Failed!!")
+                return HttpResponse(json.dumps(data), content_type="application/json")
+            
             else:
-                data = {
-                        'result':'danger',
-                        'message':unicode(_('Process Failed')),
+                data = {'result':'Failed',
+                        'title':unicode(_('Process Failed')),
+                        'message': unicode(_('Process Failed'))
                         }
-                logger.debug("Upload Failed!!")
                 
-            return HttpResponse(json.dumps(data), content_type="application/json")
+                logger.debug("Profile Fetch Failed!!")
+                return HttpResponse(json.dumps(data), content_type="application/json")
+                
+            
         
         elif(request.method == 'POST' and 'profile_fetch' in request.POST):
             logger.debug("Profile Fetch's Ajax start")
-            lawyerObj = getLawyerInfo(request)
             
-            lawyer_regform = Lawyer_RegForm(request, instance=lawyerObj, lawyer=lawyerObj)
-            
-            u = User.objects.get(id=lawyerObj.user_id)
-            lawyer_nameform = Lawyer_Nameform(instance=u)
-            
-            if lawyerObj:
+            if is_lawyer(request):
+                lawyer_regform = Lawyer_RegForm(request,
+                                                instance=Lawyer.objects.get(user_id= request.session['_auth_user_id']), 
+                                                lawyer= Lawyer.objects.get(user_id= request.session['_auth_user_id']))
+                u = User.objects.get(id=Lawyer.objects.get(user_id= request.session['_auth_user_id']).user_id)
+                lawyer_nameform = Lawyer_Nameform(instance=u)
+                
+                logger.debug("Profile Fetch Successed!!")
                 return HttpResponse(render_form(lawyer_nameform) + render_form(lawyer_regform))
             else:
                 data = {'result':'Failed',
@@ -293,112 +307,147 @@ def lawyerHome(request, law_id):
         
         elif(request.method == 'POST' and 'editCommit' in request.POST):
             logger.debug("Profile edit commit Ajax start")
-            submittedForm = json.loads(request.POST['form'])
-            objForInit, userObj = rearrangeForm(submittedForm)
             
-            lawyer_regform_edit = Lawyer_RegForm(request, objForInit)
-            lawyer_nameform_edit = Lawyer_Nameform(userObj)
-
-            if lawyer_regform_edit.is_valid() and lawyer_nameform_edit.is_valid():
-                updateLawyerProfile(request, lawyer_regform_edit)
-                updateUserProfile(request, lawyer_nameform_edit)
+            if is_lawyer(request):
+                submittedForm = json.loads(request.POST['form'])
+                objForInit, userObj = rearrangeForm(submittedForm)
                 
-                data = {
-                        'result':'success',
-                        'title':unicode(_('Edit Successed')),
-                        'message':unicode(_('Your Profile Has Been Updated')),
-                        'first_name':userObj['first_name'],
-                        'last_name':userObj['last_name'],
-                        
+                lawyer_regform_edit = Lawyer_RegForm(request, objForInit)
+                lawyer_nameform_edit = Lawyer_Nameform(userObj)
+    
+                if lawyer_regform_edit.is_valid() and lawyer_nameform_edit.is_valid():
+                    logger.debug('edit commit validation passed')
+                    updateLawyerProfile(request, lawyer_regform_edit)
+                    updateUserProfile(request, lawyer_nameform_edit)
+                    
+                    data = {
+                            'result':'success',
+                            'title':unicode(_('Edit Successed')),
+                            'message':unicode(_('Your Profile Has Been Updated')),
+                            'first_name':userObj['first_name'],
+                            'last_name':userObj['last_name'],
+                            
+                            }
+                    logger.debug("Profile edition successed")
+                    return HttpResponse(json.dumps(data), content_type="application/json")
+                
+                else:
+                    logger.debug("Validation Failed")
+                    return HttpResponse(render_form(lawyer_nameform_edit) + 
+                                        render_form(lawyer_regform_edit))
+            else:
+                data = {'result':'Failed',
+                        'title':unicode(_('Process Failed')),
+                        'message': unicode(_('Process Failed'))
                         }
                 
+                logger.debug("Profile Fetch Failed!!")
                 return HttpResponse(json.dumps(data), content_type="application/json")
-            
-            else:
-                logger.debug("Validation Failed")
-                return HttpResponse(render_form(lawyer_nameform_edit) + 
-                                    render_form(lawyer_regform_edit))
             
         elif(request.method == 'POST' and 'photo_fetch' in request.POST):
-            lawyer_photoform = Lawyer_photoForm()
-            
-            return HttpResponse(render_form(lawyer_photoform))
+            if is_lawyer(request):
+                lawyer_photoform = Lawyer_photoForm()
+                
+                return HttpResponse(render_form(lawyer_photoform))
+            else:
+                data = {'result':'Failed',
+                        'title':unicode(_('Process Failed')),
+                        'message': unicode(_('Process Failed'))
+                        }
+                
+                logger.debug("Profile Fetch Failed!!")
+                return HttpResponse(json.dumps(data), content_type="application/json")
         
         elif(request.method == 'POST' and 'photo_edit_commit' in request.POST):
-            if 'imgFile' in request.FILES:
-                try:
-                    with transaction.atomic():
-                        imageFileBuf = request.FILES['imgFile']
-                        PIL_image = Image.open(imageFileBuf)
-                        tmpL = getLawyerInfo(request)
-                        
-                        thumbnail_save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo + '/thumbnail/'
-                        image_save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo + '/image/'
-                        
-                        logger.debug('thumbnail store path = %s' % thumbnail_save_path)
-                        logger.debug('original image store path = %s' % image_save_path)
-                        
-                        #folder check for thumbnail
-                        #if not os.path.exists(thumbnail_save_path):
-                        #    os.makedirs(thumbnail_save_path)
+            if is_lawyer(request):
+                if 'imgFile' in request.FILES:
+                    try:
+                        logger.debug('photo edit commit start')
+                        with transaction.atomic():
+                            imageFileBuf = request.FILES['imgFile']
+                            PIL_image = Image.open(imageFileBuf)
+                            tmpL = is_lawyer(request)
                             
-                        #folder check for original image
-                        if not os.path.exists(image_save_path):
-                            os.makedirs(image_save_path)
+                            thumbnail_save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo + '/thumbnail/'
+                            image_save_path = MEDIA_ROOT + '/' + tmpL.lawyerNo + '/image/'
                             
-                        #check width & height before saving as thumbnail
-                        #w,h = PIL_image.size
-                        #if w > PROFILE_IMG_WIDTH or h > PROFILE_IMG_HEIGHT:
-                        #    PIL_thumbnail = PIL_image.resize((PROFILE_IMG_WIDTH, PROFILE_IMG_WIDTH))
-                        #    PIL_thumbnail.save(thumbnail_save_path + imageFileBuf.name.lower(), 'JPEG')
-                        #else:
-                        #    PIL_image.save(thumbnail_save_path + imageFileBuf.name.lower(), 'JPEG')
+                            logger.debug('thumbnail store path = %s' % thumbnail_save_path)
+                            logger.debug('original image store path = %s' % image_save_path)
+                            
+                            #folder check for thumbnail
+                            #if not os.path.exists(thumbnail_save_path):
+                            #    os.makedirs(thumbnail_save_path)
+                                
+                            #folder check for original image
+                            if not os.path.exists(image_save_path):
+                                os.makedirs(image_save_path)
+                                
+                            #check width & height before saving as thumbnail
+                            #w,h = PIL_image.size
+                            #if w > PROFILE_IMG_WIDTH or h > PROFILE_IMG_HEIGHT:
+                            #    PIL_thumbnail = PIL_image.resize((PROFILE_IMG_WIDTH, PROFILE_IMG_WIDTH))
+                            #    PIL_thumbnail.save(thumbnail_save_path + imageFileBuf.name.lower(), 'JPEG')
+                            #else:
+                            #    PIL_image.save(thumbnail_save_path + imageFileBuf.name.lower(), 'JPEG')
+                            
+                            #save to the folder categoried by lawyer number
+                            PIL_image.save(image_save_path + imageFileBuf.name.lower(), 'JPEG')
+                            
+                            logger.debug('thumbnail & image saving completed!')
+                            
+                            img_db_path = tmpL.lawyerNo + '/image/' + imageFileBuf.name.lower()
+                            #update data in DB
+                            tmpL.photos = img_db_path
+                            #tmpL.thumbnail = '/' + tmpL.lawyerNo + '/thumbnail/' + imageFileBuf.name.lower()
+                            tmpL.save()
+                            logger.debug('thumbnail & image path saving to DB completed!')
+                            
+                            data = { 'result':'Success',
+                                     'title':unicode(_('Edit Successed')),
+                                     'message':unicode(_('Your Profile Image Is Changed')),
+                                     'img_url':MEDIA_URL + img_db_path,
+                                    }
+                            
+                            return HttpResponse(json.dumps(data), content_type="application/json")
                         
-                        #save to the folder categoried by lawyer number
-                        PIL_image.save(image_save_path + imageFileBuf.name.lower(), 'JPEG')
-                        
-                        logger.debug('thumbnail & image saving completed!')
-                        
-                        img_db_path = tmpL.lawyerNo + '/image/' + imageFileBuf.name.lower()
-                        #update data in DB
-                        tmpL.photos = img_db_path
-                        #tmpL.thumbnail = '/' + tmpL.lawyerNo + '/thumbnail/' + imageFileBuf.name.lower()
-                        tmpL.save()
-                        logger.debug('thumbnail & image path saving to DB completed!')
-                        
-                        data = { 'result':'Success',
-                                 'title':unicode(_('Edit Successed')),
-                                 'message':unicode(_('Your Profile Image Is Changed')),
-                                 'img_url':MEDIA_URL + img_db_path,
-                                }
-                        
+                    except Exception as e:
+                        logger.debug(e)
+                        data = {
+                            'result':'System Error',
+                            'title':unicode(_('Selected file is not an image')),
+                            'message':unicode(_('Please select an image file')),
+                            }
                         return HttpResponse(json.dumps(data), content_type="application/json")
+                        logger.debug('%s (%s)' % (e.message, type(e)))
                     
-                except Exception as e:
-                    print e
-                    data = {
-                        'result':'System Error',
-                        'title':unicode(_('Selected file is not an image')),
-                        'message':unicode(_('Please select an image file')),
-                        }
+                    
                     return HttpResponse(json.dumps(data), content_type="application/json")
-                    logger.debug('%s (%s)' % (e.message, type(e)))
-                
-                
-                return HttpResponse(json.dumps(data), content_type="application/json")
+                else:
+                    logger.debug('there is no image file in the request')
+                    data = {
+                            'result':'Failed',
+                            'title':unicode(_('Process Failed')),
+                            'message':unicode(_('Please Select An Image File')),
+                            }
+                    
+                    return HttpResponse(json.dumps(data), content_type="application/json")
             else:
-                logger.debug('there is no image file in the request')
-                data = {
-                        'result':'Failed',
+                data = {'result':'Failed',
                         'title':unicode(_('Process Failed')),
-                        'message':unicode(_('Please Select An Image File')),
+                        'message': unicode(_('Process Failed'))
                         }
                 
+                logger.debug("Profile Fetch Failed!!")
                 return HttpResponse(json.dumps(data), content_type="application/json")
         
+            
         else:
-            logger.debug('ajax GET call comes')
-            return HttpResponse('ajax get call LA')
+            logger.debug('ajax call with key param unknown')
+            data = {'result':'Failed',
+                    'title':unicode(_('Process Unknown')),
+                    'message': unicode(_('Process Unknown'))
+                    }
+            return HttpResponse(json.dumps(data), content_type="application/json")
     
     #----POST & ajax call end----
     
@@ -553,7 +602,7 @@ def updateLawyerInfo(res, form):
     
     return newInfos
     
-def getLawyerInfo(res):
+def is_lawyer(res):
     userid = res.session['_auth_user_id']
     try:
         l = Lawyer.objects.get(user_id= userid)

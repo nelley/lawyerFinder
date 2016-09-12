@@ -32,19 +32,17 @@ def aws_ses_config():
 
 def userInquirySender(userObj, inquiryContent):
     logger.debug('mail to %s' % userObj.email)
+    MAIL_TITLE=_('Inquiry Mail Is Coming')
     mail_html = render_to_string('email/user_inquiry.html', {'lawyer_firstname': userObj.first_name,
                                                              'lawyer_lastname': userObj.last_name,
                                                              'userInquiry': inquiryContent},
                                 )
     connection = aws_ses_config()
-    
-    #mail_html = render_to_string('email/_base.html', {'user': 'NELLEY'})
 
-    # complaint@simulator.amazonses.com
     # bounce@simulator.amazonses.com
     result = connection.send_email(
                         source='dragonbrucelee@gmail.com' # from
-                       ,subject='Inquiry Mail'
+                       ,subject=MAIL_TITLE
                        ,body=mail_html
                        ,to_addresses=userObj.email # to
                        ,cc_addresses=['dragonbrucelee@gmail.com']

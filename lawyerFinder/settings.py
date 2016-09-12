@@ -191,11 +191,13 @@ STATICFILES_DIRS = (
 #FIXTURE_DIRS = (
 #    os.path.join(BASE_DIR, "lawyerFinder/fixtures/"),
 #)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
         'simple': {
             'format': '[%(asctime)s %(module)s] %(levelname)s: %(message)s'
         },
@@ -204,14 +206,15 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'verbose',
         },
         'applogfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'laywerFinder.log'),
-            'maxBytes': 1024*1024*3, # 15MB
+            'maxBytes': 1024*1024*3, # 3MB
             'backupCount': 10,
+            'formatter': 'simple',
     },
     },
     'loggers': {

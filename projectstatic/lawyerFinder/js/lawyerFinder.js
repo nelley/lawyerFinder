@@ -189,7 +189,7 @@ function ajaxCall_profileCommit(url_profile){
         });
         
         var json_object = $("#editProfileBox");
-        
+
         $.ajax({
             type: 'POST',
             url: url_profile,
@@ -546,6 +546,7 @@ function ajax_mail_send(url_consult){
         });
         
         var json_obj = $("#mailConsultBody");
+        
         $.ajax({
             type: 'POST',
             url: url_consult,

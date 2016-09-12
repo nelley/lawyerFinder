@@ -145,3 +145,40 @@ def lawyerSearch(area, category, gender):
                     '-rank', '-field', '-premiumType')[0:30]
                     
     return (lawyers, areas, field)
+
+def connect_under_login_lawyer(self, loginId, loginPW, lawyerNo, infos=''):
+    u = User.objects.create_user(username=loginId,
+                                 email=loginId,
+                                 password=loginPW,
+                                 active_flag = True)
+        
+    l = Lawyer(user=u, lawyerNo=lawyerNo, 
+               gender=Lawyer.GENDER[randint(0,1)][0], 
+               premiumType=Lawyer.PREMIUM[randint(0,3)][0], 
+               careerYear=randint(0,20))
+    l.save()
+    
+    #relate user to group
+    tmpG = Group.objects.get(name = 'LAWYER')
+    u.groups.add(tmpG)
+    
+    l_infos = Lawyer_infos(lawyer_id=l.user_id,
+                           basic=infos,
+                           strongFields=infos,
+                           finishedCases=infos,
+                           feeStd=infos,
+                           companyInfos=infos)
+    l_infos.save()
+    
+    login = self.client.login(username=loginId, password=loginPW)
+    
+    return login
+
+def connect_under_login_user(self, loginId, loginPW):
+    u = User.objects.create_user(username='dragonbrucelee@gmail.com',
+                                 email='dragonbrucelee@gmail.com',
+                                 password='1Qa1Qa',
+                                 active_flag = True)
+
+    login = self.client.login(username='dragonbrucelee@gmail.com', password='1Qa1Qa')
+    return login

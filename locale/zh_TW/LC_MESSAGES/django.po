@@ -405,6 +405,9 @@ msgstr "好律師你在哪裡-驗證信重寄"
 msgid "New Member Verification"
 msgstr "好律師你在哪裡-新會員驗證信"
 
+msgid "Inquiry Mail Is Coming"
+msgstr "好律師你在哪裡-會員諮詢來信"
+
 #=========================================
 
 #

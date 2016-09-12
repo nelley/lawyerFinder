@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 
 
 # Create your tests here.
-class user_confirm_test(TestCase):
+class lawyer_home_test(TestCase):
     
     def setUp(self):
         pass
