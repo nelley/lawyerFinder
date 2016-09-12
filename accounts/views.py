@@ -250,43 +250,47 @@ def repw_view(request):
     
     if request.POST:
         emailID = request.POST['username']
-        type = request.POST['type']
-        re = User.objects.filter(username = emailID)
-        # user is existed or not
-        if re:
-            is_active = re.is_active
-            # if user request repassword
-            if type == 'REPW':
-                if is_active == True:
-                    # generate new pw
-                    password = User.objects.make_random_password(length=12,
-                                                                 allowed_chars='!@#$%^&*abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789')
-                    # sent mail successed
-                    mailSender(mail_to=emailID, pw=password)
-                    # update new pw to DB
-                    re.set_password(password)
-                    re.save()
-                    messages.success(request, _('Please check your new pw in your email account'))
-                else:
-                    messages.warning(request, _("This ID has not been activated. Please check your mailbox"))
-            # if user request resend confirm mail
-            elif(type == 'RECO'):
-                if is_active == True:
-                    messages.warning(request, _("This ID has been activated."))
-                else:
-                    try:
-                        with transaction.atomic():
-                            token = gen_tokens(emailID)
-                            RegistTokens.objects.create(email=emailID, registkey=token)
-                            # send mail by SES with new token
-                            mailSender(mail_to=emailID, token=token)
-                            messages.success(request, _('Please Check The Comfirmation Mail In Your Mailbox'))
-                    except IntegrityError as e:
-                        messages.error(request, _('ReComfirmation Failed'))
-                        logger.debug('ReComfirmation Failed')
-                        logger.debug(e.message)
+        
+        if emailID:
+            type = request.POST['type']
+            re = User.objects.filter(username = emailID)
+            # user is existed or not
+            if re:
+                is_active = re[0].is_active
+                # if user request repassword
+                if type == 'REPW':
+                    if is_active == True:
+                        # generate new pw
+                        password = User.objects.make_random_password(length=12,
+                                                                     allowed_chars='!@#$%^&*abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789')
+                        # sent mail successed
+                        mailSender(mail_to=emailID, pw=password)
+                        # update new pw to DB
+                        re[0].set_password(password)
+                        re[0].save()
+                        messages.success(request, _('Please check your new pw in your email account'))
+                    else:
+                        messages.warning(request, _("This ID has not been activated. Please check your mailbox"))
+                # if user request resend confirm mail
+                elif(type == 'RECO'):
+                    if is_active == True:
+                        messages.warning(request, _("This ID has been activated."))
+                    else:
+                        try:
+                            with transaction.atomic():
+                                token = gen_tokens(emailID)
+                                RegistTokens.objects.create(email=emailID, registkey=token)
+                                # send mail by SES with new token
+                                mailSender(mail_to=emailID, token=token)
+                                messages.success(request, _('Please Check The Confirmation Mail In Your Mailbox'))
+                        except IntegrityError as e:
+                            messages.error(request, _('ReConfirmation Failed'))
+                            logger.debug('ReConfirmation Failed')
+                            logger.debug(e.message)
+            else:
+                messages.error(request, _('This Email has not been registered'))
         else:
-            messages.warning(request, _('This Email has not been registered'))
+            messages.error(request, _('Please Input Email Account'))
     
     return render_to_response(
         'accounts/_base.html',

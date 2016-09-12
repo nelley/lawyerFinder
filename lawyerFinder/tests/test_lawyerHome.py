@@ -28,7 +28,7 @@ class lawyerHome_test(TestCase):
         user_inquiry_form = User_Inquiry_Form()
         self.assertEqual(response.content.decode(), render_form(user_inquiry_form))
         
-    '''
+    
     @override_settings(LANGUAGE_CODE='en-US', LANGUAGES=(('en', 'English'),))
     def test_lawyerHome_with_ajax_send_mail_success(self):
         u = User.objects.create_user(username='dragonbrucelee@gmail.com',
@@ -95,7 +95,7 @@ class lawyerHome_test(TestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertTrue('Ensure this value has at most 20 characters (it has 35).' in str(response.content.decode()))
-    '''
+    
         
     def test_lawyerHome_with_ajax_fetch_phoneNumber(self):
         u = User.objects.create_user(username='dragonbrucelee@gmail.com',

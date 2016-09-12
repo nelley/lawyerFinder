@@ -124,12 +124,16 @@ msgid "This ID has been activated."
 msgstr "這個帳號已經被啟用"
 
 #: accounts/views.py:264 accounts/views.py:309
-msgid "Please Check The Comfirmation Mail In Your Mailbox"
+msgid "Please Check The Confirmation Mail In Your Mailbox"
 msgstr "請至信箱確認寄送的認證信"
 
 #: accounts/views.py:266
-msgid "ReComfirmation Failed"
-msgstr ""
+msgid "ReConfirmation Failed"
+msgstr "重寄驗證信失敗"
+
+#: accounts/views.py
+msgid "Please Input Email Account"
+msgstr "請輸入註冊為帳號的電子信箱"
 
 #: accounts/views.py:270
 msgid "This Email has not been registered"

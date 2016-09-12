@@ -7,7 +7,7 @@ from django.test import TestCase, override_settings
 
 
 
-class user_confirm_test(TestCase):
+class user_repw_view_test(TestCase):
     def setUp(self):
         User.objects.create_user(username='testuser@gmail.com',
                                  email='testuser@gmail.com',
